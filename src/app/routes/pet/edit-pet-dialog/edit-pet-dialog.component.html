@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Edit Pet Details</h2>
+<mat-dialog-content>
+  <form #ownerForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="data.animal.animalName" name="animalName" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Birth Date</mat-label>
+      <input matInput [(ngModel)]="data.animal.animalBirthDate" name="animalBirthDate" type="date" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Gender</mat-label>
+      <input matInput [(ngModel)]="data.animal.gender" name="gender" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Species</mat-label>
+      <input matInput [(ngModel)]="data.animal.species" name="species" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Breed</mat-label>
+      <input matInput [(ngModel)]="data.animal.breed" name="breed" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Weight</mat-label>
+      <input matInput [(ngModel)]="data.animal.weight" name="weight" required>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="saveChanges()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

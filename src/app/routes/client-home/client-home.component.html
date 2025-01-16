@@ -1,0 +1,263 @@
+<body>
+  <div class="container">
+    <div class="item item-0">
+      <mat-toolbar color="primary" class="toolbar">
+        <div class="logo-container">
+          <img src="/images/MyImages/Logo2.png" alt="Logo" class="logo-image" />
+          <span class="logo-title">Dr PawPaw</span>
+        </div>
+
+        <!-- Spacer to push menu items to the right -->
+        <span class="spacer"></span>
+
+        <!-- Services Button -->
+        <div
+    class="menu-wrapper">
+    <button mat-button [matMenuTriggerFor]="PetservicesMenu" #PetservicesTrigger="matMenuTrigger">
+      Pet Services <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <mat-menu #PetservicesMenu="matMenu" class="hover-menu">
+      <button mat-menu-item (click)="onDogTraining()">Dog Training</button>
+      <button mat-menu-item (click)="onDentalCare()">Dental Care</button>
+      <button mat-menu-item (click)="onVaccineDetails()">Vaccination</button>
+      <button mat-menu-item (click)="onSurgeryDetails()">Surgery</button>
+      <button mat-menu-item (click)="onGroomDetails()">Grooming</button>
+      </mat-menu>
+  </div>
+
+<div class="menu-wrapper">
+    <button mat-button [matMenuTriggerFor]="EquineservicesMenu" #EquineservicesTrigger="matMenuTrigger">
+      Equine Services <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+  </div>
+
+  <div class="menu-wrapper">
+    <button mat-button [matMenuTriggerFor]="PetAdoptionMenu" #PetservicesTrigger="matMenuTrigger">
+      Pet Adoption <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <mat-menu #PetAdoptionMenu="matMenu" class="hover-menu">
+      <button mat-menu-item (click)="onAdoptionDetails()">Adoption Details</button>
+      <button mat-menu-item (click)="onAdoptNow()">Adopt now</button>
+      </mat-menu>
+    </div>
+
+
+  <!-- About Us Menu -->
+  <div
+    class="menu-wrapper">
+    <button mat-button [matMenuTriggerFor]="aboutUsMenu" #aboutUsTrigger="matMenuTrigger">
+      About Us <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+  </div>
+
+         <!-- Menus -->
+
+
+        <mat-menu #EquineservicesMenu="matMenu">
+          <button mat-menu-item (click)="onInternalMedicine()">Internal Medicine</button>
+          <button mat-menu-item>Diagnostics</button>
+          <button mat-menu-item>Lab Testing & Screening</button>
+          <button mat-menu-item>Horse Training</button>
+          <button mat-menu-item>Wellness & Preventative Care</button>
+        </mat-menu>
+
+        <mat-menu #aboutUsMenu="matMenu" class="hover-menu">
+        <button mat-menu-item (click)="goToTeamPage()">Our Team</button>
+        <button mat-menu-item>Contact</button>
+        </mat-menu>
+
+
+      </mat-toolbar>
+    </div>
+
+    <div class="item item-1">
+      <!-- Background Image -->
+      <div class="background-container">
+        <img src="images/MyImages/ClientHomeBack.webp" alt="Example Image">
+      </div>
+
+      <!-- Centered Text -->
+      <div class="centered">
+        <h1 class="title">Quality Care For Your Animals</h1>
+        <h2 class="subtitle">We prioritize your animal’s health and wellness</h2>
+      </div>
+      <div>
+        <button class="background-button" (click)="onBookAppointment()">Book Appointment</button></div>
+    </div>
+
+    <div class="item item-2">
+      <div class="text-2">Schedule Your Next Visit Now</div>
+      <div><button class="button-2" (click)="onBookAppointment()">Book Appointment</button></div>
+    </div>
+
+    <div class="item item-3">
+      <div><button class ="service-1">
+        <span class="text-bg">Equine</span></button>
+      </div>
+      <div><button class ="service-2">
+        <span class="text-bg">Vaccination</span>
+      </button>
+      </div>
+      <div><button class ="service-3" role="button"(click)="onSurgeryDetails()">
+        <span class="text-bg">Surgery</span></button>
+      </div>
+      <div><button class ="service-4">
+        <span class="text-bg">Grooming</span>
+      </button>
+      </div>
+
+    </div>
+
+    <div class="item item-4">
+      <div class="TEXT">
+      <h3 class="text-4">
+        Welcome to Dr. PawPaw Center
+      </h3>
+      <div class="welcome-text">{{WelcomeText}}</div>
+    </div>
+      <div class="image-box">
+        <img src="/images/MyImages/welcome.webp" alt="Vet clinic image">
+      </div>
+    </div>
+
+    <div class="item item-5">
+      <div class="button-grid">
+        <!-- Button 1 -->
+        <button class="transparent-button">
+          <div>
+            <p class="head">Contact us</p>
+            <p>
+              If you have any questions, call or email us and our staff will respond
+              as soon as possible!
+            </p>
+            <a href="/contact" class="link">Connect with us</a>
+          </div>
+        </button>
+
+        <!-- Button 2 -->
+        <button class="transparent-button" (click)="onAdoptionDetails()">
+          <div>
+            <p class="head">Adoption Info</p>
+            <p>
+              Learn more about our adoption process and find the perfect companion!
+            </p>
+            <a href="/adoption-details" class="link">Learn More</a>
+          </div>
+        </button>
+
+        <!-- Button 3 -->
+        <button class="transparent-button">
+          <div>
+            <p class="head">Wellness & Care Checkups</p>
+            <p>
+              Learn about all of the services that we provide to patients at our veterinary center.
+            </p>
+            <a href="/volunteer" class="link">Learn More</a>
+          </div>
+        </button>
+
+        <!-- Button 4 -->
+        <button class="transparent-button" (click)="onBookAppointment()">
+          <div>
+            <p class="head">Book An Appointment</p>
+            <p>
+              Schedule a convenient appointment with our office now. We can’t wait to meet you!
+            </p>
+            <a href="/book-appointment" class="link">Book Appoitment Now</a>
+          </div>
+        </button>
+      </div>
+      </div>
+
+    <div class="item item-8">
+      <div class="meet-the-team-container">
+        <mat-card class="horizontal-card">
+          <div class="card-content">
+            <img mat-card-image src="images/MyImages/MeetTheTeam.webp" alt="Our Veterinary Team">
+            <div class="text-content">
+              <mat-card-title>Meet the Team</mat-card-title>
+              <mat-card-subtitle>Discover our skilled veterinary team</mat-card-subtitle>
+              <mat-card-content>
+                <p>
+                  Our dedicated team of veterinarians and staff is here to ensure the best care for your animals.
+                  Learn more about their expertise and passion for animal health.
+                </p>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="goToTeamPage()">Learn More</button>
+              </mat-card-actions>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="item item-9">
+      <div class="office-hours">
+        <h3>Office Hours</h3>
+        <div class="hours-container">
+          <div class="day-time">Monday<br><span>9:00 am - 5:00 pm</span></div>
+          <div class="divider"></div>
+          <div class="day-time">Tuesday<br><span>9:00 am - 5:00 pm</span></div>
+          <div class="divider"></div>
+          <div class="day-time">Wednesday<br><span>9:00 am - 5:00 pm</span></div>
+          <div class="divider"></div>
+          <div class="day-time">Thursday<br><span>9:00 am - 5:00 pm</span></div>
+          <div class="divider"></div>
+          <div class="day-time">Friday<br><span>9:00 am - 5:00 pm</span></div>
+          <div class="divider"></div>
+          <div class="day-time">Saturday<br><span>9:00 am - 2:00 pm</span></div>
+          <div class="divider"></div>
+          <div class="day-time">Sunday<br><span>Closed</span></div>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <div class="logo">
+          <img src="images/MyImages/Logo2.png" alt="Dr Pawpaw Center Logo" />
+        </div>
+        <div class="social-icons">
+          <a href="https://www.instagram.com" target="_blank">
+            <img src="images/MyImages/instagram.webp" alt="Instagram" />
+          </a>
+          <a href="https://www.facebook.com" target="_blank">
+            <img src="images/MyImages/facebook.jpg" alt="Facebook" />
+          </a>
+        </div>
+        <div class="contact-info">
+          <span>Call Us: <a href="tel:800-462-8749">800-462-8749</a></span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="item item-10">
+      <div class="location-section">
+        <!-- Address Card -->
+        <mat-card class="address-card">
+          <mat-card-header>
+            <mat-card-title>Our Location</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Dr PawPaw Veterinary Clinic St, City, Country</p>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Map -->
+        <div class="map-container">
+          <iframe
+            width="600"
+            height="450"
+            src="https://www.google.com/maps/embed/v1/place?q=37.4220,-122.0841&key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao"
+            frameborder="0"
+            style="border:0;"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</body>

@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Edit Owner Details</h2>
+<mat-dialog-content>
+  <form #ownerForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Full Name</mat-label>
+      <input matInput [(ngModel)]="data.owner.fullName" name="fullName" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Birth Date</mat-label>
+      <input matInput [(ngModel)]="data.owner.ownerBirthDate" name="ownerBirthDate" type="date" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Phone</mat-label>
+      <input matInput [(ngModel)]="data.owner.phone" name="phone" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="data.owner.ownerEmail" name="ownerEmail" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Address</mat-label>
+      <textarea matInput [(ngModel)]="data.owner.address" name="address" required></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="saveChanges()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

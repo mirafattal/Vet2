@@ -1,0 +1,100 @@
+<body>
+  <div class="container">
+    <!-- Already Designed Items -->
+    <div class="item item-1">
+      Good Morning Doctor, <br />
+      Let's see what's on the agenda today!
+    </div>
+    <div class="item item-2">
+      <mat-card class="card">
+        <mat-card-content class="items">
+          <i class="icon"><mat-icon>pets</mat-icon></i>
+          <div class="card-text">
+            <h3>Total Pet Patients</h3>
+            <p>180</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="item item-3">
+      <mat-card class="card">
+        <mat-card-content class="items">
+          <i class="icon"><mat-icon>local_hospital</mat-icon></i>
+          <div class="card-text">
+            <h3>Total Horse Patients</h3>
+            <p>300</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="item item-4">
+      <mat-card class="card">
+        <mat-card-content class="items">
+          <i class="icon"><mat-icon>date_range</mat-icon></i>
+          <div class="card-text">
+            <h3>Total Appointments</h3>
+            <p>{{appoints}}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="item item-5">
+      <mat-card class="card">
+        <mat-card-content class="items">
+          <i class="icon"><mat-icon>attach_money</mat-icon></i>
+          <div class="card-text">
+            <h3>Total Month Revenue</h3>
+            <p>{{upcomingAppointments}}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Clinic Revenue Chart -->
+    <div class="item item-6">
+      <h3>Clinic Revenue</h3>
+      <canvas id="revenueChart"></canvas>
+    </div>
+
+    <!-- Patient Appointment Overview -->
+<div class="item item-7">
+  <mat-card>
+    <h3>Upcoming Patient Appointments</h3>
+    <p>Here you can view and manage upcoming patient appointments with the staff.</p>
+    <button mat-raised-button color="primary" (click)="viewAppointments()">View Appointments</button>
+  </mat-card>
+</div>
+
+
+    <!-- Pet Patients Table -->
+    <div class="item item-8">
+      <mat-card>
+        <h3>Pet Patients</h3>
+      <table mat-table [dataSource]="petPatients" class="mat-elevation-z8">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let pet"> {{pet.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef> Age </th>
+          <td mat-cell *matCellDef="let pet"> {{pet.age}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="health">
+          <th mat-header-cell *matHeaderCellDef> Health </th>
+          <td mat-cell *matCellDef="let pet"> {{pet.health}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastVisit">
+          <th mat-header-cell *matHeaderCellDef> Last Visit </th>
+          <td mat-cell *matCellDef="let pet"> {{pet.lastVisit}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card>
+    </div>
+  </div>
+</body>

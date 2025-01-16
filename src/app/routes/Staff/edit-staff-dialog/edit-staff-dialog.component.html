@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Edit Staff Details</h2>
+<mat-dialog-content>
+  <form #ownerForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Staff Name</mat-label>
+      <input matInput [(ngModel)]="data.staff.fullName" name="fullName" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Address</mat-label>
+      <textarea matInput [(ngModel)]="data.staff.address" name="address" required></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Phone</mat-label>
+      <input matInput [(ngModel)]="data.staff.phone" name="phone" required />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Staff Role</mat-label>
+      <mat-select name="staffRole" [(ngModel)]="data.staff.staffRoleId" required>
+        <mat-option [value]="null">None</mat-option> <!-- Default option if no role is selected -->
+        <ng-container *ngFor="let staffRole of staffRoles">
+          <mat-option [value]="staffRole.staffRoleId">{{ staffRole.roleName }}</mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="saveChanges()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

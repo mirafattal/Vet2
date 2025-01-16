@@ -1,0 +1,206 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 50px 1fr 50px 1fr 50px 1fr;
+  grid-template-rows: 70px 300px 1fr 1fr;
+  row-gap: 20px;
+  column-gap: 20px;
+  padding: 20px;
+  background-color: lightsteelblue;
+}
+
+.item-1 {
+  grid-column: 1/8;
+  grid-row: 1;
+  font-style: italic;
+  font-size: 24px;
+  font-weight: bold;
+  color: #3a3a3a;
+  text-align: center;
+}
+
+.card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Subtle shadow
+  border-radius: 10px; // Rounded corners
+  background: linear-gradient(135deg, beige, rgb(238, 238, 195)); // Gradient for a modern look
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-5px); // Slight lift effect
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); // Stronger shadow
+  }
+}
+
+.icon {
+  font-size: 48px; // Large icon size
+  color: #4caf50; // Green color for icons
+  margin-bottom: 10px;
+}
+
+.card-text {
+  h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 20px;
+    color: #555;
+    margin: 0;
+  }
+}
+
+.item-2 {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.item-3 {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.item-4 {
+  grid-column: 5;
+  grid-row: 2;
+}
+.item-5{
+  grid-column: 7;
+  grid-row: 2;
+}
+
+.item-6 {
+  grid-column: 2/7;
+  grid-row: 3;
+  background-color: beige;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;  // Add transition for hover effect
+
+  &:hover {
+    transform: translateY(-5px);  // Lift the container on hover
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);  // Increase shadow on hover
+  }
+
+  h3 {
+    font-size: 1.6em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;  // Ensure consistent font family
+  }
+
+  canvas {
+    width: 100% !important;  // Ensure the chart fits within the container
+    height: 400px;           // Set a fixed height for the chart
+    display: block;          // Block display to avoid inline styling
+    border-radius: 8px;      // Optional: rounded corners for the chart
+  }
+
+  mat-card {
+    padding: 15px;
+    background: beige;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    width: 300px;
+  }
+}
+
+.item-8 {
+  mat-card {
+    padding: 20px;  // More padding for better content spacing
+    background: beige;
+    border: 1px solid beige;
+    border-radius: 12px;  // Softer corners
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  // Adds subtle shadow
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;  // Smooth scaling and shadow change on hover
+
+    &:hover {
+      transform: translateY(-5px);  // Slight upward movement on hover
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);  // Deep shadow for hover effect
+    }
+
+    h3 {
+      font-size: 1.6em;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+      text-transform: uppercase;  // Make it more prominent
+    }
+
+    button {
+      width: 100%;  // Make the button span the entire width of the card
+      padding: 12px;
+      font-size: 1.2em;
+      background-color: #4caf50;  // Green button to match the theme
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;  // Smooth transition for hover
+
+      &:hover {
+        background-color: #45a049;  // Darker shade of green for hover effect
+        transform: scale(1.05);  // Slightly enlarge on hover
+      }
+    }
+  }
+}
+
+.item-7 {
+  grid-column: 1/4;
+  grid-row: 4;
+    mat-card {
+      padding: 20px;
+      background-color: beige;
+      border: 1px solid #dcdcdc;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        color: #3a3a3a;
+      }
+
+      p {
+        font-size: 1rem;
+        color: #6c6c6c;
+      }
+
+      button {
+        margin-top: 15px;
+        width: 100%;
+      }
+    }
+}
+
+.item-8 {
+  grid-column: 5/8;
+  grid-row: 4;
+}
+
+table {
+  background-color: beige;
+  width: 100%;
+  th {
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+  }
+  td {
+    padding: 10px;
+    text-align: left;
+  }
+}
+

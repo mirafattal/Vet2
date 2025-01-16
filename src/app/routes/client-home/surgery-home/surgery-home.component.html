@@ -1,0 +1,58 @@
+<body>
+  <div class="container">
+    <div class="item item-0">
+      <app-client-toolbar></app-client-toolbar>
+    </div>
+
+    <div class="item item-1">
+      <div class="breadcrumb-container mat-elevation-z2">
+        <nav>
+          <span class="breadcrumb-item">
+            <button mat-button (click)="navigateTo('/client-home')" class="breadcrumb-link">Home</button>
+          </span>
+          <span class="breadcrumb-separator"> / </span>
+          <span class="breadcrumb-item">
+            <button mat-button (click)="navigateTo('/surgery-home')" class="breadcrumb-link current">Surgery</button>
+          </span>
+        </nav>
+      </div>
+      <div class="text">Surgery</div>
+    </div>
+
+    <div class="item item-2">
+      <div class="surgery-section">
+        <div class="text-and-image">
+          <div class="surgery-text">
+            <h2>{{ surgeryDetails.title }}</h2>
+            <p *ngFor="let paragraph of surgeryDetails.paragraphs">{{ paragraph }}</p>
+          </div>
+          <div class="surgery-image">
+            <img src="images/MyImages/ClientSurgery.webp" alt="Cat in surgery">
+          </div>
+        </div>
+
+        <div class="additional-details">
+          <div>
+          <h3>{{ surgeryDetails.subtitle1 }}</h3>
+          <p *ngFor="let paragraph of surgeryDetails.additionalDetails1">{{ paragraph }}</p>
+        </div>
+
+        <div>
+          <h3>{{ surgeryDetails.subtitle2 }}</h3>
+          <p *ngFor="let paragraph of surgeryDetails.additionalDetails2">{{ paragraph }}</p>
+        </div>
+
+        <div>
+          <h3>{{ surgeryDetails.subtitle3 }}</h3>
+          <p *ngFor="let paragraph of surgeryDetails.additionalDetails3">{{ paragraph }}</p>
+          </div>
+
+          <h3>{{ surgeryDetails.subtitle4 }}</h3>
+          <p>{{ surgeryDetails.closingParagraph }}</p>
+          <p class="contactInfo">{{ surgeryDetails.contact }}</p>
+        </div>
+      </div>
+    </div>
+
+   </div>
+  </body>
