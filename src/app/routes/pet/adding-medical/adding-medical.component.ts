@@ -18,6 +18,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatSelectModule} from '@angular/material/select';
 import { APIClient, GetStaffNamesdto, MedicalRecordDto, StaffWithRoleDTO } from '@shared/services/api-client/veterinary-api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-adding-medical',
@@ -39,7 +40,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     CommonModule,
     MatFormFieldModule,
     MatOptionModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCardModule
   ],
   templateUrl: './adding-medical.component.html',
   styleUrl: './adding-medical.component.scss'

@@ -8,6 +8,10 @@ export abstract class BaseToken {
     return this.attributes.access_token;
   }
 
+  get user_ID(): number | undefined {
+    return this.attributes.user_ID;
+  }
+
   get refresh_token(): string | void {
     return this.attributes.refresh_token;
   }

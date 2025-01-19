@@ -1,0 +1,60 @@
+.add-lab-result-container {
+  .mat-card {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between each form field */
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  button {
+    min-width: 120px;
+  }
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+mat-label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+mat-select, mat-input {
+  font-size: 1rem;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+
+mat-card-actions button {
+  min-width: 120px;
+}
+
+mat-error {
+  color: red;
+  font-size: 0.875rem;
+}

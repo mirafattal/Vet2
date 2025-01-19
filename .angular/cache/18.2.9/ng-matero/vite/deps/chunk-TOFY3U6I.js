@@ -1,14 +1,16 @@
 import {
-  outputToObservable
-} from "./chunk-I6RFACYD.js";
-import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   Directive,
   InjectionToken,
+  RuntimeError,
+  assertInInjectionContext,
+  assertNotInReactiveContext,
   booleanAttribute,
   computed,
   effect,
+  getOutputDestroyRef,
   inject,
   input,
   numberAttribute,
@@ -43,8 +45,81 @@ import {
   timer
 } from "./chunk-VMTHMMW2.js";
 import {
+  Observable
+} from "./chunk-W52FN47Y.js";
+import {
   __spreadValues
 } from "./chunk-PEHFQLBM.js";
+
+// node_modules/@angular/core/fesm2022/rxjs-interop.mjs
+function outputToObservable(ref) {
+  const destroyRef = getOutputDestroyRef(ref);
+  return new Observable((observer) => {
+    destroyRef?.onDestroy(() => observer.complete());
+    const subscription = ref.subscribe((v) => observer.next(v));
+    return () => subscription.unsubscribe();
+  });
+}
+function toSignal(source, options) {
+  ngDevMode && assertNotInReactiveContext(toSignal, "Invoking `toSignal` causes new subscriptions every time. Consider moving `toSignal` outside of the reactive context and read the signal value where needed.");
+  const requiresCleanup = !options?.manualCleanup;
+  requiresCleanup && !options?.injector && assertInInjectionContext(toSignal);
+  const cleanupRef = requiresCleanup ? options?.injector?.get(DestroyRef) ?? inject(DestroyRef) : null;
+  const equal = makeToSignalEqual(options?.equal);
+  let state;
+  if (options?.requireSync) {
+    state = signal({
+      kind: 0
+      /* StateKind.NoValue */
+    }, {
+      equal
+    });
+  } else {
+    state = signal({
+      kind: 1,
+      value: options?.initialValue
+    }, {
+      equal
+    });
+  }
+  const sub = source.subscribe({
+    next: (value) => state.set({
+      kind: 1,
+      value
+    }),
+    error: (error) => {
+      if (options?.rejectErrors) {
+        throw error;
+      }
+      state.set({
+        kind: 2,
+        error
+      });
+    }
+    // Completion of the Observable is meaningless to the signal. Signals don't have a concept of
+    // "complete".
+  });
+  if (options?.requireSync && state().kind === 0) {
+    throw new RuntimeError(601, (typeof ngDevMode === "undefined" || ngDevMode) && "`toSignal()` called with `requireSync` but `Observable` did not emit synchronously.");
+  }
+  cleanupRef?.onDestroy(sub.unsubscribe.bind(sub));
+  return computed(() => {
+    const current = state();
+    switch (current.kind) {
+      case 1:
+        return current.value;
+      case 2:
+        throw current.error;
+      case 0:
+        throw new RuntimeError(601, (typeof ngDevMode === "undefined" || ngDevMode) && "`toSignal()` called with `requireSync` but `Observable` did not emit synchronously.");
+    }
+  }, {
+    equal: options?.equal
+  });
+}
+function makeToSignalEqual(userEquality = Object.is) {
+  return (a, b) => a.kind === 1 && b.kind === 1 && userEquality(a.value, b.value);
+}
 
 // node_modules/ngx-progressbar/fesm2022/ngx-progressbar.mjs
 function NgProgressbar_Conditional_3_Template(rf, ctx) {
@@ -391,9 +466,19 @@ var NgProgressbar = _NgProgressbar;
 })();
 
 export {
+  toSignal,
   NG_PROGRESS_OPTIONS,
   provideNgProgressOptions,
   NgProgressRef,
   NgProgressbar
 };
-//# sourceMappingURL=chunk-RCMLJ3GA.js.map
+/*! Bundled license information:
+
+@angular/core/fesm2022/rxjs-interop.mjs:
+  (**
+   * @license Angular v18.2.8
+   * (c) 2010-2024 Google LLC. https://angular.io/
+   * License: MIT
+   *)
+*/
+//# sourceMappingURL=chunk-TOFY3U6I.js.map

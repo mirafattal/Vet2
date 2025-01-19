@@ -1,0 +1,26 @@
+<mat-dialog-content>
+  <form #InvoiceForm="ngForm">
+    <ng-template>Fill Invoice</ng-template>
+    <div class="vertical-container">
+
+      <mat-form-field>
+        <mat-label>Owner Name</mat-label>
+        <input matInput [(ngModel)]="invoice.ownerName" name="OwnerName" required />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Owner Number</mat-label>
+        <input matInput [(ngModel)]="invoice.ownerNumber" name="OwnerNumber" required />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Total Amount</mat-label>
+        <input matInput [(ngModel)]="invoice.totalAmount" name="TotalAmount" required />
+      </mat-form-field>
+     </div>
+      <div>
+        <button mat-button (click)="onCancel()">Cancel</button>
+        <button mat-button (click)="onSubmit()" [disabled]="!InvoiceForm.valid">Submit</button>
+    </div>
+  </form>
+</mat-dialog-content>

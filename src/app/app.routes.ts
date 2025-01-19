@@ -32,7 +32,7 @@ import { InternalMedicineComponent } from './routes/client-home/internal-medicin
 import { AppointmentComponent } from './routes/appointment/appointment.component';
 import { AdoptionComponent } from './routes/adoption/adoption.component';
 import { InvoiceComponent } from './routes/Invoice/Invoice.component';
-
+import { AddLabComponent } from './routes/pet/add-lab/add-lab.component';
 
 
 export const routes: Routes = [

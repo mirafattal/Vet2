@@ -106,7 +106,14 @@ export class AddAppDialogComponent implements OnInit {
               }));
 
             this.slots = validSlots as { slotDate: Date; slotStartTime: string; doctorSlotId: number }[];
-            this.availableDates = [...new Set(validSlots.map((slot) => slot.slotDate))];
+            this.availableDates = [
+              ...new Set(
+                this.slots.map((slot) =>
+                  new Date(slot.slotDate).toISOString().split('T')[0] // Normalize to 'YYYY-MM-DD'
+                )
+              ),
+            ].map((dateString) => new Date(dateString)); // Convert back to Date objects
+
             this.availableTimes = validSlots
               .map((slot) => slot.slotStartTime)
               .filter((time): time is string => time !== null && time !== undefined);
@@ -144,18 +151,26 @@ export class AddAppDialogComponent implements OnInit {
 
 
     onDateChange(selectedDate: Date): void {
-      // Ensure the selected date is correct
+      if (!selectedDate || !this.slots) {
+        console.warn('Selected date or slots are undefined.');
+        return;
+      }
+
+      // Log the selected date for debugging
       console.log('Selected Date:', selectedDate);
 
-      // Filter the available slots for the selected date
+      // Filter slots by matching dates (normalize to YYYY-MM-DD for accurate comparison)
       const filteredSlots = this.slots.filter(
-        (slot) => new Date(slot.slotDate).toDateString() === selectedDate.toDateString()
+        (slot) =>
+          new Date(slot.slotDate).toISOString().split('T')[0] ===
+          selectedDate.toISOString().split('T')[0]
       );
 
       // Update availableTimes with valid times
-      this.availableTimes = filteredSlots.map((slot) => slot.slotStartTime);
+      this.availableTimes = filteredSlots.map((slot) => slot.slotStartTime).filter(Boolean);
 
-      // Check the updated availableTimes
+      // Log the filtered slots and available times for debugging
+      console.log('Filtered Slots:', filteredSlots);
       console.log('Available Times:', this.availableTimes);
     }
 

@@ -151,6 +151,7 @@
   justify-content: center;
   flex-direction: column; /* Stack text and button vertically */
   .text-2{
+    margin-top: 90px;
     color: white;
     font-size: 34px; /* Adjust text size */
     margin-bottom: 20px; /* Add spacing below the text */
@@ -204,6 +205,10 @@ align-items: center; /* Vertically center buttons */
   background-image: url("/images/MyImages/Equine.webp");
   filter: contrast(65%);
   background-size: cover; /* Ensure background image covers the button */
+  transition: transform 0.3s ease-in-out;
+   &:hover {
+     transform: scale(1.05); /* Slight zoom on hover */
+  }
   .text-bg {
     display: inline-block;
     width: 100px; /* Fixed width */
@@ -224,6 +229,10 @@ align-items: center; /* Vertically center buttons */
   background-image: url("/images/MyImages/Vaccine.webp");
   filter: contrast(50%);
   background-size: cover; /* Ensure background image covers the button */
+  transition: transform 0.3s ease-in-out;
+   &:hover {
+     transform: scale(1.05); /* Slight zoom on hover */
+  }
   .text-bg {
     display: inline-block;
     width: 100px; /* Fixed width */
@@ -244,7 +253,10 @@ align-items: center; /* Vertically center buttons */
   background-image: url("/images/MyImages/Surgery.webp");
   filter: contrast(50%);
   background-size: cover; /* Ensure background image covers the button */
-
+  transition: transform 0.3s ease-in-out;
+  &:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+ }
   .text-bg {
     display: inline-block;
     width: 100px; /* Fixed width */
@@ -266,6 +278,10 @@ align-items: center; /* Vertically center buttons */
   background-image: url("/images/MyImages/Grooming.jpg");
   filter: contrast(50%);
   background-size: cover; /* Ensure background image covers the button */
+  transition: transform 0.3s ease-in-out;
+   &:hover {
+     transform: scale(1.05); /* Slight zoom on hover */
+  }
   .text-bg {
     display: inline-block;
     width: 100px; /* Fixed width */

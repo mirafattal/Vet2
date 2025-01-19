@@ -1,7 +1,11 @@
 <body>
   <div class="container">
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="end">
-      <mat-tab label="Pet Info">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="peticon">pets</mat-icon>
+          Pet Info
+        </ng-template>
     <div class="item item-1">
       <button class="closeButton" mat-icon-button (click)="onClose()" aria-label="Close Drawer">
         <mat-icon>close</mat-icon>
@@ -77,40 +81,49 @@
     </div>
 </mat-tab>
 
-<mat-tab label="Appointments">
-    <div class="item item-3">
-      <button class="closeButton" mat-icon-button (click)="onClose()" aria-label="Close Drawer">
-        <mat-icon>close</mat-icon>
-      </button>
-      <mat-card
-        (ngpFileUploadSelected)="onFilesSelected($event)"
-        ngpFileUpload
-        ngpFileUploadMultiple
-      >
-        <ng-icon name="heroCloudArrowUp" inert />
-        <p class="heading">Select or drag and drop files here.</p>
-        <p class="subheading">Max file size: 10MB</p>
-      </mat-card>
-    </div>
+<mat-tab>
+  <ng-template mat-tab-label>
+    <mat-icon class="xrayicon">image</mat-icon>
+    X-ray
+  </ng-template>
+  <div class="item item-1">
+    <button class="closeButton" mat-icon-button (click)="onClose()" aria-label="Close Drawer">
+      <mat-icon>close</mat-icon>
+    </button></div>
 
+   <!-- Add New X-Ray Form -->
+   <form (submit)="onAddXray($event)" class="add-xray-form">
+    <input type="file" class="file-input"
+       (change)="onFileSelected($event)" accept="image/*" #fileUpload required>
+        <div class="file-upload">
+           {{ "Upload Xray Here"}}
+           <button mat-mini-fab color="primary" class="upload-btn"
+             (click)="fileUpload.click()">
+             <mat-icon>attach_file</mat-icon>
+           </button>
+        </div>
+    <button mat-raised-button color="primary" type="submit">Add X-Ray</button>
+  </form>
 
-    <div class="item item-4">Appointments
-      <mat-card class="example-card" appearance="outlined">
-  <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-title>Shiba Inu</mat-card-title>
-      <mat-card-subtitle>Medium</mat-card-subtitle>
-      <img mat-card-md-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"  alt="Image of a Shiba Inu">
-    </mat-card-title-group>
-  </mat-card-header>
-  <mat-card-content>
-    {{longText}}
-  </mat-card-content>
-</mat-card>
-    </div>
+  <div class="xray-cards">
+    <mat-card *ngFor="let xray of xray" class="xray-card">
+      <mat-card-header>
+        <mat-card-title>Name: {{ animal?.animalName }}</mat-card-title>
+        <mat-card-subtitle>Created: {{ xray.createdDate | date: 'short' }}</mat-card-subtitle>
+        <button mat-icon-button class="delete-icon" (click)="onDeleteXray(xray.xrayId!)">
+          <mat-icon color="warn">delete</mat-icon>
+        </button>
+      </mat-card-header>
+      <img mat-card-image [src]="xray.imageUrl" alt="X-ray image" class="xray-image" />
+    </mat-card>
+  </div>
 </mat-tab>
 
-<mat-tab label="Medical Record">
+<mat-tab>
+  <ng-template mat-tab-label>
+    <mat-icon class="medicalicon">healing</mat-icon>
+    Medical Records
+  </ng-template>
     <div class="item item-5">
       <button class="closeButton" mat-icon-button (click)="onClose()" aria-label="Close Drawer">
         <mat-icon>close</mat-icon>
@@ -140,7 +153,7 @@
         </ng-container>
 
         <!-- Weight Column -->
-        <ng-container matColumnDef="treatment">
+        <ng-container matColumnDef="medication">
           <th mat-header-cell *matHeaderCellDef> Medication </th>
           <td mat-cell *matCellDef="let row"> {{row.prescribedMedication}} </td>
         </ng-container>
@@ -150,10 +163,23 @@
         </ng-container>
 
         <!-- Symbol Column -->
-        <ng-container matColumnDef="actions">
+        <ng-container matColumnDef="treatment">
           <th mat-header-cell *matHeaderCellDef> Treatment </th>
           <td mat-cell *matCellDef="let row"> {{row.treatment}} </td>
         </ng-container>
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+         <th mat-header-cell *matHeaderCellDef class="tableheader"> Actions </th>
+         <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="accent">
+            <mat-icon>edit</mat-icon>
+          </button>
+      <button mat-icon-button color="warn" (click)="onDeleteMedical(row)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
@@ -162,7 +188,11 @@
     </div>
   </mat-tab>
 
-  <mat-tab label="Vaccine History">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="vaccineicon">local_hospital</mat-icon>
+      Vaccine History
+    </ng-template>
     <div class="item item-6">
       <button class="closeButton" mat-icon-button (click)="onClose()" aria-label="Close Drawer">
         <mat-icon>close</mat-icon>
@@ -201,8 +231,118 @@
           <td mat-cell *matCellDef="let row"> {{row.nextDueDate | date: 'dd MMM yyyy'}} </td>
         </ng-container>
 
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="tableheader"> Actions </th>
+          <td mat-cell *matCellDef="let row">
+           <button mat-icon-button color="accent">
+             <mat-icon>edit</mat-icon>
+           </button>
+       <button mat-icon-button color="warn">
+         <mat-icon>delete</mat-icon>
+       </button>
+     </td>
+   </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="VaccineColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: VaccineColumns;"></tr>
+      </table>
+        </mat-card-content>
+      </mat-card>
+      </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="appointicon">calendar_today</mat-icon>
+     Appoints
+    </ng-template>
+    <div class="item item-1">
+      <button class="closeButton" mat-icon-button (click)="onClose()" aria-label="Close Drawer">
+        <mat-icon>close</mat-icon>
+      </button></div>
+
+    <div class="item item-4">Appointments
+      <mat-card class="example-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Shiba Inu</mat-card-title>
+      <mat-card-subtitle>Medium</mat-card-subtitle>
+      <img mat-card-md-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"  alt="Image of a Shiba Inu">
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    {{longText}}
+  </mat-card-content>
+</mat-card>
+    </div>
+  </mat-tab>
+
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="labicon">invert_colors</mat-icon>
+      Lab Result
+    </ng-template>
+
+    <div class="item item-7">
+      <button class="closeButton" mat-icon-button (click)="onClose()" aria-label="Close Drawer">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Lab Results</mat-card-title>
+          <mat-card-subtitle>Shows lab results of your patients</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- HTML !-->
+      <button class="button-61" role="button" (click)="onAddLabResults()">Add Result</button>
+
+      <table mat-table [dataSource]="labResults" class="mat-elevation-z8">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="TestName">
+          <th mat-header-cell *matHeaderCellDef> Test Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.testName}}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="TestDate">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let row"> {{row.testDate | date: 'dd MMM yyyy' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Result">
+          <th mat-header-cell *matHeaderCellDef> Results </th>
+          <td mat-cell *matCellDef="let row"> {{row.result}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Unit">
+          <th mat-header-cell *matHeaderCellDef> Unit </th>
+          <td mat-cell *matCellDef="let row"> {{ getUnitOfMeasurement(row.labResultId) }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isNormal">
+          <th mat-header-cell *matHeaderCellDef> Condition </th>
+          <td mat-cell *matCellDef="let row" [ngClass]="{'normal': row.isNormal === 'Normal', 'abnormal': row.isNormal === 'Abnormal'}">
+            {{row.isNormal}}
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="tableheader"> Actions </th>
+          <td mat-cell *matCellDef="let row">
+           <button mat-icon-button color="accent">
+             <mat-icon>edit</mat-icon>
+           </button>
+       <button mat-icon-button color="warn">
+         <mat-icon>delete</mat-icon>
+       </button>
+     </td>
+   </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="LabColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: LabColumns;"></tr>
       </table>
         </mat-card-content>
       </mat-card>

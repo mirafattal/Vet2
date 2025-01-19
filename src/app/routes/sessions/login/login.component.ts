@@ -62,14 +62,6 @@ export class LoginComponent {
   }
 
   login() {
-    this.isSubmitting = true;
-    // this.loginReq.username="test";
-    // this.loginReq.password="pass";
-    // console.log(this.loginReq);
-
-    // this.apiClient.login(this.loginReq).subscribe(res=> {
-    //   console.log(res);
-    // });
     this.auth
       .login(this.username.value, this.password.value, this.rememberMe.value)
       .pipe(filter(authenticated => authenticated))

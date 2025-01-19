@@ -19,6 +19,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { AddOwnerAndAnimalDto, AnimalDto, AnimalTypeDto, AnimalTypeDtoIEnumerableApiResponse, APIClient, OwnerDto, OwnerDtoIEnumerableApiResponse } from '@shared/services/api-client/veterinary-api.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-adding-pet',
@@ -41,7 +42,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     CommonModule,
     MatFormFieldModule,
     MatOptionModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCardModule
   ],
   // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './adding-pet.component.html',

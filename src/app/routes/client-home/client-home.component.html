@@ -49,23 +49,28 @@
       About Us <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
   </div>
+  <div class="menu-wrapper">
+    <button mat-button [matMenuTriggerFor]="ResultsMenu" #ResultsTrigger="matMenuTrigger">
+      Check Results <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+  </div>
 
-         <!-- Menus -->
+   <!-- Menus -->
+   <mat-menu #EquineservicesMenu="matMenu">
+    <button mat-menu-item (click)="onInternalMedicine()">Internal Medicine</button>
+    <button mat-menu-item>Diagnostics</button>
+    <button mat-menu-item>Lab Testing & Screening</button>
+    <button mat-menu-item>Horse Training</button>
+    <button mat-menu-item>Wellness & Preventative Care</button>
+  </mat-menu>
 
-
-        <mat-menu #EquineservicesMenu="matMenu">
-          <button mat-menu-item (click)="onInternalMedicine()">Internal Medicine</button>
-          <button mat-menu-item>Diagnostics</button>
-          <button mat-menu-item>Lab Testing & Screening</button>
-          <button mat-menu-item>Horse Training</button>
-          <button mat-menu-item>Wellness & Preventative Care</button>
-        </mat-menu>
-
-        <mat-menu #aboutUsMenu="matMenu" class="hover-menu">
-        <button mat-menu-item (click)="goToTeamPage()">Our Team</button>
-        <button mat-menu-item>Contact</button>
-        </mat-menu>
-
+    <mat-menu #aboutUsMenu="matMenu" class="hover-menu">
+    <button mat-menu-item (click)="goToTeamPage()">Our Team</button>
+    <button mat-menu-item>Contact</button>
+    </mat-menu>
+    <mat-menu #ResultsMenu="matMenu">
+      <button mat-menu-item>Lab Results</button>
+    </mat-menu>
 
       </mat-toolbar>
     </div>
@@ -86,22 +91,22 @@
     </div>
 
     <div class="item item-2">
-      <div class="text-2">Schedule Your Next Visit Now</div>
-      <div><button class="button-2" (click)="onBookAppointment()">Book Appointment</button></div>
+      <div class="text-2">Your Future Pet is Just a Click Away!</div>
+      <div><button class="button-2" (click)="onAdoptNow()">Adopt Now</button></div>
     </div>
 
     <div class="item item-3">
       <div><button class ="service-1">
         <span class="text-bg">Equine</span></button>
       </div>
-      <div><button class ="service-2">
+      <div><button class ="service-2" (click)="onVaccineDetails()">
         <span class="text-bg">Vaccination</span>
       </button>
       </div>
       <div><button class ="service-3" role="button"(click)="onSurgeryDetails()">
         <span class="text-bg">Surgery</span></button>
       </div>
-      <div><button class ="service-4">
+      <div><button class ="service-4" (click)="onGroomDetails()">
         <span class="text-bg">Grooming</span>
       </button>
       </div>

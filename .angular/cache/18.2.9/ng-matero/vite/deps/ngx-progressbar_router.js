@@ -1,9 +1,7 @@
 import {
-  NgProgressRef
-} from "./chunk-RCMLJ3GA.js";
-import {
+  NgProgressRef,
   toSignal
-} from "./chunk-I6RFACYD.js";
+} from "./chunk-TOFY3U6I.js";
 import {
   NavigationCancel,
   NavigationEnd,
@@ -26,8 +24,8 @@ import {
   ɵɵdefineDirective,
   ɵɵgetInheritedFactory
 } from "./chunk-YCMYJ33Q.js";
-import "./chunk-7GQHZGQU.js";
 import "./chunk-B744N6TL.js";
+import "./chunk-7GQHZGQU.js";
 import {
   filter
 } from "./chunk-VMTHMMW2.js";

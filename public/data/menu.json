@@ -11,12 +11,6 @@
       }
     },
     {
-      "route": "my-login",
-      "name": "my-login",
-      "type": "link",
-      "icon": "dashboard"
-    },
-    {
       "route": "appointment",
       "name": "appointment",
       "type": "link",
@@ -31,12 +25,6 @@
     {
       "route": "overview",
       "name": "overview",
-      "type": "link",
-      "icon": "dashboard"
-    },
-    {
-      "route": "client-home",
-      "name": "client-home",
       "type": "link",
       "icon": "dashboard"
     },
@@ -96,8 +84,18 @@
       "permissions": {
         "only": [
           "ADMIN",
-          "MANAGER"
+          "MANAGER",
+          "GUEST"
         ]
+      }
+    },
+    {
+      "route": "client-home",
+      "name": "client-home",
+      "type": "link",
+      "icon": "dashboard",
+      "permissions": {
+        "only": "ADMIN"
       }
     },
     {

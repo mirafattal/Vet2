@@ -62,4 +62,14 @@ export class ClientToolbarComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  isLoggedIn: boolean = false; // Track if user is logged in
+
+  // Method to handle notification click
+  onNotificationClick() {
+    console.log('Notification clicked');
+    // You can implement your notification logic here
+    // E.g., open a dialog or navigate to a notifications page
+  }
+
 }

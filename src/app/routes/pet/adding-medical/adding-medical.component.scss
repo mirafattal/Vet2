@@ -1,9 +1,20 @@
-.mat-mdc-form-field {
-  margin-top: 16px;
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 20px; /* Space between fields */
+  margin-bottom: 20px;
 }
-.vertical-container {
+
+.form-field {
+  width: 100%;
+}
+
+.mat-card {
+  margin: 20px 0;
+}
+
+.action-buttons {
   display: flex;
-  flex-direction: column; /* Stack items vertically */
-  gap: 16px; /* Add spacing between fields (optional) */
-  width: 300px;
+  justify-content: space-between;
+  margin-top: 20px;
 }

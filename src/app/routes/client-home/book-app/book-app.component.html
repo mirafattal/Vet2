@@ -22,6 +22,16 @@
     <div class="item item-2">
       <div class="appointment-container">
 
+        <!-- Animal Selection Section -->
+        <div *ngIf="animals.length > 0">
+          <label for="animal">Select Animal:</label>
+          <mat-select [(ngModel)]="selectedAnimalId" (selectionChange)="onAnimalChange($event.value)">
+            <mat-option *ngFor="let animal of animals" [value]="animal.animalId">
+              {{ animal.animalName }} ({{ animal.species }})
+            </mat-option>
+          </mat-select>
+        </div>
+
         <!-- Form Section -->
         <div *ngIf="!showConfirmationMessage">
           <h2>Book an Appointment</h2>

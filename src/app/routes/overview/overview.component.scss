@@ -5,7 +5,6 @@
   row-gap: 20px;
   column-gap: 20px;
   padding: 20px;
-  background-color: lightsteelblue;
 }
 
 .item-1 {
@@ -24,10 +23,11 @@
   background: linear-gradient(135deg, beige, rgb(238, 238, 195)); // Gradient for a modern look
   text-align: center;
   padding: 20px;
+  height: 240px;
   transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
-    transform: translateY(-5px); // Slight lift effect
+    transform: translateY(-2px); // Slight lift effect
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); // Stronger shadow
   }
 }

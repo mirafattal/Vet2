@@ -93,6 +93,314 @@ export class APIClient {
     /**
      * @return OK
      */
+    getAllPendingStatus(): Observable<AdoptionQuestionnaireDto[]> {
+        let url_ = this.baseUrl + "/api/AdoptionQuestionnaire/GetAllPendingStatus";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllPendingStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPendingStatus(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AdoptionQuestionnaireDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AdoptionQuestionnaireDto[]>;
+        }));
+    }
+
+    protected processGetAllPendingStatus(response: HttpResponseBase): Observable<AdoptionQuestionnaireDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AdoptionQuestionnaireDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Internal Server Error", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    approveQuest(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/AdoptionQuestionnaire/ApproveQuest?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApproveQuest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApproveQuest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processApproveQuest(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Internal Server Error", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    rejectQuest(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/AdoptionQuestionnaire/RejectQuest?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRejectQuest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRejectQuest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRejectQuest(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Internal Server Error", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param petId (optional) 
+     * @return OK
+     */
+    countByPetId(petId: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/AdoptionQuestionnaire/countByPetId?";
+        if (petId === null)
+            throw new Error("The parameter 'petId' cannot be null.");
+        else if (petId !== undefined)
+            url_ += "petId=" + encodeURIComponent("" + petId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCountByPetId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCountByPetId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCountByPetId(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param petForAdoptionId (optional) 
+     * @return OK
+     */
+    getByPetID(petForAdoptionId: number | undefined): Observable<GetAllAdoptionQuestwithPetNameDto[]> {
+        let url_ = this.baseUrl + "/api/AdoptionQuestionnaire/GetByPetID?";
+        if (petForAdoptionId === null)
+            throw new Error("The parameter 'petForAdoptionId' cannot be null.");
+        else if (petForAdoptionId !== undefined)
+            url_ += "petForAdoptionId=" + encodeURIComponent("" + petForAdoptionId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByPetID(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByPetID(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAllAdoptionQuestwithPetNameDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAllAdoptionQuestwithPetNameDto[]>;
+        }));
+    }
+
+    protected processGetByPetID(response: HttpResponseBase): Observable<GetAllAdoptionQuestwithPetNameDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetAllAdoptionQuestwithPetNameDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     getAll(): Observable<AdoptionQuestionnaireDtoIEnumerableApiResponse> {
         let url_ = this.baseUrl + "/api/AdoptionQuestionnaire/GetAll";
         url_ = url_.replace(/[?&]$/, "");
@@ -1052,6 +1360,204 @@ export class APIClient {
                 result500 = resultData500 !== undefined ? resultData500 : <any>null;
     
             return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param animalId (optional) 
+     * @param imageUrl (optional) 
+     * @param posterFile (optional) 
+     * @return OK
+     */
+    updateimage(animalId: number | undefined, imageUrl: string | undefined, posterFile: FileParameter | undefined): Observable<AnimalImageDto[]> {
+        let url_ = this.baseUrl + "/api/Animal/updateimage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (animalId === null || animalId === undefined)
+            throw new Error("The parameter 'animalId' cannot be null.");
+        else
+            content_.append("AnimalId", animalId.toString());
+        if (imageUrl === null || imageUrl === undefined)
+            throw new Error("The parameter 'imageUrl' cannot be null.");
+        else
+            content_.append("ImageUrl", imageUrl.toString());
+        if (posterFile === null || posterFile === undefined)
+            throw new Error("The parameter 'posterFile' cannot be null.");
+        else
+            content_.append("posterFile", posterFile.data, posterFile.fileName ? posterFile.fileName : "posterFile");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateimage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateimage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AnimalImageDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AnimalImageDto[]>;
+        }));
+    }
+
+    protected processUpdateimage(response: HttpResponseBase): Observable<AnimalImageDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AnimalImageDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param imagePath (optional) 
+     * @return OK
+     */
+    downloadImageAnimal(imagePath: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Animal/DownloadImageAnimal?";
+        if (imagePath === null)
+            throw new Error("The parameter 'imagePath' cannot be null.");
+        else if (imagePath !== undefined)
+            url_ += "imagePath=" + encodeURIComponent("" + imagePath) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDownloadImageAnimal(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDownloadImageAnimal(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDownloadImageAnimal(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param ownerId (optional) 
+     * @return OK
+     */
+    getAllAnimalsByOwnerId(ownerId: number | undefined): Observable<AnimalDto[]> {
+        let url_ = this.baseUrl + "/api/Animal/getAllAnimalsByOwnerId?";
+        if (ownerId === null)
+            throw new Error("The parameter 'ownerId' cannot be null.");
+        else if (ownerId !== undefined)
+            url_ += "ownerId=" + encodeURIComponent("" + ownerId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllAnimalsByOwnerId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllAnimalsByOwnerId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AnimalDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AnimalDto[]>;
+        }));
+    }
+
+    protected processGetAllAnimalsByOwnerId(response: HttpResponseBase): Observable<AnimalDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AnimalDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2833,6 +3339,62 @@ export class APIClient {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    authh(body: LoginRequestDto | undefined): Observable<AuthResponseDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/Auth/authh";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAuthh(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAuthh(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AuthResponseDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AuthResponseDtoApiResponse>;
+        }));
+    }
+
+    protected processAuthh(response: HttpResponseBase): Observable<AuthResponseDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AuthResponseDtoApiResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -5901,6 +6463,63 @@ export class APIClient {
     }
 
     /**
+     * @param userId (optional) 
+     * @return OK
+     */
+    getOwnerIdByUserId(userId: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/Owner/getOwnerIdByUserId?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOwnerIdByUserId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOwnerIdByUserId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetOwnerIdByUserId(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     getAll11(): Observable<OwnerDtoIEnumerableApiResponse> {
@@ -6222,6 +6841,358 @@ export class APIClient {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = BooleanApiResponse.fromJS(resultData200);
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param petForAdoptionId (optional) 
+     * @param breed (optional) 
+     * @param species (optional) 
+     * @param petBirthDate (optional) 
+     * @param petCondition (optional) 
+     * @param gender (optional) 
+     * @param weight (optional) 
+     * @param adoptionStatusId (optional) 
+     * @param petName (optional) 
+     * @param imageUrl (optional) 
+     * @param posterFile (optional) 
+     * @return OK
+     */
+    addPetwithImage(petForAdoptionId: number | undefined, breed: string | undefined, species: string | undefined, petBirthDate: Date | undefined, petCondition: string | undefined, gender: string | undefined, weight: number | undefined, adoptionStatusId: number | undefined, petName: string | undefined, imageUrl: string | undefined, posterFile: FileParameter | undefined): Observable<AddPetForAdoptionDto[]> {
+        let url_ = this.baseUrl + "/api/PetForAdoption/addPetwithImage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (petForAdoptionId === null || petForAdoptionId === undefined)
+            throw new Error("The parameter 'petForAdoptionId' cannot be null.");
+        else
+            content_.append("PetForAdoptionId", petForAdoptionId.toString());
+        if (breed === null || breed === undefined)
+            throw new Error("The parameter 'breed' cannot be null.");
+        else
+            content_.append("Breed", breed.toString());
+        if (species === null || species === undefined)
+            throw new Error("The parameter 'species' cannot be null.");
+        else
+            content_.append("Species", species.toString());
+        if (petBirthDate === null || petBirthDate === undefined)
+            throw new Error("The parameter 'petBirthDate' cannot be null.");
+        else
+            content_.append("PetBirthDate", petBirthDate.toJSON());
+        if (petCondition === null || petCondition === undefined)
+            throw new Error("The parameter 'petCondition' cannot be null.");
+        else
+            content_.append("PetCondition", petCondition.toString());
+        if (gender === null || gender === undefined)
+            throw new Error("The parameter 'gender' cannot be null.");
+        else
+            content_.append("Gender", gender.toString());
+        if (weight === null || weight === undefined)
+            throw new Error("The parameter 'weight' cannot be null.");
+        else
+            content_.append("Weight", weight.toString());
+        if (adoptionStatusId === null || adoptionStatusId === undefined)
+            throw new Error("The parameter 'adoptionStatusId' cannot be null.");
+        else
+            content_.append("AdoptionStatusId", adoptionStatusId.toString());
+        if (petName === null || petName === undefined)
+            throw new Error("The parameter 'petName' cannot be null.");
+        else
+            content_.append("PetName", petName.toString());
+        if (imageUrl === null || imageUrl === undefined)
+            throw new Error("The parameter 'imageUrl' cannot be null.");
+        else
+            content_.append("ImageUrl", imageUrl.toString());
+        if (posterFile === null || posterFile === undefined)
+            throw new Error("The parameter 'posterFile' cannot be null.");
+        else
+            content_.append("posterFile", posterFile.data, posterFile.fileName ? posterFile.fileName : "posterFile");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddPetwithImage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddPetwithImage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AddPetForAdoptionDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AddPetForAdoptionDto[]>;
+        }));
+    }
+
+    protected processAddPetwithImage(response: HttpResponseBase): Observable<AddPetForAdoptionDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AddPetForAdoptionDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param imagePath (optional) 
+     * @return OK
+     */
+    downloadImage(imagePath: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/PetForAdoption/DownloadImage?";
+        if (imagePath === null)
+            throw new Error("The parameter 'imagePath' cannot be null.");
+        else if (imagePath !== undefined)
+            url_ += "imagePath=" + encodeURIComponent("" + imagePath) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDownloadImage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDownloadImage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDownloadImage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAllPetforAdoptionNames(): Observable<PetForAdoptionDto[]> {
+        let url_ = this.baseUrl + "/api/PetForAdoption/GetAllPetforAdoptionNames";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllPetforAdoptionNames(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPetforAdoptionNames(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PetForAdoptionDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PetForAdoptionDto[]>;
+        }));
+    }
+
+    protected processGetAllPetforAdoptionNames(response: HttpResponseBase): Observable<PetForAdoptionDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PetForAdoptionDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result400 = resultData400 !== undefined ? resultData400 : <any>null;
+    
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = resultData500 !== undefined ? resultData500 : <any>null;
+    
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAvailablePets(): Observable<PetForAdoptionDto[]> {
+        let url_ = this.baseUrl + "/api/PetForAdoption/GetAvailablePets";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAvailablePets(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAvailablePets(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PetForAdoptionDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PetForAdoptionDto[]>;
+        }));
+    }
+
+    protected processGetAvailablePets(response: HttpResponseBase): Observable<PetForAdoptionDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(PetForAdoptionDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param petId (optional) 
+     * @return OK
+     */
+    markPetAsadopted(petId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/PetForAdoption/markPetAsadopted?";
+        if (petId === null)
+            throw new Error("The parameter 'petId' cannot be null.");
+        else if (petId !== undefined)
+            url_ += "petId=" + encodeURIComponent("" + petId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMarkPetAsadopted(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMarkPetAsadopted(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processMarkPetAsadopted(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -8280,6 +9251,1342 @@ export class APIClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param xrayId (optional) 
+     * @param imageUrl (optional) 
+     * @param animalId (optional) 
+     * @param createdDate (optional) 
+     * @param posterFile (optional) 
+     * @return OK
+     */
+    addXraywithImage(xrayId: number | undefined, imageUrl: string | undefined, animalId: number | undefined, createdDate: Date | undefined, posterFile: FileParameter | undefined): Observable<XrayImageDto[]> {
+        let url_ = this.baseUrl + "/api/XrayImage/addXraywithImage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (xrayId === null || xrayId === undefined)
+            throw new Error("The parameter 'xrayId' cannot be null.");
+        else
+            content_.append("XrayId", xrayId.toString());
+        if (imageUrl === null || imageUrl === undefined)
+            throw new Error("The parameter 'imageUrl' cannot be null.");
+        else
+            content_.append("ImageUrl", imageUrl.toString());
+        if (animalId === null || animalId === undefined)
+            throw new Error("The parameter 'animalId' cannot be null.");
+        else
+            content_.append("AnimalId", animalId.toString());
+        if (createdDate === null || createdDate === undefined)
+            throw new Error("The parameter 'createdDate' cannot be null.");
+        else
+            content_.append("CreatedDate", createdDate.toJSON());
+        if (posterFile === null || posterFile === undefined)
+            throw new Error("The parameter 'posterFile' cannot be null.");
+        else
+            content_.append("posterFile", posterFile.data, posterFile.fileName ? posterFile.fileName : "posterFile");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddXraywithImage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddXraywithImage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<XrayImageDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<XrayImageDto[]>;
+        }));
+    }
+
+    protected processAddXraywithImage(response: HttpResponseBase): Observable<XrayImageDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(XrayImageDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param imagePath (optional) 
+     * @return OK
+     */
+    downloadXrayImage(imagePath: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/XrayImage/DownloadXrayImage?";
+        if (imagePath === null)
+            throw new Error("The parameter 'imagePath' cannot be null.");
+        else if (imagePath !== undefined)
+            url_ += "imagePath=" + encodeURIComponent("" + imagePath) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDownloadXrayImage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDownloadXrayImage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDownloadXrayImage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param animalId (optional) 
+     * @return OK
+     */
+    getXRayByAnimalId(animalId: number | undefined): Observable<XrayImageDto[]> {
+        let url_ = this.baseUrl + "/api/XrayImage/getXRayByAnimalId?";
+        if (animalId === null)
+            throw new Error("The parameter 'animalId' cannot be null.");
+        else if (animalId !== undefined)
+            url_ += "animalId=" + encodeURIComponent("" + animalId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetXRayByAnimalId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetXRayByAnimalId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<XrayImageDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<XrayImageDto[]>;
+        }));
+    }
+
+    protected processGetXRayByAnimalId(response: HttpResponseBase): Observable<XrayImageDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(XrayImageDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAll17(): Observable<XrayImageDtoIEnumerableApiResponse> {
+        let url_ = this.baseUrl + "/api/XrayImage/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll17(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll17(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<XrayImageDtoIEnumerableApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<XrayImageDtoIEnumerableApiResponse>;
+        }));
+    }
+
+    protected processGetAll17(response: HttpResponseBase): Observable<XrayImageDtoIEnumerableApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = XrayImageDtoIEnumerableApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getById17(id: number | undefined): Observable<XrayImageDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/XrayImage/GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById17(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById17(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<XrayImageDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<XrayImageDtoApiResponse>;
+        }));
+    }
+
+    protected processGetById17(response: HttpResponseBase): Observable<XrayImageDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = XrayImageDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    add17(body: XrayImageDto | undefined): Observable<XrayImageDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/XrayImage/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd17(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd17(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<XrayImageDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<XrayImageDtoApiResponse>;
+        }));
+    }
+
+    protected processAdd17(response: HttpResponseBase): Observable<XrayImageDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = XrayImageDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    update17(body: XrayImageDto | undefined): Observable<XrayImageDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/XrayImage/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate17(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate17(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<XrayImageDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<XrayImageDtoApiResponse>;
+        }));
+    }
+
+    protected processUpdate17(response: HttpResponseBase): Observable<XrayImageDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = XrayImageDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteById17(id: number | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/XrayImage/DeleteById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteById17(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteById17(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDeleteById17(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    delete17(body: XrayImageDto | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/XrayImage/Delete";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete17(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete17(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDelete17(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param animalId (optional) 
+     * @return OK
+     */
+    getLabbyanimalId(animalId: number | undefined): Observable<ZLabResultDto[]> {
+        let url_ = this.baseUrl + "/api/ZLabResult/GetLabbyanimalId?";
+        if (animalId === null)
+            throw new Error("The parameter 'animalId' cannot be null.");
+        else if (animalId !== undefined)
+            url_ += "animalId=" + encodeURIComponent("" + animalId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLabbyanimalId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLabbyanimalId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZLabResultDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZLabResultDto[]>;
+        }));
+    }
+
+    protected processGetLabbyanimalId(response: HttpResponseBase): Observable<ZLabResultDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ZLabResultDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addLabResult(body: ZLabResultDto | undefined): Observable<ZLabResultResponseDto> {
+        let url_ = this.baseUrl + "/api/ZLabResult/AddLabResult";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddLabResult(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddLabResult(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZLabResultResponseDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZLabResultResponseDto>;
+        }));
+    }
+
+    protected processAddLabResult(response: HttpResponseBase): Observable<ZLabResultResponseDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZLabResultResponseDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result404 = resultData404 !== undefined ? resultData404 : <any>null;
+    
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = resultData500 !== undefined ? resultData500 : <any>null;
+    
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAll18(): Observable<ZLabResultDtoIEnumerableApiResponse> {
+        let url_ = this.baseUrl + "/api/ZLabResult/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll18(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll18(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZLabResultDtoIEnumerableApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZLabResultDtoIEnumerableApiResponse>;
+        }));
+    }
+
+    protected processGetAll18(response: HttpResponseBase): Observable<ZLabResultDtoIEnumerableApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZLabResultDtoIEnumerableApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getById18(id: number | undefined): Observable<ZLabResultDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZLabResult/GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById18(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById18(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZLabResultDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZLabResultDtoApiResponse>;
+        }));
+    }
+
+    protected processGetById18(response: HttpResponseBase): Observable<ZLabResultDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZLabResultDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    add18(body: ZLabResultDto | undefined): Observable<ZLabResultDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZLabResult/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd18(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd18(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZLabResultDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZLabResultDtoApiResponse>;
+        }));
+    }
+
+    protected processAdd18(response: HttpResponseBase): Observable<ZLabResultDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZLabResultDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    update18(body: ZLabResultDto | undefined): Observable<ZLabResultDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZLabResult/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate18(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate18(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZLabResultDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZLabResultDtoApiResponse>;
+        }));
+    }
+
+    protected processUpdate18(response: HttpResponseBase): Observable<ZLabResultDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZLabResultDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteById18(id: number | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZLabResult/DeleteById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteById18(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteById18(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDeleteById18(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    delete18(body: ZLabResultDto | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZLabResult/Delete";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete18(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete18(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDelete18(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAll19(): Observable<ZTestNormalRangeDtoIEnumerableApiResponse> {
+        let url_ = this.baseUrl + "/api/ZTestNormalRange/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll19(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll19(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZTestNormalRangeDtoIEnumerableApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZTestNormalRangeDtoIEnumerableApiResponse>;
+        }));
+    }
+
+    protected processGetAll19(response: HttpResponseBase): Observable<ZTestNormalRangeDtoIEnumerableApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZTestNormalRangeDtoIEnumerableApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getById19(id: number | undefined): Observable<ZTestNormalRangeDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZTestNormalRange/GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById19(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById19(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZTestNormalRangeDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZTestNormalRangeDtoApiResponse>;
+        }));
+    }
+
+    protected processGetById19(response: HttpResponseBase): Observable<ZTestNormalRangeDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZTestNormalRangeDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    add19(body: ZTestNormalRangeDto | undefined): Observable<ZTestNormalRangeDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZTestNormalRange/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd19(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd19(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZTestNormalRangeDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZTestNormalRangeDtoApiResponse>;
+        }));
+    }
+
+    protected processAdd19(response: HttpResponseBase): Observable<ZTestNormalRangeDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZTestNormalRangeDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    update19(body: ZTestNormalRangeDto | undefined): Observable<ZTestNormalRangeDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZTestNormalRange/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate19(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate19(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZTestNormalRangeDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZTestNormalRangeDtoApiResponse>;
+        }));
+    }
+
+    protected processUpdate19(response: HttpResponseBase): Observable<ZTestNormalRangeDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZTestNormalRangeDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteById19(id: number | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZTestNormalRange/DeleteById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteById19(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteById19(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDeleteById19(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    delete19(body: ZTestNormalRangeDto | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZTestNormalRange/Delete";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete19(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete19(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDelete19(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export class AddAdoptionQuestWithOwnerDTO implements IAddAdoptionQuestWithOwnerDTO {
@@ -8416,6 +10723,78 @@ export interface IAddOwnerAndAnimalDto {
     phone?: string | null;
     ownerBirthDate?: Date;
     animals?: AnimalDto;
+}
+
+export class AddPetForAdoptionDto implements IAddPetForAdoptionDto {
+    petForAdoptionId?: number;
+    breed?: string | null;
+    species?: string | null;
+    petBirthDate?: Date;
+    petCondition?: string | null;
+    gender?: string | null;
+    weight?: number;
+    adoptionStatusId?: number;
+    petName?: string | null;
+    imageUrl?: string | null;
+
+    constructor(data?: IAddPetForAdoptionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.petForAdoptionId = _data["petForAdoptionId"] !== undefined ? _data["petForAdoptionId"] : <any>null;
+            this.breed = _data["breed"] !== undefined ? _data["breed"] : <any>null;
+            this.species = _data["species"] !== undefined ? _data["species"] : <any>null;
+            this.petBirthDate = _data["petBirthDate"] ? new Date(_data["petBirthDate"].toString()) : <any>null;
+            this.petCondition = _data["petCondition"] !== undefined ? _data["petCondition"] : <any>null;
+            this.gender = _data["gender"] !== undefined ? _data["gender"] : <any>null;
+            this.weight = _data["weight"] !== undefined ? _data["weight"] : <any>null;
+            this.adoptionStatusId = _data["adoptionStatusId"] !== undefined ? _data["adoptionStatusId"] : <any>null;
+            this.petName = _data["petName"] !== undefined ? _data["petName"] : <any>null;
+            this.imageUrl = _data["imageUrl"] !== undefined ? _data["imageUrl"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AddPetForAdoptionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddPetForAdoptionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["petForAdoptionId"] = this.petForAdoptionId !== undefined ? this.petForAdoptionId : <any>null;
+        data["breed"] = this.breed !== undefined ? this.breed : <any>null;
+        data["species"] = this.species !== undefined ? this.species : <any>null;
+        data["petBirthDate"] = this.petBirthDate ? formatDate(this.petBirthDate) : <any>null;
+        data["petCondition"] = this.petCondition !== undefined ? this.petCondition : <any>null;
+        data["gender"] = this.gender !== undefined ? this.gender : <any>null;
+        data["weight"] = this.weight !== undefined ? this.weight : <any>null;
+        data["adoptionStatusId"] = this.adoptionStatusId !== undefined ? this.adoptionStatusId : <any>null;
+        data["petName"] = this.petName !== undefined ? this.petName : <any>null;
+        data["imageUrl"] = this.imageUrl !== undefined ? this.imageUrl : <any>null;
+        return data;
+    }
+}
+
+export interface IAddPetForAdoptionDto {
+    petForAdoptionId?: number;
+    breed?: string | null;
+    species?: string | null;
+    petBirthDate?: Date;
+    petCondition?: string | null;
+    gender?: string | null;
+    weight?: number;
+    adoptionStatusId?: number;
+    petName?: string | null;
+    imageUrl?: string | null;
 }
 
 export class AdoptionQuestionnaireDto implements IAdoptionQuestionnaireDto {
@@ -8758,6 +11137,7 @@ export class AnimalDto implements IAnimalDto {
     gender?: string | null;
     animalBirthDate?: Date;
     weight?: number;
+    imageUrl?: string | null;
 
     constructor(data?: IAnimalDto) {
         if (data) {
@@ -8779,6 +11159,7 @@ export class AnimalDto implements IAnimalDto {
             this.gender = _data["gender"] !== undefined ? _data["gender"] : <any>null;
             this.animalBirthDate = _data["animalBirthDate"] ? new Date(_data["animalBirthDate"].toString()) : <any>null;
             this.weight = _data["weight"] !== undefined ? _data["weight"] : <any>null;
+            this.imageUrl = _data["imageUrl"] !== undefined ? _data["imageUrl"] : <any>null;
         }
     }
 
@@ -8800,6 +11181,7 @@ export class AnimalDto implements IAnimalDto {
         data["gender"] = this.gender !== undefined ? this.gender : <any>null;
         data["animalBirthDate"] = this.animalBirthDate ? this.animalBirthDate.toISOString() : <any>null;
         data["weight"] = this.weight !== undefined ? this.weight : <any>null;
+        data["imageUrl"] = this.imageUrl !== undefined ? this.imageUrl : <any>null;
         return data;
     }
 }
@@ -8814,6 +11196,7 @@ export interface IAnimalDto {
     gender?: string | null;
     animalBirthDate?: Date;
     weight?: number;
+    imageUrl?: string | null;
 }
 
 export class AnimalDtoApiResponse implements IAnimalDtoApiResponse {
@@ -8921,6 +11304,46 @@ export interface IAnimalDtoIEnumerableApiResponse {
     data?: AnimalDto[] | null;
     message?: string | null;
     errorMessage?: string | null;
+}
+
+export class AnimalImageDto implements IAnimalImageDto {
+    animalId?: number;
+    imageUrl?: string | null;
+
+    constructor(data?: IAnimalImageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
+            this.imageUrl = _data["imageUrl"] !== undefined ? _data["imageUrl"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AnimalImageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AnimalImageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
+        data["imageUrl"] = this.imageUrl !== undefined ? this.imageUrl : <any>null;
+        return data;
+    }
+}
+
+export interface IAnimalImageDto {
+    animalId?: number;
+    imageUrl?: string | null;
 }
 
 export class AnimalTypeDto implements IAnimalTypeDto {
@@ -9307,7 +11730,7 @@ export class AuthResponseDto implements IAuthResponseDto {
     userId?: number;
     password?: string | null;
     email?: string | null;
-    userRoleId?: number;
+    role?: string | null;
 
     constructor(data?: IAuthResponseDto) {
         if (data) {
@@ -9325,7 +11748,7 @@ export class AuthResponseDto implements IAuthResponseDto {
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
             this.password = _data["password"] !== undefined ? _data["password"] : <any>null;
             this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
-            this.userRoleId = _data["userRoleId"] !== undefined ? _data["userRoleId"] : <any>null;
+            this.role = _data["role"] !== undefined ? _data["role"] : <any>null;
         }
     }
 
@@ -9343,7 +11766,7 @@ export class AuthResponseDto implements IAuthResponseDto {
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
         data["password"] = this.password !== undefined ? this.password : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
-        data["userRoleId"] = this.userRoleId !== undefined ? this.userRoleId : <any>null;
+        data["role"] = this.role !== undefined ? this.role : <any>null;
         return data;
     }
 }
@@ -9354,7 +11777,7 @@ export interface IAuthResponseDto {
     userId?: number;
     password?: string | null;
     email?: string | null;
-    userRoleId?: number;
+    role?: string | null;
 }
 
 export class AuthResponseDtoApiResponse implements IAuthResponseDtoApiResponse {
@@ -9825,6 +12248,86 @@ export interface IDoctorSlotDtoIEnumerableApiResponse {
     data?: DoctorSlotDto[] | null;
     message?: string | null;
     errorMessage?: string | null;
+}
+
+export class GetAllAdoptionQuestwithPetNameDto implements IGetAllAdoptionQuestwithPetNameDto {
+    adoptionQuestionnaireId?: number;
+    userId?: number;
+    occupation?: string | null;
+    salary?: number;
+    isMarried?: boolean;
+    isHouseholdAware?: boolean;
+    hasOwnedPetBefore?: boolean;
+    petForAdoptionId?: number;
+    reasonForAdoption?: string | null;
+    questionStatus?: string | null;
+    createdAt?: Date;
+    petName?: string | null;
+
+    constructor(data?: IGetAllAdoptionQuestwithPetNameDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.adoptionQuestionnaireId = _data["adoptionQuestionnaireId"] !== undefined ? _data["adoptionQuestionnaireId"] : <any>null;
+            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+            this.occupation = _data["occupation"] !== undefined ? _data["occupation"] : <any>null;
+            this.salary = _data["salary"] !== undefined ? _data["salary"] : <any>null;
+            this.isMarried = _data["isMarried"] !== undefined ? _data["isMarried"] : <any>null;
+            this.isHouseholdAware = _data["isHouseholdAware"] !== undefined ? _data["isHouseholdAware"] : <any>null;
+            this.hasOwnedPetBefore = _data["hasOwnedPetBefore"] !== undefined ? _data["hasOwnedPetBefore"] : <any>null;
+            this.petForAdoptionId = _data["petForAdoptionId"] !== undefined ? _data["petForAdoptionId"] : <any>null;
+            this.reasonForAdoption = _data["reasonForAdoption"] !== undefined ? _data["reasonForAdoption"] : <any>null;
+            this.questionStatus = _data["questionStatus"] !== undefined ? _data["questionStatus"] : <any>null;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>null;
+            this.petName = _data["petName"] !== undefined ? _data["petName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GetAllAdoptionQuestwithPetNameDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllAdoptionQuestwithPetNameDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["adoptionQuestionnaireId"] = this.adoptionQuestionnaireId !== undefined ? this.adoptionQuestionnaireId : <any>null;
+        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        data["occupation"] = this.occupation !== undefined ? this.occupation : <any>null;
+        data["salary"] = this.salary !== undefined ? this.salary : <any>null;
+        data["isMarried"] = this.isMarried !== undefined ? this.isMarried : <any>null;
+        data["isHouseholdAware"] = this.isHouseholdAware !== undefined ? this.isHouseholdAware : <any>null;
+        data["hasOwnedPetBefore"] = this.hasOwnedPetBefore !== undefined ? this.hasOwnedPetBefore : <any>null;
+        data["petForAdoptionId"] = this.petForAdoptionId !== undefined ? this.petForAdoptionId : <any>null;
+        data["reasonForAdoption"] = this.reasonForAdoption !== undefined ? this.reasonForAdoption : <any>null;
+        data["questionStatus"] = this.questionStatus !== undefined ? this.questionStatus : <any>null;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>null;
+        data["petName"] = this.petName !== undefined ? this.petName : <any>null;
+        return data;
+    }
+}
+
+export interface IGetAllAdoptionQuestwithPetNameDto {
+    adoptionQuestionnaireId?: number;
+    userId?: number;
+    occupation?: string | null;
+    salary?: number;
+    isMarried?: boolean;
+    isHouseholdAware?: boolean;
+    hasOwnedPetBefore?: boolean;
+    petForAdoptionId?: number;
+    reasonForAdoption?: string | null;
+    questionStatus?: string | null;
+    createdAt?: Date;
+    petName?: string | null;
 }
 
 export class GetAnimalbyOwnerIDdto implements IGetAnimalbyOwnerIDdto {
@@ -10553,6 +13056,7 @@ export interface IMedicalRecordDtoIEnumerableApiResponse {
 
 export class OwnerDto implements IOwnerDto {
     ownerId?: number;
+    userId?: number;
     fullName?: string | null;
     address?: string | null;
     ownerEmail?: string | null;
@@ -10571,6 +13075,7 @@ export class OwnerDto implements IOwnerDto {
     init(_data?: any) {
         if (_data) {
             this.ownerId = _data["ownerId"] !== undefined ? _data["ownerId"] : <any>null;
+            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
             this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
             this.address = _data["address"] !== undefined ? _data["address"] : <any>null;
             this.ownerEmail = _data["ownerEmail"] !== undefined ? _data["ownerEmail"] : <any>null;
@@ -10589,6 +13094,7 @@ export class OwnerDto implements IOwnerDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["ownerId"] = this.ownerId !== undefined ? this.ownerId : <any>null;
+        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
         data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
         data["address"] = this.address !== undefined ? this.address : <any>null;
         data["ownerEmail"] = this.ownerEmail !== undefined ? this.ownerEmail : <any>null;
@@ -10600,6 +13106,7 @@ export class OwnerDto implements IOwnerDto {
 
 export interface IOwnerDto {
     ownerId?: number;
+    userId?: number;
     fullName?: string | null;
     address?: string | null;
     ownerEmail?: string | null;
@@ -10716,6 +13223,7 @@ export interface IOwnerDtoIEnumerableApiResponse {
 
 export class PetForAdoptionDto implements IPetForAdoptionDto {
     petForAdoptionId?: number;
+    petName?: string | null;
     breed?: string | null;
     species?: string | null;
     petBirthDate?: Date;
@@ -10737,6 +13245,7 @@ export class PetForAdoptionDto implements IPetForAdoptionDto {
     init(_data?: any) {
         if (_data) {
             this.petForAdoptionId = _data["petForAdoptionId"] !== undefined ? _data["petForAdoptionId"] : <any>null;
+            this.petName = _data["petName"] !== undefined ? _data["petName"] : <any>null;
             this.breed = _data["breed"] !== undefined ? _data["breed"] : <any>null;
             this.species = _data["species"] !== undefined ? _data["species"] : <any>null;
             this.petBirthDate = _data["petBirthDate"] ? new Date(_data["petBirthDate"].toString()) : <any>null;
@@ -10758,6 +13267,7 @@ export class PetForAdoptionDto implements IPetForAdoptionDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["petForAdoptionId"] = this.petForAdoptionId !== undefined ? this.petForAdoptionId : <any>null;
+        data["petName"] = this.petName !== undefined ? this.petName : <any>null;
         data["breed"] = this.breed !== undefined ? this.breed : <any>null;
         data["species"] = this.species !== undefined ? this.species : <any>null;
         data["petBirthDate"] = this.petBirthDate ? formatDate(this.petBirthDate) : <any>null;
@@ -10772,6 +13282,7 @@ export class PetForAdoptionDto implements IPetForAdoptionDto {
 
 export interface IPetForAdoptionDto {
     petForAdoptionId?: number;
+    petName?: string | null;
     breed?: string | null;
     species?: string | null;
     petBirthDate?: Date;
@@ -11428,11 +13939,11 @@ export interface IStaffWithRoleDTO {
 
 export class UserDto implements IUserDto {
     userId?: number;
-    userRoleId?: number;
     fullName?: string | null;
     username?: string | null;
     email?: string | null;
     password?: string | null;
+    role?: string | null;
     createdAt?: Date | null;
     lastLogin?: Date | null;
 
@@ -11448,11 +13959,11 @@ export class UserDto implements IUserDto {
     init(_data?: any) {
         if (_data) {
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.userRoleId = _data["userRoleId"] !== undefined ? _data["userRoleId"] : <any>null;
             this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
             this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
             this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
             this.password = _data["password"] !== undefined ? _data["password"] : <any>null;
+            this.role = _data["role"] !== undefined ? _data["role"] : <any>null;
             this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>null;
             this.lastLogin = _data["lastLogin"] ? new Date(_data["lastLogin"].toString()) : <any>null;
         }
@@ -11468,11 +13979,11 @@ export class UserDto implements IUserDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["userRoleId"] = this.userRoleId !== undefined ? this.userRoleId : <any>null;
         data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
         data["username"] = this.username !== undefined ? this.username : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
         data["password"] = this.password !== undefined ? this.password : <any>null;
+        data["role"] = this.role !== undefined ? this.role : <any>null;
         data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>null;
         data["lastLogin"] = this.lastLogin ? this.lastLogin.toISOString() : <any>null;
         return data;
@@ -11481,11 +13992,11 @@ export class UserDto implements IUserDto {
 
 export interface IUserDto {
     userId?: number;
-    userRoleId?: number;
     fullName?: string | null;
     username?: string | null;
     email?: string | null;
     password?: string | null;
+    role?: string | null;
     createdAt?: Date | null;
     lastLogin?: Date | null;
 }
@@ -11802,6 +14313,559 @@ export class WeeklyRevenueDto implements IWeeklyRevenueDto {
 export interface IWeeklyRevenueDto {
     paymentDate?: Date;
     totalAmount?: number;
+}
+
+export class XrayImageDto implements IXrayImageDto {
+    xrayId?: number;
+    imageUrl?: string | null;
+    animalId?: number;
+    createdDate?: Date;
+
+    constructor(data?: IXrayImageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.xrayId = _data["xrayId"] !== undefined ? _data["xrayId"] : <any>null;
+            this.imageUrl = _data["imageUrl"] !== undefined ? _data["imageUrl"] : <any>null;
+            this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
+            this.createdDate = _data["createdDate"] ? new Date(_data["createdDate"].toString()) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): XrayImageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new XrayImageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["xrayId"] = this.xrayId !== undefined ? this.xrayId : <any>null;
+        data["imageUrl"] = this.imageUrl !== undefined ? this.imageUrl : <any>null;
+        data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
+        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>null;
+        return data;
+    }
+}
+
+export interface IXrayImageDto {
+    xrayId?: number;
+    imageUrl?: string | null;
+    animalId?: number;
+    createdDate?: Date;
+}
+
+export class XrayImageDtoApiResponse implements IXrayImageDtoApiResponse {
+    success?: boolean;
+    data?: XrayImageDto;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IXrayImageDtoApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.data = _data["data"] ? XrayImageDto.fromJS(_data["data"]) : <any>null;
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): XrayImageDtoApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new XrayImageDtoApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["data"] = this.data ? this.data.toJSON() : <any>null;
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IXrayImageDtoApiResponse {
+    success?: boolean;
+    data?: XrayImageDto;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class XrayImageDtoIEnumerableApiResponse implements IXrayImageDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: XrayImageDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IXrayImageDtoIEnumerableApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(XrayImageDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): XrayImageDtoIEnumerableApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new XrayImageDtoIEnumerableApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IXrayImageDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: XrayImageDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZLabResultDto implements IZLabResultDto {
+    labResultId?: number;
+    animalId?: number;
+    testName?: string | null;
+    testDate?: Date;
+    result?: number;
+    notes?: string | null;
+    isNormal?: string | null;
+    testNormalRangeId?: number;
+
+    constructor(data?: IZLabResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.labResultId = _data["labResultId"] !== undefined ? _data["labResultId"] : <any>null;
+            this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
+            this.testName = _data["testName"] !== undefined ? _data["testName"] : <any>null;
+            this.testDate = _data["testDate"] ? new Date(_data["testDate"].toString()) : <any>null;
+            this.result = _data["result"] !== undefined ? _data["result"] : <any>null;
+            this.notes = _data["notes"] !== undefined ? _data["notes"] : <any>null;
+            this.isNormal = _data["isNormal"] !== undefined ? _data["isNormal"] : <any>null;
+            this.testNormalRangeId = _data["testNormalRangeId"] !== undefined ? _data["testNormalRangeId"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZLabResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZLabResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["labResultId"] = this.labResultId !== undefined ? this.labResultId : <any>null;
+        data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
+        data["testName"] = this.testName !== undefined ? this.testName : <any>null;
+        data["testDate"] = this.testDate ? this.testDate.toISOString() : <any>null;
+        data["result"] = this.result !== undefined ? this.result : <any>null;
+        data["notes"] = this.notes !== undefined ? this.notes : <any>null;
+        data["isNormal"] = this.isNormal !== undefined ? this.isNormal : <any>null;
+        data["testNormalRangeId"] = this.testNormalRangeId !== undefined ? this.testNormalRangeId : <any>null;
+        return data;
+    }
+}
+
+export interface IZLabResultDto {
+    labResultId?: number;
+    animalId?: number;
+    testName?: string | null;
+    testDate?: Date;
+    result?: number;
+    notes?: string | null;
+    isNormal?: string | null;
+    testNormalRangeId?: number;
+}
+
+export class ZLabResultDtoApiResponse implements IZLabResultDtoApiResponse {
+    success?: boolean;
+    data?: ZLabResultDto;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZLabResultDtoApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.data = _data["data"] ? ZLabResultDto.fromJS(_data["data"]) : <any>null;
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZLabResultDtoApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZLabResultDtoApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["data"] = this.data ? this.data.toJSON() : <any>null;
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZLabResultDtoApiResponse {
+    success?: boolean;
+    data?: ZLabResultDto;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZLabResultDtoIEnumerableApiResponse implements IZLabResultDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZLabResultDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZLabResultDtoIEnumerableApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(ZLabResultDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZLabResultDtoIEnumerableApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZLabResultDtoIEnumerableApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZLabResultDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZLabResultDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZLabResultResponseDto implements IZLabResultResponseDto {
+    labResultId?: number;
+    animalId?: number;
+    testName?: string | null;
+    testDate?: Date;
+    result?: number;
+    isNormal?: string | null;
+    notes?: string | null;
+    testNormalRangeId?: number;
+    unitMeasurements?: string | null;
+
+    constructor(data?: IZLabResultResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.labResultId = _data["labResultId"] !== undefined ? _data["labResultId"] : <any>null;
+            this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
+            this.testName = _data["testName"] !== undefined ? _data["testName"] : <any>null;
+            this.testDate = _data["testDate"] ? new Date(_data["testDate"].toString()) : <any>null;
+            this.result = _data["result"] !== undefined ? _data["result"] : <any>null;
+            this.isNormal = _data["isNormal"] !== undefined ? _data["isNormal"] : <any>null;
+            this.notes = _data["notes"] !== undefined ? _data["notes"] : <any>null;
+            this.testNormalRangeId = _data["testNormalRangeId"] !== undefined ? _data["testNormalRangeId"] : <any>null;
+            this.unitMeasurements = _data["unitMeasurements"] !== undefined ? _data["unitMeasurements"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZLabResultResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZLabResultResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["labResultId"] = this.labResultId !== undefined ? this.labResultId : <any>null;
+        data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
+        data["testName"] = this.testName !== undefined ? this.testName : <any>null;
+        data["testDate"] = this.testDate ? this.testDate.toISOString() : <any>null;
+        data["result"] = this.result !== undefined ? this.result : <any>null;
+        data["isNormal"] = this.isNormal !== undefined ? this.isNormal : <any>null;
+        data["notes"] = this.notes !== undefined ? this.notes : <any>null;
+        data["testNormalRangeId"] = this.testNormalRangeId !== undefined ? this.testNormalRangeId : <any>null;
+        data["unitMeasurements"] = this.unitMeasurements !== undefined ? this.unitMeasurements : <any>null;
+        return data;
+    }
+}
+
+export interface IZLabResultResponseDto {
+    labResultId?: number;
+    animalId?: number;
+    testName?: string | null;
+    testDate?: Date;
+    result?: number;
+    isNormal?: string | null;
+    notes?: string | null;
+    testNormalRangeId?: number;
+    unitMeasurements?: string | null;
+}
+
+export class ZTestNormalRangeDto implements IZTestNormalRangeDto {
+    testNormalRangeId?: number;
+    testName?: string | null;
+    minRange?: number;
+    maxRange?: number;
+    unitOfMeasurement?: string | null;
+
+    constructor(data?: IZTestNormalRangeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.testNormalRangeId = _data["testNormalRangeId"] !== undefined ? _data["testNormalRangeId"] : <any>null;
+            this.testName = _data["testName"] !== undefined ? _data["testName"] : <any>null;
+            this.minRange = _data["minRange"] !== undefined ? _data["minRange"] : <any>null;
+            this.maxRange = _data["maxRange"] !== undefined ? _data["maxRange"] : <any>null;
+            this.unitOfMeasurement = _data["unitOfMeasurement"] !== undefined ? _data["unitOfMeasurement"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZTestNormalRangeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZTestNormalRangeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["testNormalRangeId"] = this.testNormalRangeId !== undefined ? this.testNormalRangeId : <any>null;
+        data["testName"] = this.testName !== undefined ? this.testName : <any>null;
+        data["minRange"] = this.minRange !== undefined ? this.minRange : <any>null;
+        data["maxRange"] = this.maxRange !== undefined ? this.maxRange : <any>null;
+        data["unitOfMeasurement"] = this.unitOfMeasurement !== undefined ? this.unitOfMeasurement : <any>null;
+        return data;
+    }
+}
+
+export interface IZTestNormalRangeDto {
+    testNormalRangeId?: number;
+    testName?: string | null;
+    minRange?: number;
+    maxRange?: number;
+    unitOfMeasurement?: string | null;
+}
+
+export class ZTestNormalRangeDtoApiResponse implements IZTestNormalRangeDtoApiResponse {
+    success?: boolean;
+    data?: ZTestNormalRangeDto;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZTestNormalRangeDtoApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.data = _data["data"] ? ZTestNormalRangeDto.fromJS(_data["data"]) : <any>null;
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZTestNormalRangeDtoApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZTestNormalRangeDtoApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["data"] = this.data ? this.data.toJSON() : <any>null;
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZTestNormalRangeDtoApiResponse {
+    success?: boolean;
+    data?: ZTestNormalRangeDto;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZTestNormalRangeDtoIEnumerableApiResponse implements IZTestNormalRangeDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZTestNormalRangeDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZTestNormalRangeDtoIEnumerableApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(ZTestNormalRangeDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZTestNormalRangeDtoIEnumerableApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZTestNormalRangeDtoIEnumerableApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZTestNormalRangeDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZTestNormalRangeDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
 }
 
 function formatDate(d: Date) {

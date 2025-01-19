@@ -36,9 +36,18 @@ export class AuthService {
 
   login(username: string, password: string, rememberMe = false) {
     return this.loginService.login(username, password, rememberMe).pipe(
-      tap(token => this.tokenService.set({
-        access_token: token.data!.token!
-    })),
+      tap(token => {
+        // Log the response here
+        console.log('Login response:', token);
+
+        // Set the token in your token service
+        this.tokenService.set({
+          access_token: token.data!.token!,
+          user_ID: token.data?.userId!,
+          Username: token.data?.username!,
+          Roles: token.data?.role!,
+        });
+      }),
       map(() => this.check())
     );
   }
@@ -62,6 +71,10 @@ export class AuthService {
 
   user() {
     return this.user$.pipe(share());
+  }
+
+  getUser() {
+    return this.user$.asObservable(); // Expose user BehaviorSubject as an observable
   }
 
   menu() {

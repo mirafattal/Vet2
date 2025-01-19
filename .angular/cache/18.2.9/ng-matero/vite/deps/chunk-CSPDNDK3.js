@@ -3,13 +3,13 @@ import {
   Dialog,
   DialogConfig,
   DialogModule
-} from "./chunk-7JMXQO6V.js";
+} from "./chunk-SUPJT3KT.js";
 import {
   Overlay,
   OverlayContainer,
   OverlayModule,
   OverlayRef
-} from "./chunk-MMHUPZPO.js";
+} from "./chunk-XQB4GRD4.js";
 import {
   CdkPortalOutlet,
   PortalModule
@@ -28,15 +28,15 @@ import {
   trigger
 } from "./chunk-H77DEX4X.js";
 import {
+  CdkScrollable
+} from "./chunk-DLH5MCAG.js";
+import {
   ESCAPE,
   FocusMonitor,
   FocusTrapFactory,
   InteractivityChecker,
   hasModifierKey
 } from "./chunk-JFTPTE55.js";
-import {
-  CdkScrollable
-} from "./chunk-DLH5MCAG.js";
 import {
   coerceNumberProperty
 } from "./chunk-EX4W6FOG.js";
@@ -1040,4 +1040,4 @@ export {
   _defaultParams,
   matDialogAnimations
 };
-//# sourceMappingURL=chunk-7CWDZ5R6.js.map
+//# sourceMappingURL=chunk-CSPDNDK3.js.map

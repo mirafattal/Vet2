@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { ClientToolbarComponent } from '../client-toolbar/client-toolbar.component';
 import { CommonModule } from '@angular/common';
-import { APIClient, BookAppointmentDto, DoctorSlotDto, GetStaffNamesdto, StaffDto, StaffWithRoleDTO } from '@shared/services/api-client/veterinary-api.service';
+import { AnimalDto, APIClient, BookAppointmentDto, DoctorSlotDto, GetStaffNamesdto, StaffDto, StaffWithRoleDTO } from '@shared/services/api-client/veterinary-api.service';
 import { FormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatRadioModule } from '@angular/material/radio';
@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
+import { AuthService, TokenService } from '@core';
 
 @Component({
   selector: 'app-book-app',
@@ -49,14 +50,31 @@ export class BookAppComponent implements OnInit {
   selectedDate: Date | null = null; // User-selected date
   selectedTime: string | null = null; // User-selected time
   selectedSlotId: number | null = null; // DoctorSlotId for booking
+  selectedAnimalId: number | null = null; // Store selected animalId
+  appointmentDetails: string = ''; // Stores the appointment details
+  ownerId: number | null = null;
+  userId: number = 0;
+  animals: AnimalDto [] = [];
   appointmentReason: string = '';
   slots: { slotDate: Date; slotStartTime: string; doctorSlotId: number }[] = []; // All slots from the backend
 
-  constructor(private router: Router, private apiService: APIClient, private datePipe: DatePipe) { }
+  constructor(private router: Router, private apiService: APIClient, private datePipe: DatePipe,
+    private tokenService: TokenService, private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.loadDoctors();
     this.loadAvailableSlots();
+
+    const userId = this.tokenService.getUserId();
+
+  if (userId !== undefined && userId !== null) {
+    this.userId = userId;
+    this.getOwnerId(this.userId);
+  } else {
+    console.log('User is not authenticated');
+    // Handle unauthenticated state (e.g., redirect to login page)
+  }
   }
 
 
@@ -112,11 +130,19 @@ export class BookAppComponent implements OnInit {
             }));
 
           this.slots = validSlots as { slotDate: Date; slotStartTime: string; doctorSlotId: number }[];
-          this.availableDates = [...new Set(validSlots.map((slot) => slot.slotDate))];
+          this.availableDates = [
+            ...new Set(
+              this.slots.map((slot) =>
+                new Date(slot.slotDate).toISOString().split('T')[0] // Normalize to 'YYYY-MM-DD'
+              )
+            ),
+          ].map((dateString) => new Date(dateString)); // Convert back to Date objects
+
           this.availableTimes = validSlots
             .map((slot) => slot.slotStartTime)
             .filter((time): time is string => time !== null && time !== undefined);
 
+          console.log("Unique Dates:", this.availableDates);
           console.log('Available slots:', data);
           console.log('Available dates:', this.availableDates);
           console.log('Available times:', this.availableTimes);
@@ -150,20 +176,29 @@ export class BookAppComponent implements OnInit {
 
 
   onDateChange(selectedDate: Date): void {
-    // Ensure the selected date is correct
+    if (!selectedDate || !this.slots) {
+      console.warn('Selected date or slots are undefined.');
+      return;
+    }
+
+    // Log the selected date for debugging
     console.log('Selected Date:', selectedDate);
 
-    // Filter the available slots for the selected date
+    // Filter slots by matching dates (normalize to YYYY-MM-DD for accurate comparison)
     const filteredSlots = this.slots.filter(
-      (slot) => new Date(slot.slotDate).toDateString() === selectedDate.toDateString()
+      (slot) =>
+        new Date(slot.slotDate).toISOString().split('T')[0] ===
+        selectedDate.toISOString().split('T')[0]
     );
 
     // Update availableTimes with valid times
-    this.availableTimes = filteredSlots.map((slot) => slot.slotStartTime);
+    this.availableTimes = filteredSlots.map((slot) => slot.slotStartTime).filter(Boolean);
 
-    // Check the updated availableTimes
+    // Log the filtered slots and available times for debugging
+    console.log('Filtered Slots:', filteredSlots);
     console.log('Available Times:', this.availableTimes);
   }
+
 
   onTimeChange(selectedTime: string): void {
     this.selectedTime = selectedTime; // Store the selected time
@@ -181,8 +216,9 @@ export class BookAppComponent implements OnInit {
 
   showConfirmationMessage: boolean = false; // Controls whether to show the confirmation message
 
-appointmentDetails: string = ''; // Stores the appointment details
+
 submitAppointment(): void {
+
   if (this.selectedDoctorId && this.selectedDate && this.selectedTime && this.selectedSlotId) {
     // Create a new instance of BookAppointmentDto
     const appointmentData = new BookAppointmentDto();
@@ -193,7 +229,7 @@ submitAppointment(): void {
     appointmentData.appointmentDate = this.selectedDate;
     appointmentData.doctorSlotId = this.selectedSlotId;
     appointmentData.appointmentReason = this.appointmentReason || null; // Optional reason
-    appointmentData.animalId = 2; // Temporary animalId for testing
+    appointmentData.animalId = this.selectedAnimalId!; // Temporary animalId for testing
 
     // Debugging: Log the appointment data being sent
     console.log('Booking appointment with data:', appointmentData);
@@ -246,6 +282,23 @@ submitAppointment(): void {
 
 
 
+getOwnerId(userId: number): void {
+  this.apiService.getOwnerIdByUserId(userId).subscribe(ownerId => {
+    this.ownerId = ownerId;  // Ensure ownerId is just a number
+    console.log('OwnerId', ownerId);
+    this.getAnimals(ownerId);
+  });
+}
+getAnimals(ownerId: number): void {
+  this.apiService.getAllAnimalsByOwnerId(ownerId).subscribe(animals => {
+    this.animals = animals; // Populate the list of animals
+  });
+}
+
+onAnimalChange(animalId: number): void {
+  this.selectedAnimalId = animalId;
+  console.log('Selected Animal ID:', this.selectedAnimalId);
+}
 
 
   navigateTo(link: string): void {

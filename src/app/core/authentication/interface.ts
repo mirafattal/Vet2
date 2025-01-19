@@ -17,4 +17,7 @@ export interface Token {
   expires_in?: number;
   exp?: number;
   refresh_token?: string;
+  user_ID?: number
+  Username?: string;
+  Roles?: string;
 }

@@ -44,14 +44,14 @@ export class OverviewComponent {
               {
                 label: 'Revenue',
                 data: data.map((item: any) => item.amount),
-                borderColor: '#4caf50',
-                backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                borderColor: 'rgba(235, 40, 235, 0.87)',
+                backgroundColor: 'rgba(175, 76, 175, 0.26)',
                 fill: true,
                 tension: 0.4,  // Smooth line curve
-                pointRadius: 5,  // Larger points
+                pointRadius: 3,  // Larger points
                 pointBackgroundColor: '#fff', // White background for points
-                pointBorderColor: '#4caf50',  // Green border for points
-                pointBorderWidth: 2,  // Thicker point borders
+                pointBorderColor: 'rgba(235, 40, 235, 0.87)',  // Green border for points
+                pointBorderWidth: 1,  // Thicker point borders
               },
             ],
           },

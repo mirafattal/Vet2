@@ -43,7 +43,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatTableModule,
     MatTabsModule,
     MtxProgressModule,
-    BreadcrumbComponent,
     MatIconModule
   ],
 })

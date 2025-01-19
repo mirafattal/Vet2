@@ -4,59 +4,138 @@
     <p>View completed adoption questionnaires and available pets for adoption.</p>
   </div>
 
-  <!-- Search and Filter Panel -->
-  <div class="filter-panel">
-    <mat-select placeholder="Filter by Status">
-      <mat-option value="approved">Approved</mat-option>
-      <mat-option value="pending">Pending</mat-option>
-      <mat-option value="rejected">Rejected</mat-option>
-    </mat-select>
-  </div>
-
-  <!-- Main Content -->
-  <div class="main-content">
-     <!-- Pets for Adoption Section -->
-     <section class="pets-for-adoption">
-      <h2>Pets for Adoption</h2>
-      <div class="card-grid">
-        <mat-card *ngFor="let pet of petsforadoption">
-          <mat-card-header>
-            <mat-card-title>breed: {{ pet.breed }}</mat-card-title>
-            <mat-card-subtitle>birth date: {{ pet.petBirthDate | date: 'dd MMM yyyy'}}</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image [src]="pet.imageUrl" alt="Pet image" />
-          <mat-card-content>
-            <p>Health Condition: {{ pet.petCondition }}</p>
-            <p>Status: {{ pet.adoptionStatusId }}</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button color="primary" >Adopt</button>
-          </mat-card-actions>
-        </mat-card>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab label="Pets For Adoption">
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Pets for Adoption Section -->
+        <section class="pets-for-adoption">
+          <h2>Pets for Adoption</h2>
+          <button class="btn-add-pet" (click)="onAddPetForAdoption()">Add Pets for Adoption</button>
+          <div class="card-grid">
+            <mat-card *ngFor="let pet of petsforadoption">
+              <mat-card-header>
+                <mat-card-title>Name: {{ pet.petName }}</mat-card-title>
+                <mat-card-subtitle>
+                  Birth date: {{ pet.petBirthDate | date: 'dd MMM yyyy' }}
+                </mat-card-subtitle>
+                <button mat-icon-button class="btn-delete" (click)="onDeletePet(pet.petForAdoptionId!)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-card-header>
+              <img mat-card-image [src]="pet.imageUrl" alt="Pet image" />
+              <mat-card-content>
+                <p>Breed: {{ pet.breed }}</p>
+                <p>Health Condition: {{ pet.petCondition }}</p>
+                <p>Status: {{ pet.adoptionStatusId }}</p>
+                <p>Gender: {{ pet.gender }}</p>
+                <p>Weight: {{ pet.weight }}</p>
+              </mat-card-content>
+              <mat-card-actions>
+                <!-- Conditionally render the 'Mark as Adopted' button or 'Adopted' text based on adoptionStatusId -->
+                <button *ngIf="pet.adoptionStatusId !== 3" mat-raised-button color="primary" (click)="onMarkAsAdopted(pet.petForAdoptionId!)">
+                  Mark as Adopted
+                </button>
+                <span *ngIf="pet.adoptionStatusId === 3" class="adopted-text">Adopted</span>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </section>
       </div>
-    </section>
-    <!-- Adoption Questionnaires Section -->
-    <section class="adoption-questionnaires">
-      <h2>Adoption Questionnaires</h2>
-      <div class="card-grid">
-        <mat-card *ngFor="let questionnaire of questionnaires">
-          <mat-card-header>
-            <mat-card-title>Occupation:{{ questionnaire.occupation }}</mat-card-title>
-            <mat-card-subtitle>Created At: {{ questionnaire.createdAt| date }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <p>Owned Pet: {{ questionnaire.hasOwnedPetBefore }}</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button color="primary">View</button>
-            <button mat-button color="accent" *ngIf="questionnaire.questionStatus === 'Pending'">Approve</button>
-            <button mat-button color="warn" *ngIf="questionnaire.questionStatus === 'Pending'">Reject</button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </section>
+    </mat-tab>
 
 
-  </div>
+    <mat-tab label="Filled Questionnaires">
+      <section class="adoption-questionnaires">
+        <!-- Dropdown for filtering by Pet Name -->
+        <mat-form-field appearance="fill">
+          <mat-label>Filter by Pet Name</mat-label>
+          <mat-select [(value)]="selectedPetName" (selectionChange)="onPetNameChange()">
+            <!-- "None" option to show all questionnaires -->
+            <mat-option [value]="'None'">None</mat-option>
+            <mat-option *ngFor="let pet of petsforadoption" [value]="pet.petName">
+              {{ pet.petName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Table for displaying questionnaires -->
+        <table mat-table [dataSource]="questionnaires" class="mat-elevation-z8">
+
+          <ng-container matColumnDef="petName">
+            <th mat-header-cell *matHeaderCellDef> Pet Name </th>
+            <td mat-cell *matCellDef="let questionnaire">{{ questionnaire.petName }}</td>
+          </ng-container>
+
+          <!-- Occupation Column -->
+          <ng-container matColumnDef="occupation">
+            <th mat-header-cell *matHeaderCellDef> Occupation </th>
+            <td mat-cell *matCellDef="let questionnaire">{{ questionnaire.occupation }}</td>
+          </ng-container>
+
+          <!-- Created At Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef> Created At </th>
+            <td mat-cell *matCellDef="let questionnaire">{{ questionnaire.createdAt | date }}</td>
+          </ng-container>
+
+          <!-- Owned Pet Column -->
+          <ng-container matColumnDef="hasOwnedPetBefore">
+            <th mat-header-cell *matHeaderCellDef> Owned Pet </th>
+            <td mat-cell *matCellDef="let questionnaire">
+              {{ questionnaire.hasOwnedPetBefore ? 'Yes' : 'No' }}
+            </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let questionnaire">
+              <span
+                [ngClass]="{
+                  approved: questionnaire.questionStatus === 'Approved',
+                  rejected: questionnaire.questionStatus === 'Rejected'
+                }"
+              >
+                {{ questionnaire.questionStatus }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let questionnaire">
+              <button mat-button color="primary" class="view">View</button>
+              <button
+                mat-button
+                color="accent"
+                *ngIf="questionnaire.questionStatus === 'Pending'"
+                (click)="approveQuestionnaire(questionnaire.adoptionQuestionnaireId!)"
+                class="approve"
+              >
+                Approve
+              </button>
+              <button
+                mat-button
+                color="warn"
+                *ngIf="questionnaire.questionStatus === 'Pending'"
+                (click)="denyQuestionnaire(questionnaire.adoptionQuestionnaireId!)"
+                class="reject"
+              >
+                Reject
+              </button>
+            </td>
+          </ng-container>
+
+          <!-- Header Row -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <!-- Data Rows -->
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </section>
+    </mat-tab>
+
+
+  </mat-tab-group>
 </div>
-

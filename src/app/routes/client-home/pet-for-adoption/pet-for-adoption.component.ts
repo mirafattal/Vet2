@@ -22,21 +22,30 @@ export class PetForAdoptionComponent implements OnInit {
 
   constructor(private router: Router, private apiService: APIClient) {}
 
-  loadPets(): void {
-    this.apiService.getAll12().subscribe(
-      (response: PetForAdoptionDtoIEnumerableApiResponse) => {
-        if (response && response.data) {
-          this.pets = response.data; // Assuming `data` is the array of PetForAdoptionDto
-        } else {
-          console.error('API response does not contain the expected data');
-          this.pets = []; // Set to an empty array in case of invalid response
-        }
+  fetchPets(): void {
+    this.apiService.getAvailablePets().subscribe(
+      (response:PetForAdoptionDto[]) => {
+        // Ensure pets are correctly mapped while keeping their type
+        this.pets = (response ?? []).map((pet) => {
+          return {
+            ...pet,
+            imageUrl: this.getFullImageUrl(pet.imageUrl || ""), // Ensure imageUrl is properly transformed
+          } as PetForAdoptionDto; // Explicitly cast the object as PetForAdoptionDto
+        });
       },
       (error) => {
-        console.error('Error fetching pets for adoption:', error);
-        this.pets = []; // Handle the error by setting to an empty array
+        console.error('Error fetching pets:', error);
+        this.pets = []; // Ensure the array is never null
       }
     );
+  }
+
+
+
+  getFullImageUrl(imagePath: string): string {
+    const fullUrl = `https://localhost:7175/api/PetForAdoption/DownloadImage?imagePath=${encodeURIComponent(imagePath)}`;
+    console.log('Generated image URL:', fullUrl); // Log the URL to check
+    return fullUrl;
   }
 
   adoptPet(petForAdoptionId: number | undefined): void {
@@ -49,7 +58,7 @@ export class PetForAdoptionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadPets();
+    this.fetchPets();
   }
 
   navigateTo(link: string): void {

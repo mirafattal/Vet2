@@ -1,11 +1,11 @@
 import {
+  SharedResizeObserver
+} from "./chunk-B6OXZJQD.js";
+import {
   CdkPortal,
   CdkPortalOutlet,
   TemplatePortal
 } from "./chunk-3CITYLRN.js";
-import {
-  SharedResizeObserver
-} from "./chunk-B6OXZJQD.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatCommonModule,
@@ -19,6 +19,11 @@ import {
   trigger
 } from "./chunk-H77DEX4X.js";
 import {
+  CdkScrollable,
+  ViewportRuler
+} from "./chunk-DLH5MCAG.js";
+import "./chunk-V3R3B2HD.js";
+import {
   CdkMonitorFocus,
   CdkObserveContent,
   ENTER,
@@ -28,11 +33,6 @@ import {
   hasModifierKey
 } from "./chunk-JFTPTE55.js";
 import "./chunk-F7EOE3FW.js";
-import {
-  CdkScrollable,
-  ViewportRuler
-} from "./chunk-DLH5MCAG.js";
-import "./chunk-V3R3B2HD.js";
 import {
   Directionality
 } from "./chunk-2VBJCTJ6.js";
@@ -116,11 +116,11 @@ import {
   ɵɵtextInterpolate,
   ɵɵviewQuery
 } from "./chunk-YCMYJ33Q.js";
-import "./chunk-7GQHZGQU.js";
 import {
   fromEvent,
   merge
 } from "./chunk-B744N6TL.js";
+import "./chunk-7GQHZGQU.js";
 import {
   BehaviorSubject,
   EMPTY,

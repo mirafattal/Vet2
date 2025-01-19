@@ -47,6 +47,15 @@ export class TokenService implements OnDestroy {
     return this;
   }
 
+  get(): BaseToken | undefined {
+    return this.token; // Return the current token object
+  }
+
+  getUserId() {
+    const token = this.get(); // Use the newly added `get` method
+    return token?.user_ID; // Return the user_ID property
+  }
+
   clear() {
     this.save();
   }
