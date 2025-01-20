@@ -3,8 +3,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { APIClient } from '@shared/services/api-client/veterinary-api.service';
+import { APIClient, ZTestNormalRangeDto, ZTestNormalRangeDtoApiResponse } from '@shared/services/api-client/veterinary-api.service';
 import { ChartOptions, ChartType, ChartData, Chart, registerables } from 'chart.js';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AddDollarPipe } from "../../shared/pipes/add-dollar.pipe";
 
 @Component({
   selector: 'app-overview',
@@ -12,21 +14,17 @@ import { ChartOptions, ChartType, ChartData, Chart, registerables } from 'chart.
   imports: [
     MatCardModule,
     MatIconModule,
-    MatTableModule
-  ],
+    MatTableModule,
+    NgxChartsModule,
+    AddDollarPipe
+],
 
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss'
 })
 export class OverviewComponent {
 
-  upcomingAppointments = 5;
-  petPatients = [
-    { name: 'Buddy', age: 3, health: 'Good', lastVisit: '2024-12-15' },
-    { name: 'Mittens', age: 5, health: 'Excellent', lastVisit: '2024-12-10' },
-    { name: 'Max', age: 2, health: 'Fair', lastVisit: '2024-11-20' },
-  ];
-  displayedColumns = ['name', 'age', 'health', 'lastVisit'];
+
 
   loadRevenueChart() {
     this.apiService.revenuemonthlybyday().subscribe((data: any) => {
@@ -44,13 +42,13 @@ export class OverviewComponent {
               {
                 label: 'Revenue',
                 data: data.map((item: any) => item.amount),
-                borderColor: 'rgba(235, 40, 235, 0.87)',
-                backgroundColor: 'rgba(175, 76, 175, 0.26)',
+                borderColor: 'rgba(43, 40, 235, 0.87)',
+                backgroundColor: 'rgba(76, 102, 175, 0.26)',
                 fill: true,
                 tension: 0.4,  // Smooth line curve
                 pointRadius: 3,  // Larger points
                 pointBackgroundColor: '#fff', // White background for points
-                pointBorderColor: 'rgba(235, 40, 235, 0.87)',  // Green border for points
+                pointBorderColor: 'rgba(43, 40, 235, 0.87)',  // Green border for points
                 pointBorderWidth: 1,  // Thicker point borders
               },
             ],
@@ -122,6 +120,15 @@ export class OverviewComponent {
   viewAppointments() {
     this.router.navigate(['appointment'])
   }
+  viewAdoptions() {
+    this.router.navigate(['adoption'])
+  }
+  viewPets() {
+    this.router.navigate(['pet'])
+  }
+  viewHorses() {
+    this.router.navigate(['horse'])
+  }
 
 
     longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
@@ -134,6 +141,9 @@ export class OverviewComponent {
   ngOnInit(): void {
     this.totalAppointments();
     this.loadRevenueChart();
+    this.loadPetCounts();
+    this.loadHorseCounts();
+    this.loadYearlyTotalRevenue();
   }
 
   appoints: number = 0 ;
@@ -151,4 +161,65 @@ export class OverviewComponent {
     });
   }
 
+  colorScheme = 'air'; // Use a predefined color scheme
+  showContent = true;
+
+  datas: ChartDat[] = []; // Initialize an empty array for the chart data
+  horseCount: number = 0;
+  petCount: number = 0;
+
+  // Load Horse Patient Counts
+  loadHorseCounts(): void {
+    this.apiService.counttotalhorsepatients().subscribe({
+      next: (response) => {
+        console.log('count horses:', response);
+        this.horseCount = response; // Store horse count in variable
+        this.updateChartDat(); // Update datas array after receiving the count
+      },
+      error: (err) => {
+        console.error('Error fetching horse patient count:', err);
+      }
+    });
+  }
+
+  // Load Pet Patient Counts
+  loadPetCounts(): void {
+    this.apiService.counttotalpetpatients().subscribe({
+      next: (response) => {
+        console.log('count pets:', response);
+        this.petCount = response; // Store pet count in variable
+        this.updateChartDat(); // Update datas array after receiving the count
+      },
+      error: (err) => {
+        console.error('Error fetching pet patient count:', err);
+      }
+    });
+  }
+
+  // Update the datas array with the counts
+  updateChartDat(): void {
+    this.datas = [
+      { name: 'Horses', value: this.horseCount },
+      { name: 'Pets', value: this.petCount }
+    ];
+  }
+
+  totalyearRevenue: number = 0;
+  loadYearlyTotalRevenue(): void {
+    this.apiService.yearlyTotalSumrevenue().subscribe({
+      next: (response) => {
+        console.log('Yearly Total Revenue:', response.totalRevenue);
+        this.totalyearRevenue = response.totalRevenue;
+      },
+      error: (err) => {
+        console.error('Error fetching yearly revenue:', err);
+      }
+    });
+  }
+
 }
+interface ChartDat {
+  name: string;
+  value: number;
+}
+

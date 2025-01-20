@@ -1,0 +1,89 @@
+/* confirmation-dialog.component.scss */
+
+/* Center the dialog content */
+mat-dialog-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+/* Style for the title */
+h1[mat-dialog-title] {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Style for the content */
+mat-dialog-content {
+  font-size: 16px;
+  color: #555;
+  margin-left: 20px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Align buttons horizontally */
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 16px;
+}
+
+/* Style for the cancel button */
+button[mat-button] {
+  font-size: 14px;
+  color: #555;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect for the cancel button */
+button[mat-button]:hover {
+  background-color: #f1f1f1;
+  border-color: #ddd;
+}
+
+/* Style for the confirm button */
+button[mat-button][color="warn"] {
+  font-size: 14px;
+  color: #fff;
+  background-color: #d32f2f;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect for the confirm button */
+button[mat-button][color="warn"]:hover {
+  background-color: #b71c1c;
+}
+
+/* Add spacing between buttons */
+mat-dialog-actions button {
+  margin: 0 8px;
+}
+
+/* Add some responsiveness */
+@media screen and (max-width: 600px) {
+  mat-dialog-container {
+    padding: 16px;
+  }
+
+  mat-dialog-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  mat-dialog-actions button {
+    width: 100%;
+    margin: 8px 0;
+  }
+}
+
+p {
+  margin-left: 30px;
+}

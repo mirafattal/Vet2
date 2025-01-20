@@ -42,6 +42,7 @@
     "@ng-icons/heroicons": "^29.10.0",
     "@ng-matero/extensions": "^18.3.0",
     "@ng-matero/extensions-moment-adapter": "^18.0.0",
+    "@ngx-chart/doughnut": "^0.1.1",
     "@ngx-formly/core": "^6.3.10",
     "@ngx-formly/material": "^6.3.10",
     "@ngx-translate/core": "^16.0.0",

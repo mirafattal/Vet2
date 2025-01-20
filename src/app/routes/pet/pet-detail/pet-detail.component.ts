@@ -20,6 +20,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { EditOwnerDialogComponent } from '../edit-owner-dialog/edit-owner-dialog.component';
 import { EditPetDialogComponent } from '../edit-pet-dialog/edit-pet-dialog.component';
 import { AddLabComponent } from '../add-lab/add-lab.component';
+import { ConfirmDialogComponent } from 'app/routes/confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddVaccineComponent } from '../add-vaccine/add-vaccine.component';
 
 @Component({
   selector: 'app-pet-detail',
@@ -65,6 +68,7 @@ export class PetDetailComponent implements OnInit {
   }
   constructor(
     private router: Router,
+    private snackBar: MatSnackBar,
     private apiService: APIClient,
     private route: ActivatedRoute,
     private dialog: MatDialog,
@@ -373,41 +377,122 @@ export class PetDetailComponent implements OnInit {
     });
   }
 
+  onAddVaccine(): void {
+    this.dialog.open(AddVaccineComponent, {
+      disableClose: true, // Prevent closing on outside click or Escape key
+      width: '600px', // Optional: Adjust dialog width
+      data: { animalId: this.animalId } // Pass animalId to the dialog
+    });
+  }
+
 
   onDeleteMedical(row: any): void {
-    console.log('Row data:', row); // Log the entire row object
-    console.log('medical ID to delete:', row.medicalrecordId); // Log the medicalrecordId
-    console.log('Delete action clicked for:', row);
+    // Open the dialog
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px', // Set the desired width here
+      height: '200px'
+    });
 
-    // Confirm the deletion action (optional)
-    const confirmDelete = window.confirm(`Are you sure you want to delete ${row.diagnosis}?`);
-    if (!confirmDelete) {
-      return; // If user cancels, do nothing
-    }
-
-    // Call the backend service to delete the medical record
-    this.apiService.deleteById10(row.medicalRecordId).subscribe({
-      next: (response) => {
-        console.log('Delete successful:', response);
-        // Update the UI (remove the row from the table, etc.)
-        this.removeRowFromTable(row);
-        alert('Medical record has been deleted successfully!');
-      },
-      error: (err) => {
-        console.error('Error deleting medical record:', err);
-        alert('Failed to delete the medical record!');
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Proceed with deletion
+        console.log('Delete action confirmed for:', row.diagnosis);
+        this.apiService.deleteById10(row.medicalRecordId).subscribe({
+          next: (response) => {
+            console.log('Delete successful:', response);
+            // Remove row from table
+            this.removeRowFromTableMedical(row);
+            this.snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 })
+          },
+          error: (err) => {
+            console.error('Error deleting record:', err);
+            this.snackBar.open('Failed to delete record!', 'Close', { duration: 3000 })
+          }
+        });
+      } else {
+        console.log('Delete action cancelled');
       }
     });
   }
 
-  removeRowFromTable(row: any): void {
-    // Implement logic to remove the deleted row from your displayed data
+  removeRowFromTableMedical(row: any): void {
     const index = this.records.findIndex(item => item.medicalRecordId === row.medicalRecordId);
     if (index !== -1) {
       this.records.splice(index, 1);  // Remove the row from your data array
     }
   }
 
+  onDeleteLabResults(row: any): void {
+    // Open the dialog
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px', // Set the desired width here
+      height: '200px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Proceed with deletion
+        console.log('Delete action confirmed for:', row.testName);
+        this.apiService.deleteById18(row.labResultId).subscribe({
+          next: (response) => {
+            console.log('Delete successful:', response);
+            // Remove row from table
+            this.removeRowFromTableLab(row);
+            this.snackBar.open('Lab Result has been deleted successfully!', 'Close', { duration: 3000 })
+          },
+          error: (err) => {
+            console.error('Error deleting record:', err);
+            this.snackBar.open('Failed to delete Lab Result!', 'Close', { duration: 3000 })
+          }
+        });
+      } else {
+        console.log('Delete action cancelled');
+      }
+    });
+  }
+
+  removeRowFromTableLab(row: any): void {
+    const index = this.labResults.findIndex(item => item.labResultId === row.labResultId);
+    if (index !== -1) {
+      this.records.splice(index, 1);  // Remove the row from your data array
+    }
+  }
+
+  onDeleteVaccine(row: any): void {
+    // Open the dialog
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px', // Set the desired width here
+      height: '200px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Proceed with deletion
+        console.log('Delete action confirmed for:', row.vaccineName);
+        this.apiService.deleteById16(row.vaccinationId).subscribe({
+          next: (response) => {
+            console.log('Delete successful:', response);
+            // Remove row from table
+            this.removeRowFromTableVaccine(row);
+            this.snackBar.open('Vaccine Result has been deleted successfully!', 'Close', { duration: 3000 })
+          },
+          error: (err) => {
+            console.error('Error deleting record:', err);
+            this.snackBar.open('Failed to delete Vaccine Result!', 'Close', { duration: 3000 })
+          }
+        });
+      } else {
+        console.log('Delete action cancelled');
+      }
+    });
+  }
+
+  removeRowFromTableVaccine(row: any): void {
+    const index = this.vaccines.findIndex(item => item.vaccinationId === row.vaccinationId);
+    if (index !== -1) {
+      this.records.splice(index, 1);  // Remove the row from your data array
+    }
+  }
 
 }
 

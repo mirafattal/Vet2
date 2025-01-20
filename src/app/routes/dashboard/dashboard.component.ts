@@ -25,11 +25,11 @@ import { DashboardService } from './dashboard.service';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DashboardService],
   standalone: true,
   imports: [
