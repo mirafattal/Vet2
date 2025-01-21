@@ -27,17 +27,18 @@
       <mat-card class="adoption-card">
         <div class="row">
           <!-- Left Card for Form Fields -->
-          <mat-card class="left-card" fxFlex="50%">
+          <mat-card class="quest-card" fxFlex="50%">
+            <img src="images/MyImages/AdoptionCard.png" alt="Pet Image" class="pet-image" />
             <mat-card-header class="leftheader">Adoption Questionnaire</mat-card-header>
             <!-- Occupation Field -->
             <mat-form-field>
-              <mat-label>Your Occupation</mat-label>
+              <mat-label>What is Your Occupation?</mat-label>
               <input matInput [(ngModel)]="adoption.occupation" name="ownerOccupation" required />
             </mat-form-field>
 
             <!-- Salary Field -->
             <mat-form-field>
-              <mat-label>Your Salary</mat-label>
+              <mat-label>What is Your Salary?</mat-label>
               <input matInput [(ngModel)]="adoption.salary" name="salary" type="number" required />
             </mat-form-field>
 
@@ -45,6 +46,14 @@
             <div class="checkbox-group">
               <p>Are you married?</p>
               <mat-radio-group [(ngModel)]="adoption.isMarried">
+                <mat-radio-button [value]="true">Yes</mat-radio-button>
+                <mat-radio-button [value]="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <div class="checkbox-group">
+              <p>Do you Have Children?</p>
+              <mat-radio-group [(ngModel)]="adoption.hasChildren">
                 <mat-radio-button [value]="true">Yes</mat-radio-button>
                 <mat-radio-button [value]="false">No</mat-radio-button>
               </mat-radio-group>
@@ -68,9 +77,50 @@
               </mat-radio-group>
             </div>
 
+            <div class="checkbox-group">
+              <p>Has anyone in your household experienced allergies or asthma?</p>
+              <mat-radio-group [(ngModel)]="adoption.hasAllergiesAsthma">
+                <mat-radio-button [value]="true">Yes</mat-radio-button>
+                <mat-radio-button [value]="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <mat-form-field>
+              <mat-label>Who will be responsible for the dog's care?(feeding, exercise, walks,potty)?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="adoption.whoWillBeReponsible"
+                name="responsible"
+                rows="2"
+                required
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Who will provide for your pet in the event that you become ill or unable to care for him/her?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="adoption.ifSick"
+                name="sick"
+                rows="3"
+                required
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>How many hours a day will your pet be left alone? Where will (s)he be left alone?</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="adoption.leftAlone"
+                name="alone"
+                rows="3"
+                required
+              ></textarea>
+            </mat-form-field>
+
             <!-- Reason for Adoption -->
             <mat-form-field>
-              <mat-label>Reason for Adoption</mat-label>
+              <mat-label>What is your Reason for adoption?</mat-label>
               <textarea
                 matInput
                 [(ngModel)]="adoption.reasonForAdoption"
@@ -84,46 +134,4 @@
             <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
           </mat-card>
 
-          <!-- Right Card for Image -->
-          <mat-card class="right-card" fxFlex="50%">
-            <img src="images/MyImages/Adoption2.webp" alt="Pet Image" class="pet-image" />
-          </mat-card>
-        </div>
-      </mat-card>
-
-      <div class="office-hours">
-        <h3>Office Hours</h3>
-        <div class="hours-container">
-          <div class="day-time">Monday<br><span>9:00 am - 5:00 pm</span></div>
-          <div class="divider"></div>
-          <div class="day-time">Tuesday<br><span>9:00 am - 5:00 pm</span></div>
-          <div class="divider"></div>
-          <div class="day-time">Wednesday<br><span>9:00 am - 5:00 pm</span></div>
-          <div class="divider"></div>
-          <div class="day-time">Thursday<br><span>9:00 am - 5:00 pm</span></div>
-          <div class="divider"></div>
-          <div class="day-time">Friday<br><span>9:00 am - 5:00 pm</span></div>
-          <div class="divider"></div>
-          <div class="day-time">Saturday<br><span>9:00 am - 2:00 pm</span></div>
-          <div class="divider"></div>
-          <div class="day-time">Sunday<br><span>Closed</span></div>
-        </div>
-      </div>
-
-      <div class="footer-section">
-        <div class="logo">
-          <img src="images/MyImages/Logo2.png" alt="Dr Pawpaw Center Logo" />
-        </div>
-        <div class="social-icons">
-          <a href="https://www.instagram.com" target="_blank">
-            <img src="images/MyImages/instagram.webp" alt="Instagram" />
-          </a>
-          <a href="https://www.facebook.com" target="_blank">
-            <img src="images/MyImages/facebook.jpg" alt="Facebook" />
-          </a>
-        </div>
-        <div class="contact-info">
-          <span>Call Us: <a href="tel:800-462-8749">800-462-8749</a></span>
-        </div>
-      </div>
     </div>

@@ -12,6 +12,7 @@ import { AddPetAdoptionComponent } from './add-pet-adoption/add-pet-adoption.com
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ViewQuestComponent } from './view-quest/view-quest.component';
 
 @Component({
   selector: 'app-adoption',
@@ -33,7 +34,7 @@ export class AdoptionComponent implements OnInit {
 
   // Arrays to store the data for pets and questionnaires
   petsforadoption: PetForAdoptionDto[] = [];
-  questionnaires: GetAllAdoptionQuestwithPetNameDto[] = [];
+  questionnaires: AdoptionQuestionnaireDto[] = [];
   selectedPetName: string = ''; // Store the selected pet name
   displayedColumns: string[] = ['petName', 'occupation', 'createdAt', 'hasOwnedPetBefore', 'status', 'actions'];
 
@@ -87,17 +88,8 @@ export class AdoptionComponent implements OnInit {
 
   fetchQuestionnaires(): void {
     this.apiService.getAllPendingStatus().subscribe(
-      (response: GetAllAdoptionQuestwithPetNameDto[]) => {
-        this.questionnaires = response.map((questionnaire) => {
-          const pet = this.petsforadoption.find(
-            (pet) => pet.petForAdoptionId === questionnaire.petForAdoptionId
-          );
-          // If a matching pet is found, assign the pet name
-          if (pet) {
-            questionnaire.petName = pet.petName;
-          }
-          return questionnaire;
-        });
+      (response: AdoptionQuestionnaireDto[]) => {
+        this.questionnaires = response;
         console.log('Questionnaires:', this.questionnaires);
       },
       (error) => {
@@ -220,4 +212,24 @@ export class AdoptionComponent implements OnInit {
     }
   }
 
+  getPetNameById(petForAdoptionId: number): string {
+    // Here you can replace the mock data with actual data fetching logic
+
+    const pet = this.petsforadoption.find(p => p.petForAdoptionId === petForAdoptionId);
+    return pet ? pet.petName! : 'Unknown Pet';
+  }
+
+
+  openViewDialog(questionnaire: any): void {
+    console.log('Questionnaire:', questionnaire);
+    // Pass the petAdoptionId to the method to get the petName
+    const petName = this.getPetNameById(questionnaire.petForAdoptionId);
+
+    this.dialog.open(ViewQuestComponent, {
+      data: {
+        petName: petName, // Pass only the pet name
+        questionnaire: questionnaire, // Optionally pass the entire questionnaire if needed
+      },
+    });
+  }
 }

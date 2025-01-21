@@ -30,7 +30,7 @@
       }
 
       .mat-select-arrow {
-        color: #555; // Arrow color
+        color: #414040; // Arrow color
       }
     }
   }
@@ -41,7 +41,7 @@
 
     h2 {
       font-size: 1.5rem;
-      color: #555;
+      color: #555555;
     }
   }
 
@@ -64,7 +64,7 @@
         transition: transform 0.2s;
 
       &:hover {
-        transform: translateY(-5px);
+        transform: translateY(-1px);
       }
 
         mat-card-header {

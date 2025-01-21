@@ -102,23 +102,6 @@ AddanimalOnly: AnimalDto = new AnimalDto();
     this.animalowner.animals.animalId = 0;
     this.animalowner.animals.ownerId = this.animalowner.ownerId
 
-    //console.log('Selected Owner:', this.selectedOwnerId);
-    // if (this.selectedOwnerId) {
-    //   this.AddanimalOnly.ownerId = this.selectedOwnerId; // Use the selected owner ID
-    //   this.apiService.add(this.AddanimalOnly).subscribe({
-    //     next: (response) => {
-    //       console.log('Response from backend:', response);
-    //       alert('Animal added successfully to existing Owner!');
-    //       this.dialogRef.close(); // Close the dialog on successful submission
-    //     }
-    //   })
-    // } else {
-    //   console.error('No owner selected!');
-    //   alert('Please select an owner before submitting.');
-    //   return; // Exit if no owner is selected
-    // }
-
-    // Call backend service to add the owner and animal
     this.apiService.addownerwithanimal(this.animalowner).subscribe({
       next: (response) => {
         console.log('Response from backend:', response);

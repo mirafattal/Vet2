@@ -60,6 +60,7 @@
     "moment": "^2.30.0",
     "ng-primitives": "^0.15.0",
     "ng2-charts": "^8.0.0",
+    "ngx-mat-select-search": "^7.0.9",
     "ngx-permissions": "^17.1.0",
     "ngx-progressbar": "^13.0.0",
     "ngx-toastr": "^19.0.0",

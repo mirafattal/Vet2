@@ -19,6 +19,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { APIClient, GetStaffNamesdto, MedicalRecordDto, StaffWithRoleDTO } from '@shared/services/api-client/veterinary-api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-adding-medical',
@@ -54,7 +55,7 @@ export class AddingMedicalComponent implements OnInit {
   medical: MedicalRecordDto = new MedicalRecordDto();
   animalId: number; // Store the passed animalId
   private _formBuilder = inject(FormBuilder);
-    constructor(private apiService: APIClient,
+    constructor(private apiService: APIClient, private snackBar: MatSnackBar,
        public dialogRef: MatDialogRef<AddingMedicalComponent>,
        @Inject(MAT_DIALOG_DATA) public data: { animalId: number})  // Inject the passed data)
        {
@@ -94,12 +95,16 @@ export class AddingMedicalComponent implements OnInit {
       this.apiService.add10(this.medical).subscribe({
         next: (response) => {
           console.log('Response from backend:', response);
-          alert('Medical Record added successfully!');
+          this.snackBar.open('Medical Record added successfully!', 'Close', {
+            duration: 3000,
+          });
           this.dialogRef.close(response); // Close the dialog on successful submission
         },
         error: (err) => {
           console.error('Error adding Medical Records:', err);
-          alert('Failed to add medical record!');
+          this.snackBar.open('Failed to add medical record!', 'Close', {
+            duration: 3000,
+          });
         },
       });
     }

@@ -1,0 +1,46 @@
+mat-card {
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+mat-card-title {
+  text-align: center;
+  color: #2335a0;
+  margin-bottom: 1rem;
+}
+
+.questionnaire-item {
+  margin-bottom: 1rem;
+
+  .question {
+    font-style: italic;
+    color: #3a3a3a;
+    margin-bottom: 0.3rem;
+  }
+
+  .answer {
+    color: #2c2c2c;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  mat-divider {
+    margin: 1rem 0;
+  }
+}
+
+mat-dialog-actions {
+  margin-top: 1rem;
+  button {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+
+.close{
+  width: 60px;
+  height: 30px;
+  background-color: red;
+  cursor: pointer;
+  border-radius: 8px;
+}

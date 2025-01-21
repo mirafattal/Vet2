@@ -1,0 +1,113 @@
+<mat-card class="add-lab-card">
+  <mat-card-header>
+    <mat-card-title>Animal Submission</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-dialog-content>
+      <mat-stepper #stepper>
+
+        <!-- Step 1: Fill out owner details -->
+        <mat-step>
+            <ng-template matStepLabel>Fill Owner</ng-template>
+            <div class="vertical-container">
+
+              <mat-form-field appearance="fill">
+                <mat-label>Search Owner</mat-label>
+                <input matInput [(ngModel)]="searchTerm" name="searchTerm" (input)="onSearch()" placeholder="Search invoices">
+              </mat-form-field>
+
+              <table mat-table [dataSource]="owners" class="mat-elevation-z8">
+                <ng-container matColumnDef="select">
+                  <th mat-header-cell *matHeaderCellDef></th>
+                  <td mat-cell *matCellDef="let owner">
+                    <mat-radio-group [(ngModel)]="selectedOwnerId" (ngModelChange)="onOwnerSelectionChange($event)">
+                      <mat-radio-button [value]="owner.ownerId">
+                        Select
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="fullName">
+                  <th mat-header-cell *matHeaderCellDef>Owner Name</th>
+                  <td mat-cell *matCellDef="let owner">{{ owner.fullName }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <div>
+                <button mat-button matStepperPrevious (click)="onCancel()">Cancel</button>
+                <button mat-button matStepperNext >Next</button>
+              </div>
+            </div>
+        </mat-step>
+
+        <!-- Step 2: Fill out animal details -->
+        <mat-step>
+          <form #animalForm="ngForm">
+            <ng-template matStepLabel>Fill Animal</ng-template>
+            <div class="vertical-container">
+
+              <mat-form-field>
+                <mat-label>Animal Name</mat-label>
+                <input matInput [(ngModel)]="AddanimalOnly.animalName" name="animalName" required />
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Animal Gender</mat-label>
+                <mat-select [(ngModel)]="AddanimalOnly.gender" name="gender" required>
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Animal Birth Date</mat-label>
+                <input matInput [matDatepicker]="AnimalBirthDatePicker"
+                       [(ngModel)]="AddanimalOnly.animalBirthDate" name="animalBirthDate" required />
+                <mat-datepicker-toggle matIconSuffix [for]="AnimalBirthDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #AnimalBirthDatePicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Animal Type</mat-label>
+                <mat-select name="animalType" [(ngModel)]="AddanimalOnly.animalTypeId" required>
+                  <mat-option *ngFor="let type of animaltype" [value]="type.animalTypeId">
+                    {{ type.typeName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Animal Species</mat-label>
+                <mat-select [(ngModel)]="AddanimalOnly.species" name="species" required (selectionChange)="updateBreeds()">
+                  <mat-option *ngFor="let species of speciesList" [value]="species">{{ species }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Animal Breed</mat-label>
+                <mat-select [(ngModel)]="AddanimalOnly.breed" name="breed" [disabled]="isBreedDisabled" required>
+                  <mat-option *ngFor="let breed of breeds" [value]="breed">{{ breed }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Animal Weight</mat-label>
+                <input matInput [(ngModel)]="AddanimalOnly.weight" name="weight" required />
+              </mat-form-field>
+
+            </div>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button (click)="onAddAnimalwithExistingOwner()" [disabled]="!animalForm.valid">Submit</button>
+            </div>
+          </form>
+        </mat-step>
+
+      </mat-stepper>
+    </mat-dialog-content>
+  </mat-card-content>
+</mat-card>

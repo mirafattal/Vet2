@@ -1,6 +1,6 @@
 <mat-card class="add-lab-card">
   <mat-card-header>
-    <mat-card-title>Pet Submission</mat-card-title>
+    <mat-card-title>Animal Submission</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
@@ -62,7 +62,10 @@
 
               <mat-form-field>
                 <mat-label>Animal Gender</mat-label>
-                <input matInput [(ngModel)]="animal.gender" name="gender" required />
+                <mat-select [(ngModel)]="animal.gender" name="gender" required>
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                </mat-select>
               </mat-form-field>
 
               <mat-form-field>
@@ -73,24 +76,29 @@
                 <mat-datepicker #AnimalBirthDatePicker></mat-datepicker>
               </mat-form-field>
 
-              <mat-form-field>
-                <mat-label>Animal Breed</mat-label>
-                <input matInput [(ngModel)]="animal.breed" name="breed" required />
-              </mat-form-field>
+
 
               <mat-form-field>
                 <mat-label>Animal Type</mat-label>
                 <mat-select name="animalType" [(ngModel)]="animal.animalTypeId" required>
-                  <mat-option [value]="animaltype">None</mat-option>
-                  <ng-container *ngFor="let animaltype of animaltype">
-                    <mat-option [value]="animaltype.animalTypeId">{{ animaltype.typeName }}</mat-option>
-                  </ng-container>
+                  <mat-option *ngFor="let type of animaltype" [value]="type.animalTypeId">
+                    {{ type.typeName }}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
 
               <mat-form-field>
                 <mat-label>Animal Species</mat-label>
-                <input matInput [(ngModel)]="animal.species" name="species" required />
+                <mat-select [(ngModel)]="animal.species" name="species" required (selectionChange)="updateBreeds()">
+                  <mat-option *ngFor="let species of speciesList" [value]="species">{{ species }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Animal Breed</mat-label>
+                <mat-select [(ngModel)]="animal.breed" name="breed" [disabled]="isBreedDisabled" required>
+                  <mat-option *ngFor="let breed of breeds" [value]="breed">{{ breed }}</mat-option>
+                </mat-select>
               </mat-form-field>
 
               <mat-form-field>

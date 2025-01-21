@@ -15,6 +15,7 @@ import { DrawerPosition, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/d
 import { PetDetailComponent } from '../pet/pet-detail/pet-detail.component';
 import { AddHorseComponent } from './add-horse/add-horse.component';
 import { AddAppDialogComponent } from '../pet/add-app-dialog/add-app-dialog.component';
+import { AskUserDialogComponent } from '../pet/ask-user-dialog/ask-user-dialog.component';
 
 @Component({
   selector: 'app-horse',
@@ -174,7 +175,7 @@ ngOnInit(): void {
 
       readonly dialog = inject(MatDialog);
       openDialog() {
-        this.dialog.open(AddHorseComponent, {
+        this.dialog.open(AskUserDialogComponent, {
           disableClose: true, // Prevents closing on outside click or Escape key
         });
       }

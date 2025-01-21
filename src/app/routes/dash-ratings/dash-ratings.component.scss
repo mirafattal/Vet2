@@ -1,0 +1,82 @@
+.reviews-container {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h2 {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .review-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 700px;
+
+    .review-card {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+      p {
+        font-size: 16px;
+        font-style: italic;
+        color: #555;
+        margin: 0;
+        line-height: 1.5;
+        padding: 5px;
+      }
+
+      p strong {
+        font-weight: 20px;
+        color: #333;
+      }
+
+      .stars {
+        display: flex;
+        gap: 4px;
+        margin-top: 10px;
+
+        mat-icon {
+          font-size: 24px;
+          cursor: pointer;
+          color: #ccc;
+          transition: color 0.3s;
+
+          &.primary {
+            color: #ffc107; // Gold color for filled stars
+          }
+
+          &:hover {
+            color: #ffc107; // Highlight on hover
+          }
+        }
+      }
+    }
+  }
+
+  .no-reviews {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+  }
+}
+.name{
+  font-size: 20px;
+}

@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Choose an Option</h2>
+<mat-dialog-content>
+  <p class="text">Would you like to add a pet with a new owner or an existing owner?</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onSelect('new')">New Owner</button>
+  <button mat-button (click)="onSelect('existing')">Existing Owner</button>
+</mat-dialog-actions>

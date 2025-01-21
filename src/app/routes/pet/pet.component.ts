@@ -15,6 +15,7 @@ import { AnimalDto, APIClient, OwnerDto, OwnerDtoIEnumerableApiResponse } from '
 import { DrawerPosition, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { PetDetailComponent } from './pet-detail/pet-detail.component';
 import { AddAppDialogComponent } from './add-app-dialog/add-app-dialog.component';
+import { AskUserDialogComponent } from './ask-user-dialog/ask-user-dialog.component';
 
 @Component({
   selector: 'app-pet',
@@ -133,12 +134,6 @@ export class PetComponent implements OnInit {
       this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
-    // onView(animalId: number): void {
-    //   console.log('Animal ID to view:', animalId);
-    //   console.log('Navigating to animal with ID:', animalId);
-    //   this.router.navigate(['/pet-detail', animalId]);
-    // }
-
     onEdit(row: any): void {
       console.log('Edit action clicked for:', row);
       // Add logic to edit details
@@ -179,7 +174,7 @@ export class PetComponent implements OnInit {
 
     readonly dialog = inject(MatDialog);
     openDialog() {
-      this.dialog.open(AddingPetComponent, {
+      this.dialog.open(AskUserDialogComponent, {
         disableClose: true, // Prevents closing on outside click or Escape key
       });
     }

@@ -72,4 +72,8 @@ export class ClientToolbarComponent implements OnInit {
     // E.g., open a dialog or navigate to a notifications page
   }
 
+  onLabResultHome() {
+    this.router.navigate(['lab-result-home']);
+  }
+
 }

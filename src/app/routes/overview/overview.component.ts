@@ -130,10 +130,6 @@ export class OverviewComponent {
     this.router.navigate(['horse'])
   }
 
-
-    longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
-  from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
-  originally bred for hunting.`;
   constructor(private apiService: APIClient, private router: Router){
     Chart.register(...registerables); // Register Chart.js components
   }

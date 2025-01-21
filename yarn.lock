@@ -7682,6 +7682,13 @@ ngx-color@^9.0.0:
     material-colors "^1.2.6"
     tslib "^2.3.0"
 
+ngx-mat-select-search@^7.0.9:
+  version "7.0.9"
+  resolved "https://registry.npmjs.org/ngx-mat-select-search/-/ngx-mat-select-search-7.0.9.tgz"
+  integrity sha512-3SeLneHVsde0xO6YRSgh6DmLkxiII3AjbnFCoqt8n/2pEeavYUREVBBqPdufIfOFXKo5H1CAYkZ7ROgnDXQIsw==
+  dependencies:
+    tslib "^2.4.0"
+
 ngx-permissions@^17.1.0:
   version "17.1.0"
   resolved "https://registry.npmjs.org/ngx-permissions/-/ngx-permissions-17.1.0.tgz"

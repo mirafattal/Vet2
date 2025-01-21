@@ -1,0 +1,28 @@
+<div class="reviews-container">
+  <h2>View Ratings Submitted By Owners</h2>
+
+  <div *ngIf="reviews && reviews.length > 0; else noReviews" class="reviews-list">
+
+    <div class="review-cards">
+      <mat-card class="review-card" *ngFor="let review of reviews">
+
+        <p><strong><div class="name">{{ review.fullName }}</div> </strong></p>
+        <p>{{ review.review }}</p>
+        <p>{{review.createdAt | date: 'dd MMM yyyy'}}</p>
+        <div class="stars">
+          <mat-icon
+            *ngFor="let star of getStarArray(review.ratingValue!); let i = index"
+            [ngClass]="{ 'primary': star === 1 }"
+          >
+            {{ star === 1 ? 'star' : 'star_border' }}
+          </mat-icon>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+
+  <ng-template #noReviews>
+    <p>No reviews available.</p>
+  </ng-template>
+</div>

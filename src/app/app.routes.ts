@@ -33,6 +33,8 @@ import { AppointmentComponent } from './routes/appointment/appointment.component
 import { AdoptionComponent } from './routes/adoption/adoption.component';
 import { InvoiceComponent } from './routes/Invoice/Invoice.component';
 import { AddLabComponent } from './routes/pet/add-lab/add-lab.component';
+import { DashRatingsComponent } from './routes/dash-ratings/dash-ratings.component';
+import { LabResultHomeComponent } from './routes/client-home/lab-result-home/lab-result-home.component';
 
 
 export const routes: Routes = [
@@ -42,7 +44,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     canActivateChild: [authGuard],
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: 'client-home', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: '403', component: Error403Component },
       { path: '404', component: Error404Component },
@@ -72,6 +74,8 @@ export const routes: Routes = [
       { path: 'appointment', component: AppointmentComponent},
       { path: 'adoption', component: AdoptionComponent},
       { path: 'invoice', component: InvoiceComponent},
+      { path: 'ratings', component: DashRatingsComponent},
+      { path: 'lab-result-home', component: LabResultHomeComponent},
 
 
       {

@@ -1,0 +1,18 @@
+<mat-dialog-content class="mat-typography">
+  <mat-card>
+    <mat-card-title style="text-align: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+      Adoption Questionnaire Details
+    </mat-card-title>
+    <mat-divider></mat-divider>
+    <mat-card-content style="padding: 1rem;">
+      <div class="questionnaire-item" *ngFor="let item of questionnaireDetails">
+        <h4 class="question">{{ item.question }}</h4>
+        <h3 class="answer">{{ item.answer }}</h3>
+        <mat-divider></mat-divider>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close color="warn" class="close">Close</button>
+</mat-dialog-actions>

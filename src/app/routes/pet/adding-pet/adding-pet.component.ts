@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
@@ -17,9 +17,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatSelectModule} from '@angular/material/select';
 import { AddOwnerAndAnimalDto, AnimalDto, AnimalTypeDto, AnimalTypeDtoIEnumerableApiResponse, APIClient, OwnerDto, OwnerDtoIEnumerableApiResponse } from '@shared/services/api-client/veterinary-api.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-adding-pet',
@@ -53,26 +54,25 @@ export class AddingPetComponent implements OnInit {
   animal: AnimalDto = new AnimalDto();
   animalowner: AddOwnerAndAnimalDto = new AddOwnerAndAnimalDto();
 
-  owners: OwnerDto[] = [];
-  selectedOwnerName: string | null | undefined = null; // Display name for the selected owner
-  selectedOwnerId: number | undefined; // Currently selected owner's ID
+
   //formDisabled: boolean = false;  // To disable other form fields if owner is selected
 
-  loadOwnerNames(): void {
-    this.apiService.getAllOwnerNames().subscribe(
-      (data) => {
-        this.owners = data;  // Store owners in the owners
-      },
-      (error) => {
-        console.error('Error fetching owner names:', error);
-      }
-    );
-  }
+  ownerType!: 'new' | 'existing';
+  title!: string;
+
+
 
   private _formBuilder = inject(FormBuilder);
 
 
-  constructor(private apiService: APIClient, public dialogRef: MatDialogRef<AddingPetComponent>) {}
+  constructor(private apiService: APIClient, private snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<AddingPetComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { ownerType: 'new' | 'existing' },
+  )
+  {
+    this.ownerType = data.ownerType;
+    console.log('Owner Type:', data.ownerType); // Should always be 'new' here
+  }
 
   readonly range = new FormGroup({
     start: new FormControl<Date | null>(null),
@@ -87,18 +87,11 @@ export class AddingPetComponent implements OnInit {
     this.apiService.getAll4().subscribe((response: AnimalTypeDtoIEnumerableApiResponse) => {
       this.animaltype = response.data ?? [];
     });
-    this.loadOwnerNames();
   }
 
-// Method to handle when an owner is selected
-// onOwnerSelected() {
-//   // Check if an owner is selected
-//   this.formDisabled = this.selectedOwnerId !== null;
-// }
-
-AddanimalOnly: AnimalDto = new AnimalDto();
 
   onSubmit() {
+    if (this.ownerType === 'new') {
     // Log current data to ensure everything is correct
     console.log('Animal Birth Date:', this.animal.animalBirthDate);
     console.log('Submitting the following data:', this.animalowner);
@@ -108,29 +101,13 @@ AddanimalOnly: AnimalDto = new AnimalDto();
     this.animalowner.animals = this.animal;
     this.animalowner.ownerId = 0;
     this.animalowner.animals.animalId = 0;
-    this.animalowner.animals.ownerId = this.animalowner.ownerId
-
-    //console.log('Selected Owner:', this.selectedOwnerId);
-    // if (this.selectedOwnerId) {
-    //   this.AddanimalOnly.ownerId = this.selectedOwnerId; // Use the selected owner ID
-    //   this.apiService.add(this.AddanimalOnly).subscribe({
-    //     next: (response) => {
-    //       console.log('Response from backend:', response);
-    //       alert('Animal added successfully to existing Owner!');
-    //       this.dialogRef.close(); // Close the dialog on successful submission
-    //     }
-    //   })
-    // } else {
-    //   console.error('No owner selected!');
-    //   alert('Please select an owner before submitting.');
-    //   return; // Exit if no owner is selected
-    // }
+    this.animalowner.animals.ownerId = this.animalowner.ownerId;
 
     // Call backend service to add the owner and animal
     this.apiService.addownerwithanimal(this.animalowner).subscribe({
       next: (response) => {
         console.log('Response from backend:', response);
-          alert('Owner and Animal added successfully!');
+        this.snackBar.open('Vaccine Result has been deleted successfully!', 'Close', { duration: 3000 })
           this.dialogRef.close(); // Close the dialog on successful submission
       },
       error: (err) => {
@@ -139,8 +116,49 @@ AddanimalOnly: AnimalDto = new AnimalDto();
       },
     });
   }
+  else {}
+ }
 
   onCancel(): void {
     this.dialogRef.close(); // Close the dialog
+  }
+
+  speciesList: string[] = ['Dog', 'Cat', 'Bird'];
+
+  breedsBySpecies: { [key: string]: string[] } = {
+    'Dog': ['Labrador', 'Beagle', 'Bulldog', 'German Shepherd', 'Golden Retriever', 'Poodle',
+    'Rottweiler', 'Chihuahua', 'Dachshund', 'Boxer', 'Shih Tzu', 'Yorkshire Terrier',
+    'Cocker Spaniel', 'Siberian Husky', 'Doberman Pinscher', 'Great Dane', 'Pomeranian',],
+
+    'Cat': ['Persian', 'Siamese', 'Maine Coon', 'Bengal', 'Ragdoll', 'British Shorthair',
+    'Abyssinian', 'Russian Blue', 'Sphynx', 'Scottish Fold', 'Exotic Shorthair', 'Birman',
+    'Oriental Shorthair', 'Savannah', 'Devon Rex', 'Burmese', 'Manx', 'Himalayan',],
+
+    'Bird': ['Parrot', 'Canary', 'Sparrow', 'Finch', 'Cockatiel', 'Budgerigar', 'Lovebird',
+    'Macaw', 'Conure', 'Amazons', 'African Grey', 'Eclectus', 'Quaker Parrot',
+    'Pionus', 'Lorikeet', 'Finch', 'Pheasant', 'Dove', 'Peacock', 'Parakeet',],
+
+    'Rabbit': [
+    'Himalayan', 'Holland Lop', 'Mini Rex', 'English Angora', 'Mini Lop', 'Dutch',
+    'Flemish Giant', 'Lionhead', 'Himalayan', 'Hotot', 'Himalayan', 'American',
+    'Miniature Lionhead', 'English Spot', 'New Zealand',  ],
+    'Horse': [
+      'Arabian', 'Thoroughbred', 'Quarter Horse', 'Clydesdale', 'Appaloosa', 'Draft', 'Paint',
+      'Shetland Pony', 'Tennessee Walker', 'Mustang', 'Morgan', 'Friesian', 'Warmblood', 'Andalusian',
+      'Haflinger', 'Percheron', 'Fjord', 'Hanoverian', 'Norwegian Fjord'
+    ]
+  };
+
+
+  breeds: string[] = [];
+
+  // Update breed options based on selected species
+  updateBreeds(): void {
+    const selectedSpecies = this.animal.species;
+    this.breeds = this.breedsBySpecies[selectedSpecies!] || [];
+    this.animal.breed = ''; // Reset breed when species changes
+  }
+  get isBreedDisabled(): boolean {
+    return this.breeds.length === 0 || !this.animal.species;
   }
 }

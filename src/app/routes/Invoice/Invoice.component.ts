@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -14,6 +14,9 @@ import { APIClient, InvoiceDto } from '@shared/services/api-client/veterinary-ap
 import { CommonModule } from '@angular/common';
 import { AddDollarPipe } from '@shared/pipes/add-dollar.pipe';
 import { AddInvoiceComponent } from './add-invoice/add-invoice.component';
+import { MatPaginatorModule, PageEvent, MatPaginator } from '@angular/material/paginator';
+import { FormsModule } from '@angular/forms';
+import { HttpParams } from '@angular/common/http';
 
 
 @Component({
@@ -30,8 +33,12 @@ import { AddInvoiceComponent } from './add-invoice/add-invoice.component';
     MatTableModule,
     RouterModule,
     MatIconModule,
-    AddDollarPipe
+    AddDollarPipe,
+    MatPaginatorModule,
+    CommonModule,
+    FormsModule,
   ],
+
   templateUrl: './Invoice.component.html',
   styleUrls: ['./Invoice.component.scss']
 })
@@ -41,6 +48,10 @@ invoice: InvoiceDto[] = [];
 displayedColumns = ['OwnerName', 'OwnerNumber', 'TotalAmount', 'PaymentDate', 'actions'];
 dataSource = new MatTableDataSource<any>([]); // Initialize with an empty array
 itemId: number | null = null;
+totalCounts: number = 0; // Total items in the database
+pageSize: number = 10; // Number of items per page
+pageIndex: number = 0; // Current page index
+searchTerm: string = '';
 
 constructor(private apiService: APIClient, private router: Router,
 private route: ActivatedRoute,) {}
@@ -52,7 +63,8 @@ ngOnInit(): void {
    data.ownerName.toLowerCase().includes(filterValue)
   );
    }
- this.fetchData();
+ //this.fetchData();
+ this.loadInvoices();
 }
 
          fetchData(){
@@ -121,4 +133,65 @@ ngOnInit(): void {
      }
 
 
+     loadInvoices(): void {
+      // Fetch invoices from the backend
+      this.apiService
+        .getInvoicesPaginated(this.pageIndex + 1, this.pageSize)
+        .subscribe((response: any) => {
+          this.invoice = response.data; // Update the invoices
+          this.totalCounts = response.totalItems; // Update the total number of items
+        });
+    }
+
+
+    page: number = 1;
+    // loadSearch(): void {
+    //   this.apiService.searchInvoice(this.searchTerm, this.page, this.pageSize).subscribe((data) => {
+    //     this.invoice! = data.data!;
+    //     this.totalCounts! = data.totalRecords!;
+    //   });
+    // }
+
+    loadSearch(): void {
+      // If searchTerm is empty or null, explicitly set it to null to fetch all invoices
+  const search = this.searchTerm?.trim() || null;
+      this.apiService.searchInvoice(search!, this.page, this.pageSize).subscribe({
+        next: (response) => {
+          if (response && response.data) {
+            this.invoice = response.data;
+            this.totalCounts = response.totalRecords!;
+          } else {
+            this.invoice = [];
+            this.totalCounts = 0;
+          }
+        },
+        error: (error) => {
+          console.error('Failed to load invoices:', error);
+          this.invoice = [];
+          this.totalCounts = 0;
+        }
+      });
+    }
+
+    onSearch(): void {
+      this.page = 1; // Reset to first page on search
+      this.loadSearch();
+    }
+
+     // Method to handle page change for both search and regular pagination
+    onPageChange(event: any): void {
+    // Check if we are in search mode or regular pagination mode
+    if (this.searchTerm) {
+      // If search term exists, we are in search mode
+      this.page = event.pageIndex + 1; // +1 to adjust for 0-based index
+    } else {
+      // Regular pagination
+      this.pageIndex = event.pageIndex; // Update the current page index
+      this.pageSize = event.pageSize; // Update the page size
+      this.page = event.pageIndex + 1; // +1 to adjust for 0-based index
+    }
+
+    this.loadInvoices(); // Reload invoices based on the new page
+    this.loadSearch();
+  }
 }

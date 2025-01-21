@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { RatingsComponent } from './ratings/ratings.component';
 
 @Component({
   selector: 'app-client-home',
@@ -15,6 +16,7 @@ import { Router } from '@angular/router';
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
+    RatingsComponent
   ],
   templateUrl: './client-home.component.html',
   styleUrl: './client-home.component.scss'
@@ -26,7 +28,7 @@ export class ClientHomeComponent {
   longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
   from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
   originally bred for hunting.`;
-  WelcomeText = `Welcome to Anderson Vet Clinic, your trusted animal hospital dedicated
+  WelcomeText = `Welcome to Dr. PawPaw Center, your trusted animal hospital dedicated
   to caring for both small pets and large animals. We provide comprehensive medical, surgical,
   and dental care for your beloved pets and specialize in equine medicine, offering expert care for horses.
   Our experienced team ensures a welcoming,
@@ -56,6 +58,10 @@ export class ClientHomeComponent {
 
   onAdoptionDetails() {
     this.router.navigate(['adoption-details']);
+  }
+
+  onLabResultHome() {
+    this.router.navigate(['lab-result-home']);
   }
 
   goToTeamPage(): void {

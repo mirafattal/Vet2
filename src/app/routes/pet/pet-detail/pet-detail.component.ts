@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { AddingMedicalComponent } from '../adding-medical/adding-medical.component';
-import { AnimalDto, APIClient, FileParameter, MedicalRecordDto, OwnerDto, VaccinationDto, XrayImageDto, ZLabResultDto, ZLabResultResponseDto, ZTestNormalRangeDto, ZTestNormalRangeDtoIEnumerableApiResponse } from '@shared/services/api-client/veterinary-api.service';
+import { AnimalDto, APIClient, AppointmentDto, FileParameter, MedicalRecordDto, OwnerDto, VaccinationDto, XrayImageDto, ZLabResultDto, ZLabResultResponseDto, ZTestNormalRangeDto, ZTestNormalRangeDtoIEnumerableApiResponse, ZZVaccineTypeDto, ZZVaccineTypeDtoIEnumerableApiResponse } from '@shared/services/api-client/veterinary-api.service';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { PetComponent } from '../pet.component';
 import { MtxDrawerRef } from '@ng-matero/extensions/drawer';
@@ -23,6 +23,8 @@ import { AddLabComponent } from '../add-lab/add-lab.component';
 import { ConfirmDialogComponent } from 'app/routes/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddVaccineComponent } from '../add-vaccine/add-vaccine.component';
+import { AddAppDialogComponent } from '../add-app-dialog/add-app-dialog.component';
+import { EditMedicalComponent } from '../edit-medical/edit-medical.component';
 
 @Component({
   selector: 'app-pet-detail',
@@ -51,16 +53,16 @@ export class PetDetailComponent implements OnInit {
   owner: OwnerDto | undefined;
   animalId!: number;
   vaccines: VaccinationDto[] = [];
+  appoints: AppointmentDto[] = [];
   labResults: ZLabResultDto[] = [];
   testNormal: ZTestNormalRangeDto[] = [];
+  vaccineTypes: ZZVaccineTypeDto[] = [];
 
-  longText = `The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog
-  from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
-  originally bred for hunting.`;
 
   displayedColumns = ['diagnosis', 'surgery', 'medication', 'createdAt', 'treatment', 'actions'];
   VaccineColumns = ['VaccineName', 'VaccineDate', 'dosage', 'NextDueDate', 'actions'];
   LabColumns =  ['TestName', 'Result', 'Unit', 'isNormal', 'TestDate', 'actions'];
+  AppointsColumns =  ['AppointmentReason', 'LastVisit'];
 
 
   onClose(): void {
@@ -88,6 +90,7 @@ export class PetDetailComponent implements OnInit {
   } else {
     console.error('Invalid or missing Animal ID.');
   }
+
   }
 
   fetchData(): void {
@@ -98,6 +101,8 @@ export class PetDetailComponent implements OnInit {
     this.fetchXrayByAnimalId();
     this.fetchLabResults();
     this.fetchTestNormal();
+    this.fetchAppoints();
+    this.fetchVaccineTypes();
   }
 
   fetchMedicalRecords(): void {
@@ -170,6 +175,30 @@ export class PetDetailComponent implements OnInit {
     }
   }
 
+  editMedical(): void {
+    console.log('Medical Records:', this.records); // Log records to check if they are available
+
+  if (this.records && this.records.length > 0) {
+    const record = this.records[0]; // Access the first record or you can iterate through the array
+    console.log('Editing record with Animal ID:', record.animalId);
+  }
+    if (this.records) { // Ensure owner data is available before opening the dialog
+      const dialogRef = this.dialog.open(EditMedicalComponent, {
+        width: '400px',
+        data: { records: { ...this.records },} // Pass a copy of the owner data to the dialog
+      });
+
+      dialogRef.afterClosed().subscribe((updatedMedical) => {
+        if (updatedMedical) {
+          this.records = updatedMedical; // Update the owner data with the changes
+          console.log('Updated medical data:', this.records);
+        }
+      });
+    } else {
+      console.error('Medical data is not available.');
+    }
+  }
+
   editPet(): void {
     if (this.animal) { // Ensure owner data is available before opening the dialog
       const dialogRef = this.dialog.open(EditPetDialogComponent, {
@@ -222,6 +251,18 @@ export class PetDetailComponent implements OnInit {
     );
   }
 
+  fetchAppoints(): void {
+    this.apiService.getappointmentbyanimalId(this.animalId).subscribe(
+      (response) => {
+        this.appoints = response; // Directly replace the array with the API response
+        console.log('Appoints Results Records:', this.appoints);
+      },
+      (error) => {
+        console.error('Error fetching appoints records', error);
+      }
+    );
+  }
+
   fetchLabResults(): void {
     this.apiService.getLabbyanimalId(this.animalId).subscribe(
       (response) => {
@@ -240,6 +281,19 @@ export class PetDetailComponent implements OnInit {
         // Extract the 'data' property from the response
         this.testNormal = response.data!; // Assuming 'data' contains the array of ZTestNormalRangeDto
         console.log('Test Records:', this.testNormal);
+      },
+      (error) => {
+        console.error('Error fetching test records', error);
+      }
+    );
+  }
+
+  fetchVaccineTypes(): void {
+    this.apiService.getAll21().subscribe(
+      (response: ZZVaccineTypeDtoIEnumerableApiResponse) => {
+        // Extract the 'data' property from the response
+        this.vaccineTypes = response.data!; // Assuming 'data' contains the array of ZTestNormalRangeDto
+        console.log('Test Records:', this.vaccineTypes);
       },
       (error) => {
         console.error('Error fetching test records', error);
@@ -342,7 +396,7 @@ export class PetDetailComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log('X-ray added successfully:', response);
-
+          this.snackBar.open('Image added successfully!', 'Close', { duration: 3000 })
           // Refresh the X-ray list
           this.fetchXrayByAnimalId();
         },
@@ -492,6 +546,59 @@ export class PetDetailComponent implements OnInit {
     if (index !== -1) {
       this.records.splice(index, 1);  // Remove the row from your data array
     }
+  }
+
+
+
+  openAddAppointmentDialog(animalId: number): void {
+        const dialogRef = this.dialog.open(AddAppDialogComponent, {
+          width: '700px',
+          data: { animalId } // Pass the animalId to the dialog data
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          console.log('Dialog closed:', result);
+          // Optionally refresh the appointment list
+          //this.getAppointments();
+        });
+      }
+
+      getVaccineName(vaccinationId: number): string {
+        // Find the matching vaccination in the vaccines array
+        const matchingVaccination = this.vaccines.find(vaccination => vaccination.vaccinationId === vaccinationId);
+
+        if (matchingVaccination) {
+          // Extract vaccineTypeId from the vaccination
+          const vaccineTypeId = matchingVaccination.vaccineTypeId;
+
+          // Find the matching vaccine type in the vaccineTypes array
+          const matchingVaccineType = this.vaccineTypes.find(vaccineType => vaccineType.vaccineTypeId === vaccineTypeId);
+
+          // Return the vaccine name or 'N/A' if no match is found
+          return matchingVaccineType ? matchingVaccineType.vaccineName! : 'N/A';
+        }
+
+        // Return 'N/A' if no matching vaccination is found
+        return 'N/A';
+    }
+
+    getDose(vaccinationId: number): string {
+      // Find the matching vaccination in the vaccines array
+      const matchingVaccination = this.vaccines.find(vaccination => vaccination.vaccinationId === vaccinationId);
+
+      if (matchingVaccination) {
+        // Extract vaccineTypeId from the vaccination
+        const vaccineTypeId = matchingVaccination.vaccineTypeId;
+
+        // Find the matching vaccine type in the vaccineTypes array
+        const matchingVaccineType = this.vaccineTypes.find(vaccineType => vaccineType.vaccineTypeId === vaccineTypeId);
+
+        // Return the vaccine name or 'N/A' if no match is found
+        return matchingVaccineType ? matchingVaccineType.dose! : 'N/A';
+      }
+
+      // Return 'N/A' if no matching vaccination is found
+      return 'N/A';
   }
 
 }

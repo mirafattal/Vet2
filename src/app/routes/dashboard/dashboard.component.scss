@@ -1,55 +1,201 @@
-.morning{
-  font-size: 10px;
-  font-style: italic;
-  font-weight: 100;
-
-}
-.mat-mdc-button-base {
-  margin: 4px;
-}
-:host {
-  display: block;
-  margin: 20px;
-}
-.ChartContent{
-  margin-left: -150px;
-}
-ngx-charts-pie-chart {
-  margin: auto;
-}
-.card {
-  // Basic card styles
-  background-color: rgb(238, 169, 169);
-  border-radius: 10px;
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 2fr;
+  grid-template-rows: 80px 300px 500px;
+  row-gap: 20px;
+  column-gap: 20px;
   padding: 20px;
-  height: 250px;
-  float: left;
+}
+
+.small-card {
+  width: 220px;  // Set the width of the card
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Subtle shadow
+  border-radius: 10px; // Rounded corners
+  background: linear-gradient(110deg, rgba(43, 40, 235, 0.87), #fff); // Gradient for a modern look
+  padding: 20px;
+  height: 240px;
+  transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
-  width: 220px;
-  margin: 0px 25px 50px 25px;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    transform: translateY(-0.3px); // Slight lift effect
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); // Stronger shadow
+  }
+}
 
+ngx-charts-pie-chart {
+  margin: auto; // Center the chart inside the card
+}
 
-      .icon {
-float: left;
-        font-size: 1.2em; /* Adjust size as needed */
+.item-1 {
+  grid-column: 1/4;
+  grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(43, 40, 235, 0.87); // Light gray background for the section
+    padding: 10px;
+    border-radius: 10px; // Rounded corners
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); // Subtle shadow
+
+    .greeting-text {
+      font-size: 1.2rem;
+      text-align: center;
+      color: white; // Darker text color for better readability
+      margin-bottom: 20px; // Space below the text
+      line-height: 1.5;
+    }
+
+}
+
+.card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Subtle shadow
+  border-radius: 10px; // Rounded corners
+  background: linear-gradient(110deg, rgba(43, 40, 235, 0.87), #fff); // Gradient for a modern look
+  text-align: center;
+  padding: 20px;
+  height: 240px;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-0.3px); // Slight lift effect
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); // Stronger shadow
+  }
+}
+
+.icon {
+  font-size: 48px; // Large icon size
+  color: rgba(43, 40, 235, 0.87); // Green color for icons
+  margin-bottom: 10px;
+}
+
+.card-text {
+  h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 20px;
+    color: #555;
+    margin: 0;
+  }
+}
+
+.item-2 {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.item-3 {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.item-4 {
+  grid-column: 3;
+  grid-row: 2;
+}
+.item-5{
+  grid-column: 4;
+  grid-row: 1/5;
+    position: relative;
+    width: 100%; // Adjust width as needed
+    height: auto;
+
+    .background-image {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      display: flex;
+      justify-content: center; // Center content horizontally
+      align-items: center; // Center content vertically
+      background-color: #fff; // White background for the card
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); // Subtle shadow for depth
+      border-radius: 8px; // Rounded corners for the card
+    }
+
+    .action-button {
+      display: block;         // Stack buttons vertically
+      width: 100%;
+      margin: 15px 0;         // Add spacing between buttons
+      color: black;           // Ensure white text
+      cursor: pointer;
+      border-radius: 4px;
+      background: linear-gradient(110deg, rgba(43, 40, 235, 0.87), #fff);
+      height: 30px;
+      transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-1px); // Slight lift effect
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); // Stronger shadow
+  }
+    }
+
+    .card-content {
+      text-align: center;
+
+      h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #333; // Dark text color
       }
-
-      .card-text{
-        float: right;
-
-    h3 {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-
-    // New patients count
-    .newPatient {
-      font-size: 14px;
-      color: #888;
     }
 }
+
+.item-6 {
+  grid-column: 1/4;
+  grid-row: 3;
+  background-color: #fff; // White background for the card
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;  // Add transition for hover effect
+
+  &:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);  // Increase shadow on hover
+  }
+
+  h3 {
+    font-size: 1.6em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;  // Ensure consistent font family
+  }
+
+  canvas {
+    width: 100% !important;  // Ensure the chart fits within the container
+    height: 300px;           // Set a fixed height for the chart
+    display: block;          // Block display to avoid inline styling
+    border-radius: 8px;      // Optional: rounded corners for the chart
+  }
+
+  mat-card {
+    padding: 15px;
+    background-color: #fff; // White background for the card
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    width: 300px;
+    height: 300px;
+  }
 }
+
+
+
 
 

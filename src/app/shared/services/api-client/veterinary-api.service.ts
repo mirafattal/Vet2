@@ -5373,6 +5373,140 @@ export class APIClient {
     }
 
     /**
+     * @param pageNumber (optional) 
+     * @param pageSize (optional) 
+     * @return OK
+     */
+    getInvoicesPaginated(pageNumber: number | undefined, pageSize: number | undefined): Observable<InvoiceDtoPaginationResponseDto> {
+        let url_ = this.baseUrl + "/api/Invoice/getInvoicesPaginated?";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInvoicesPaginated(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInvoicesPaginated(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InvoiceDtoPaginationResponseDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InvoiceDtoPaginationResponseDto>;
+        }));
+    }
+
+    protected processGetInvoicesPaginated(response: HttpResponseBase): Observable<InvoiceDtoPaginationResponseDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InvoiceDtoPaginationResponseDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param searchTerm (optional) 
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @return OK
+     */
+    searchInvoice(searchTerm: string | undefined, page: number | undefined, pageSize: number | undefined): Observable<InvoiceDtoPaginationResponseDto> {
+        let url_ = this.baseUrl + "/api/Invoice/searchInvoice?";
+        if (searchTerm === null)
+            throw new Error("The parameter 'searchTerm' cannot be null.");
+        else if (searchTerm !== undefined)
+            url_ += "SearchTerm=" + encodeURIComponent("" + searchTerm) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchInvoice(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchInvoice(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InvoiceDtoPaginationResponseDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InvoiceDtoPaginationResponseDto>;
+        }));
+    }
+
+    protected processSearchInvoice(response: HttpResponseBase): Observable<InvoiceDtoPaginationResponseDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InvoiceDtoPaginationResponseDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = InvoiceDtoPaginationResponseDto.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     getAll9(): Observable<InvoiceDtoIEnumerableApiResponse> {
@@ -5756,6 +5890,67 @@ export class APIClient {
             else {
                 result200 = <any>null;
             }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param body (optional) 
+     * @return OK
+     */
+    updateMedical(id: number | undefined, body: MedicalRecordDto | undefined): Observable<MedicalRecordDto> {
+        let url_ = this.baseUrl + "/api/MedicalRecord/updateMedical?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateMedical(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateMedical(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<MedicalRecordDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<MedicalRecordDto>;
+        }));
+    }
+
+    protected processUpdateMedical(response: HttpResponseBase): Observable<MedicalRecordDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = MedicalRecordDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6509,6 +6704,69 @@ export class APIClient {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 !== undefined ? resultData200 : <any>null;
     
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param searchTerm (optional) 
+     * @return OK
+     */
+    searchOwnerNames(searchTerm: string | undefined): Observable<OwnerDto[]> {
+        let url_ = this.baseUrl + "/api/Owner/SearchOwnerNames?";
+        if (searchTerm === null)
+            throw new Error("The parameter 'searchTerm' cannot be null.");
+        else if (searchTerm !== undefined)
+            url_ += "searchTerm=" + encodeURIComponent("" + searchTerm) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchOwnerNames(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchOwnerNames(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OwnerDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OwnerDto[]>;
+        }));
+    }
+
+    protected processSearchOwnerNames(response: HttpResponseBase): Observable<OwnerDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(OwnerDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -7702,118 +7960,6 @@ export class APIClient {
     }
 
     /**
-     * @param cvFile (optional) 
-     * @param staffId (optional) 
-     * @return OK
-     */
-    uploadcv(cvFile: FileParameter | undefined, staffId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/Staff/uploadcv";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = new FormData();
-        if (cvFile === null || cvFile === undefined)
-            throw new Error("The parameter 'cvFile' cannot be null.");
-        else
-            content_.append("CvFile", cvFile.data, cvFile.fileName ? cvFile.fileName : "CvFile");
-        if (staffId === null || staffId === undefined)
-            throw new Error("The parameter 'staffId' cannot be null.");
-        else
-            content_.append("StaffId", staffId.toString());
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUploadcv(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUploadcv(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processUploadcv(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param staffId (optional) 
-     * @return OK
-     */
-    downloadcv(staffId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/Staff/downloadcv?";
-        if (staffId === null)
-            throw new Error("The parameter 'staffId' cannot be null.");
-        else if (staffId !== undefined)
-            url_ += "staffId=" + encodeURIComponent("" + staffId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDownloadcv(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDownloadcv(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processDownloadcv(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * @return OK
      */
     getAll13(): Observable<StaffDtoIEnumerableApiResponse> {
@@ -8911,6 +9057,118 @@ export class APIClient {
             else {
                 result200 = <any>null;
             }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param vaccinationTypeId (optional) 
+     * @return OK
+     */
+    vaccinationwithvaccineType(vaccinationTypeId: number | undefined): Observable<VaccinationWithVaccineTypeDto> {
+        let url_ = this.baseUrl + "/api/Vaccination/vaccinationwithvaccineType?";
+        if (vaccinationTypeId === null)
+            throw new Error("The parameter 'vaccinationTypeId' cannot be null.");
+        else if (vaccinationTypeId !== undefined)
+            url_ += "vaccinationTypeId=" + encodeURIComponent("" + vaccinationTypeId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processVaccinationwithvaccineType(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processVaccinationwithvaccineType(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VaccinationWithVaccineTypeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VaccinationWithVaccineTypeDto>;
+        }));
+    }
+
+    protected processVaccinationwithvaccineType(response: HttpResponseBase): Observable<VaccinationWithVaccineTypeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = VaccinationWithVaccineTypeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param vaccinationId (optional) 
+     * @return OK
+     */
+    getVaccineTypeIdbyVaccinationId(vaccinationId: number | undefined): Observable<VaccinationDto> {
+        let url_ = this.baseUrl + "/api/Vaccination/getVaccineTypeIdbyVaccinationId?";
+        if (vaccinationId === null)
+            throw new Error("The parameter 'vaccinationId' cannot be null.");
+        else if (vaccinationId !== undefined)
+            url_ += "vaccinationId=" + encodeURIComponent("" + vaccinationId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVaccineTypeIdbyVaccinationId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVaccineTypeIdbyVaccinationId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<VaccinationDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<VaccinationDto>;
+        }));
+    }
+
+    protected processGetVaccineTypeIdbyVaccinationId(response: HttpResponseBase): Observable<VaccinationDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = VaccinationDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -10587,6 +10845,726 @@ export class APIClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return OK
+     */
+    latestReviews(): Observable<ZZratingDto[]> {
+        let url_ = this.baseUrl + "/api/ZZRating/latestReviews";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLatestReviews(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLatestReviews(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZratingDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZratingDto[]>;
+        }));
+    }
+
+    protected processLatestReviews(response: HttpResponseBase): Observable<ZZratingDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ZZratingDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAll20(): Observable<ZZratingDtoIEnumerableApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZRating/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll20(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll20(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZratingDtoIEnumerableApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZratingDtoIEnumerableApiResponse>;
+        }));
+    }
+
+    protected processGetAll20(response: HttpResponseBase): Observable<ZZratingDtoIEnumerableApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZratingDtoIEnumerableApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getById20(id: number | undefined): Observable<ZZratingDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZRating/GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById20(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById20(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZratingDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZratingDtoApiResponse>;
+        }));
+    }
+
+    protected processGetById20(response: HttpResponseBase): Observable<ZZratingDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZratingDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    add20(body: ZZratingDto | undefined): Observable<ZZratingDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZRating/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd20(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd20(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZratingDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZratingDtoApiResponse>;
+        }));
+    }
+
+    protected processAdd20(response: HttpResponseBase): Observable<ZZratingDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZratingDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    update20(body: ZZratingDto | undefined): Observable<ZZratingDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZRating/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate20(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate20(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZratingDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZratingDtoApiResponse>;
+        }));
+    }
+
+    protected processUpdate20(response: HttpResponseBase): Observable<ZZratingDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZratingDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteById20(id: number | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZRating/DeleteById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteById20(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteById20(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDeleteById20(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    delete20(body: ZZratingDto | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZRating/Delete";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete20(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete20(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDelete20(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAll21(): Observable<ZZVaccineTypeDtoIEnumerableApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZVaccineType/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll21(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll21(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZVaccineTypeDtoIEnumerableApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZVaccineTypeDtoIEnumerableApiResponse>;
+        }));
+    }
+
+    protected processGetAll21(response: HttpResponseBase): Observable<ZZVaccineTypeDtoIEnumerableApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZVaccineTypeDtoIEnumerableApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getById21(id: number | undefined): Observable<ZZVaccineTypeDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZVaccineType/GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById21(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById21(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZVaccineTypeDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZVaccineTypeDtoApiResponse>;
+        }));
+    }
+
+    protected processGetById21(response: HttpResponseBase): Observable<ZZVaccineTypeDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZVaccineTypeDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    add21(body: ZZVaccineTypeDto | undefined): Observable<ZZVaccineTypeDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZVaccineType/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd21(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd21(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZVaccineTypeDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZVaccineTypeDtoApiResponse>;
+        }));
+    }
+
+    protected processAdd21(response: HttpResponseBase): Observable<ZZVaccineTypeDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZVaccineTypeDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    update21(body: ZZVaccineTypeDto | undefined): Observable<ZZVaccineTypeDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZVaccineType/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate21(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate21(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZVaccineTypeDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZVaccineTypeDtoApiResponse>;
+        }));
+    }
+
+    protected processUpdate21(response: HttpResponseBase): Observable<ZZVaccineTypeDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZVaccineTypeDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteById21(id: number | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZVaccineType/DeleteById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteById21(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteById21(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDeleteById21(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    delete21(body: ZZVaccineTypeDto | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZVaccineType/Delete";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete21(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete21(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDelete21(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export class AddAdoptionQuestWithOwnerDTO implements IAddAdoptionQuestWithOwnerDTO {
@@ -10799,13 +11777,18 @@ export interface IAddPetForAdoptionDto {
 
 export class AdoptionQuestionnaireDto implements IAdoptionQuestionnaireDto {
     adoptionQuestionnaireId?: number;
-    userId?: number;
+    userId?: number | null;
     occupation?: string | null;
     salary?: number;
     isMarried?: boolean;
+    hasChildren?: boolean;
     isHouseholdAware?: boolean;
     hasOwnedPetBefore?: boolean;
     petForAdoptionId?: number;
+    hasAllergiesAsthma?: boolean;
+    whoWillBeReponsible?: string | null;
+    leftAlone?: string | null;
+    ifSick?: string | null;
     reasonForAdoption?: string | null;
     questionStatus?: string | null;
     createdAt?: Date;
@@ -10826,9 +11809,14 @@ export class AdoptionQuestionnaireDto implements IAdoptionQuestionnaireDto {
             this.occupation = _data["occupation"] !== undefined ? _data["occupation"] : <any>null;
             this.salary = _data["salary"] !== undefined ? _data["salary"] : <any>null;
             this.isMarried = _data["isMarried"] !== undefined ? _data["isMarried"] : <any>null;
+            this.hasChildren = _data["hasChildren"] !== undefined ? _data["hasChildren"] : <any>null;
             this.isHouseholdAware = _data["isHouseholdAware"] !== undefined ? _data["isHouseholdAware"] : <any>null;
             this.hasOwnedPetBefore = _data["hasOwnedPetBefore"] !== undefined ? _data["hasOwnedPetBefore"] : <any>null;
             this.petForAdoptionId = _data["petForAdoptionId"] !== undefined ? _data["petForAdoptionId"] : <any>null;
+            this.hasAllergiesAsthma = _data["hasAllergiesAsthma"] !== undefined ? _data["hasAllergiesAsthma"] : <any>null;
+            this.whoWillBeReponsible = _data["whoWillBeReponsible"] !== undefined ? _data["whoWillBeReponsible"] : <any>null;
+            this.leftAlone = _data["leftAlone"] !== undefined ? _data["leftAlone"] : <any>null;
+            this.ifSick = _data["ifSick"] !== undefined ? _data["ifSick"] : <any>null;
             this.reasonForAdoption = _data["reasonForAdoption"] !== undefined ? _data["reasonForAdoption"] : <any>null;
             this.questionStatus = _data["questionStatus"] !== undefined ? _data["questionStatus"] : <any>null;
             this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>null;
@@ -10849,9 +11837,14 @@ export class AdoptionQuestionnaireDto implements IAdoptionQuestionnaireDto {
         data["occupation"] = this.occupation !== undefined ? this.occupation : <any>null;
         data["salary"] = this.salary !== undefined ? this.salary : <any>null;
         data["isMarried"] = this.isMarried !== undefined ? this.isMarried : <any>null;
+        data["hasChildren"] = this.hasChildren !== undefined ? this.hasChildren : <any>null;
         data["isHouseholdAware"] = this.isHouseholdAware !== undefined ? this.isHouseholdAware : <any>null;
         data["hasOwnedPetBefore"] = this.hasOwnedPetBefore !== undefined ? this.hasOwnedPetBefore : <any>null;
         data["petForAdoptionId"] = this.petForAdoptionId !== undefined ? this.petForAdoptionId : <any>null;
+        data["hasAllergiesAsthma"] = this.hasAllergiesAsthma !== undefined ? this.hasAllergiesAsthma : <any>null;
+        data["whoWillBeReponsible"] = this.whoWillBeReponsible !== undefined ? this.whoWillBeReponsible : <any>null;
+        data["leftAlone"] = this.leftAlone !== undefined ? this.leftAlone : <any>null;
+        data["ifSick"] = this.ifSick !== undefined ? this.ifSick : <any>null;
         data["reasonForAdoption"] = this.reasonForAdoption !== undefined ? this.reasonForAdoption : <any>null;
         data["questionStatus"] = this.questionStatus !== undefined ? this.questionStatus : <any>null;
         data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>null;
@@ -10861,13 +11854,18 @@ export class AdoptionQuestionnaireDto implements IAdoptionQuestionnaireDto {
 
 export interface IAdoptionQuestionnaireDto {
     adoptionQuestionnaireId?: number;
-    userId?: number;
+    userId?: number | null;
     occupation?: string | null;
     salary?: number;
     isMarried?: boolean;
+    hasChildren?: boolean;
     isHouseholdAware?: boolean;
     hasOwnedPetBefore?: boolean;
     petForAdoptionId?: number;
+    hasAllergiesAsthma?: boolean;
+    whoWillBeReponsible?: string | null;
+    leftAlone?: string | null;
+    ifSick?: string | null;
     reasonForAdoption?: string | null;
     questionStatus?: string | null;
     createdAt?: Date;
@@ -11137,7 +12135,6 @@ export class AnimalDto implements IAnimalDto {
     gender?: string | null;
     animalBirthDate?: Date;
     weight?: number;
-    imageUrl?: string | null;
 
     constructor(data?: IAnimalDto) {
         if (data) {
@@ -11159,7 +12156,6 @@ export class AnimalDto implements IAnimalDto {
             this.gender = _data["gender"] !== undefined ? _data["gender"] : <any>null;
             this.animalBirthDate = _data["animalBirthDate"] ? new Date(_data["animalBirthDate"].toString()) : <any>null;
             this.weight = _data["weight"] !== undefined ? _data["weight"] : <any>null;
-            this.imageUrl = _data["imageUrl"] !== undefined ? _data["imageUrl"] : <any>null;
         }
     }
 
@@ -11181,7 +12177,6 @@ export class AnimalDto implements IAnimalDto {
         data["gender"] = this.gender !== undefined ? this.gender : <any>null;
         data["animalBirthDate"] = this.animalBirthDate ? this.animalBirthDate.toISOString() : <any>null;
         data["weight"] = this.weight !== undefined ? this.weight : <any>null;
-        data["imageUrl"] = this.imageUrl !== undefined ? this.imageUrl : <any>null;
         return data;
     }
 }
@@ -11196,7 +12191,6 @@ export interface IAnimalDto {
     gender?: string | null;
     animalBirthDate?: Date;
     weight?: number;
-    imageUrl?: string | null;
 }
 
 export class AnimalDtoApiResponse implements IAnimalDtoApiResponse {
@@ -12252,13 +13246,18 @@ export interface IDoctorSlotDtoIEnumerableApiResponse {
 
 export class GetAllAdoptionQuestwithPetNameDto implements IGetAllAdoptionQuestwithPetNameDto {
     adoptionQuestionnaireId?: number;
-    userId?: number;
+    userId?: number | null;
     occupation?: string | null;
     salary?: number;
     isMarried?: boolean;
+    hasChildren?: boolean;
     isHouseholdAware?: boolean;
     hasOwnedPetBefore?: boolean;
     petForAdoptionId?: number;
+    hasAllergiesAsthma?: boolean;
+    whoWillBeReponsible?: string | null;
+    leftAlone?: string | null;
+    ifSick?: string | null;
     reasonForAdoption?: string | null;
     questionStatus?: string | null;
     createdAt?: Date;
@@ -12280,9 +13279,14 @@ export class GetAllAdoptionQuestwithPetNameDto implements IGetAllAdoptionQuestwi
             this.occupation = _data["occupation"] !== undefined ? _data["occupation"] : <any>null;
             this.salary = _data["salary"] !== undefined ? _data["salary"] : <any>null;
             this.isMarried = _data["isMarried"] !== undefined ? _data["isMarried"] : <any>null;
+            this.hasChildren = _data["hasChildren"] !== undefined ? _data["hasChildren"] : <any>null;
             this.isHouseholdAware = _data["isHouseholdAware"] !== undefined ? _data["isHouseholdAware"] : <any>null;
             this.hasOwnedPetBefore = _data["hasOwnedPetBefore"] !== undefined ? _data["hasOwnedPetBefore"] : <any>null;
             this.petForAdoptionId = _data["petForAdoptionId"] !== undefined ? _data["petForAdoptionId"] : <any>null;
+            this.hasAllergiesAsthma = _data["hasAllergiesAsthma"] !== undefined ? _data["hasAllergiesAsthma"] : <any>null;
+            this.whoWillBeReponsible = _data["whoWillBeReponsible"] !== undefined ? _data["whoWillBeReponsible"] : <any>null;
+            this.leftAlone = _data["leftAlone"] !== undefined ? _data["leftAlone"] : <any>null;
+            this.ifSick = _data["ifSick"] !== undefined ? _data["ifSick"] : <any>null;
             this.reasonForAdoption = _data["reasonForAdoption"] !== undefined ? _data["reasonForAdoption"] : <any>null;
             this.questionStatus = _data["questionStatus"] !== undefined ? _data["questionStatus"] : <any>null;
             this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>null;
@@ -12304,9 +13308,14 @@ export class GetAllAdoptionQuestwithPetNameDto implements IGetAllAdoptionQuestwi
         data["occupation"] = this.occupation !== undefined ? this.occupation : <any>null;
         data["salary"] = this.salary !== undefined ? this.salary : <any>null;
         data["isMarried"] = this.isMarried !== undefined ? this.isMarried : <any>null;
+        data["hasChildren"] = this.hasChildren !== undefined ? this.hasChildren : <any>null;
         data["isHouseholdAware"] = this.isHouseholdAware !== undefined ? this.isHouseholdAware : <any>null;
         data["hasOwnedPetBefore"] = this.hasOwnedPetBefore !== undefined ? this.hasOwnedPetBefore : <any>null;
         data["petForAdoptionId"] = this.petForAdoptionId !== undefined ? this.petForAdoptionId : <any>null;
+        data["hasAllergiesAsthma"] = this.hasAllergiesAsthma !== undefined ? this.hasAllergiesAsthma : <any>null;
+        data["whoWillBeReponsible"] = this.whoWillBeReponsible !== undefined ? this.whoWillBeReponsible : <any>null;
+        data["leftAlone"] = this.leftAlone !== undefined ? this.leftAlone : <any>null;
+        data["ifSick"] = this.ifSick !== undefined ? this.ifSick : <any>null;
         data["reasonForAdoption"] = this.reasonForAdoption !== undefined ? this.reasonForAdoption : <any>null;
         data["questionStatus"] = this.questionStatus !== undefined ? this.questionStatus : <any>null;
         data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>null;
@@ -12317,13 +13326,18 @@ export class GetAllAdoptionQuestwithPetNameDto implements IGetAllAdoptionQuestwi
 
 export interface IGetAllAdoptionQuestwithPetNameDto {
     adoptionQuestionnaireId?: number;
-    userId?: number;
+    userId?: number | null;
     occupation?: string | null;
     salary?: number;
     isMarried?: boolean;
+    hasChildren?: boolean;
     isHouseholdAware?: boolean;
     hasOwnedPetBefore?: boolean;
     petForAdoptionId?: number;
+    hasAllergiesAsthma?: boolean;
+    whoWillBeReponsible?: string | null;
+    leftAlone?: string | null;
+    ifSick?: string | null;
     reasonForAdoption?: string | null;
     questionStatus?: string | null;
     createdAt?: Date;
@@ -12841,6 +13855,65 @@ export interface IInvoiceDtoIEnumerableApiResponse {
     data?: InvoiceDto[] | null;
     message?: string | null;
     errorMessage?: string | null;
+}
+
+export class InvoiceDtoPaginationResponseDto implements IInvoiceDtoPaginationResponseDto {
+    data?: InvoiceDto[] | null;
+    totalRecords?: number;
+    pageNumber?: number;
+    pageSize?: number;
+
+    constructor(data?: IInvoiceDtoPaginationResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(InvoiceDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.totalRecords = _data["totalRecords"] !== undefined ? _data["totalRecords"] : <any>null;
+            this.pageNumber = _data["pageNumber"] !== undefined ? _data["pageNumber"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): InvoiceDtoPaginationResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InvoiceDtoPaginationResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["totalRecords"] = this.totalRecords !== undefined ? this.totalRecords : <any>null;
+        data["pageNumber"] = this.pageNumber !== undefined ? this.pageNumber : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        return data;
+    }
+}
+
+export interface IInvoiceDtoPaginationResponseDto {
+    data?: InvoiceDto[] | null;
+    totalRecords?: number;
+    pageNumber?: number;
+    pageSize?: number;
 }
 
 export class LoginRequestDto implements ILoginRequestDto {
@@ -13573,11 +14646,11 @@ export interface ISlotGenerationRequestDto {
 
 export class StaffDto implements IStaffDto {
     staffId?: number;
+    userId?: number | null;
     fullName?: string | null;
     phone?: string | null;
     address?: string | null;
     staffRoleId?: number;
-    cvPath?: string | null;
 
     constructor(data?: IStaffDto) {
         if (data) {
@@ -13591,11 +14664,11 @@ export class StaffDto implements IStaffDto {
     init(_data?: any) {
         if (_data) {
             this.staffId = _data["staffId"] !== undefined ? _data["staffId"] : <any>null;
+            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
             this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
             this.phone = _data["phone"] !== undefined ? _data["phone"] : <any>null;
             this.address = _data["address"] !== undefined ? _data["address"] : <any>null;
             this.staffRoleId = _data["staffRoleId"] !== undefined ? _data["staffRoleId"] : <any>null;
-            this.cvPath = _data["cvPath"] !== undefined ? _data["cvPath"] : <any>null;
         }
     }
 
@@ -13609,22 +14682,22 @@ export class StaffDto implements IStaffDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["staffId"] = this.staffId !== undefined ? this.staffId : <any>null;
+        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
         data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
         data["phone"] = this.phone !== undefined ? this.phone : <any>null;
         data["address"] = this.address !== undefined ? this.address : <any>null;
         data["staffRoleId"] = this.staffRoleId !== undefined ? this.staffRoleId : <any>null;
-        data["cvPath"] = this.cvPath !== undefined ? this.cvPath : <any>null;
         return data;
     }
 }
 
 export interface IStaffDto {
     staffId?: number;
+    userId?: number | null;
     fullName?: string | null;
     phone?: string | null;
     address?: string | null;
     staffRoleId?: number;
-    cvPath?: string | null;
 }
 
 export class StaffDtoApiResponse implements IStaffDtoApiResponse {
@@ -14111,8 +15184,7 @@ export interface IUserDtoIEnumerableApiResponse {
 export class VaccinationDto implements IVaccinationDto {
     vaccinationId?: number;
     animalId?: number;
-    vaccineName?: string | null;
-    dose?: string | null;
+    vaccineTypeId?: number | null;
     vaccinationDate?: Date;
     nextDueDate?: Date;
     staffId?: number;
@@ -14130,8 +15202,7 @@ export class VaccinationDto implements IVaccinationDto {
         if (_data) {
             this.vaccinationId = _data["vaccinationId"] !== undefined ? _data["vaccinationId"] : <any>null;
             this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
-            this.vaccineName = _data["vaccineName"] !== undefined ? _data["vaccineName"] : <any>null;
-            this.dose = _data["dose"] !== undefined ? _data["dose"] : <any>null;
+            this.vaccineTypeId = _data["vaccineTypeId"] !== undefined ? _data["vaccineTypeId"] : <any>null;
             this.vaccinationDate = _data["vaccinationDate"] ? new Date(_data["vaccinationDate"].toString()) : <any>null;
             this.nextDueDate = _data["nextDueDate"] ? new Date(_data["nextDueDate"].toString()) : <any>null;
             this.staffId = _data["staffId"] !== undefined ? _data["staffId"] : <any>null;
@@ -14149,10 +15220,9 @@ export class VaccinationDto implements IVaccinationDto {
         data = typeof data === 'object' ? data : {};
         data["vaccinationId"] = this.vaccinationId !== undefined ? this.vaccinationId : <any>null;
         data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
-        data["vaccineName"] = this.vaccineName !== undefined ? this.vaccineName : <any>null;
-        data["dose"] = this.dose !== undefined ? this.dose : <any>null;
-        data["vaccinationDate"] = this.vaccinationDate ? formatDate(this.vaccinationDate) : <any>null;
-        data["nextDueDate"] = this.nextDueDate ? formatDate(this.nextDueDate) : <any>null;
+        data["vaccineTypeId"] = this.vaccineTypeId !== undefined ? this.vaccineTypeId : <any>null;
+        data["vaccinationDate"] = this.vaccinationDate ? this.vaccinationDate.toISOString() : <any>null;
+        data["nextDueDate"] = this.nextDueDate ? this.nextDueDate.toISOString() : <any>null;
         data["staffId"] = this.staffId !== undefined ? this.staffId : <any>null;
         return data;
     }
@@ -14161,8 +15231,7 @@ export class VaccinationDto implements IVaccinationDto {
 export interface IVaccinationDto {
     vaccinationId?: number;
     animalId?: number;
-    vaccineName?: string | null;
-    dose?: string | null;
+    vaccineTypeId?: number | null;
     vaccinationDate?: Date;
     nextDueDate?: Date;
     staffId?: number;
@@ -14273,6 +15342,58 @@ export interface IVaccinationDtoIEnumerableApiResponse {
     data?: VaccinationDto[] | null;
     message?: string | null;
     errorMessage?: string | null;
+}
+
+export class VaccinationWithVaccineTypeDto implements IVaccinationWithVaccineTypeDto {
+    vaccinationId?: number;
+    vaccineName?: string | null;
+    vaccinationDate?: Date;
+    dose?: string | null;
+    nextDueDate?: Date;
+
+    constructor(data?: IVaccinationWithVaccineTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vaccinationId = _data["vaccinationId"] !== undefined ? _data["vaccinationId"] : <any>null;
+            this.vaccineName = _data["vaccineName"] !== undefined ? _data["vaccineName"] : <any>null;
+            this.vaccinationDate = _data["vaccinationDate"] ? new Date(_data["vaccinationDate"].toString()) : <any>null;
+            this.dose = _data["dose"] !== undefined ? _data["dose"] : <any>null;
+            this.nextDueDate = _data["nextDueDate"] ? new Date(_data["nextDueDate"].toString()) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): VaccinationWithVaccineTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VaccinationWithVaccineTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vaccinationId"] = this.vaccinationId !== undefined ? this.vaccinationId : <any>null;
+        data["vaccineName"] = this.vaccineName !== undefined ? this.vaccineName : <any>null;
+        data["vaccinationDate"] = this.vaccinationDate ? this.vaccinationDate.toISOString() : <any>null;
+        data["dose"] = this.dose !== undefined ? this.dose : <any>null;
+        data["nextDueDate"] = this.nextDueDate ? this.nextDueDate.toISOString() : <any>null;
+        return data;
+    }
+}
+
+export interface IVaccinationWithVaccineTypeDto {
+    vaccinationId?: number;
+    vaccineName?: string | null;
+    vaccinationDate?: Date;
+    dose?: string | null;
+    nextDueDate?: Date;
 }
 
 export class WeeklyRevenueDto implements IWeeklyRevenueDto {
@@ -14864,6 +15985,324 @@ export class ZTestNormalRangeDtoIEnumerableApiResponse implements IZTestNormalRa
 export interface IZTestNormalRangeDtoIEnumerableApiResponse {
     success?: boolean;
     data?: ZTestNormalRangeDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZZVaccineTypeDto implements IZZVaccineTypeDto {
+    vaccineTypeId?: number;
+    vaccineName?: string | null;
+    dose?: string | null;
+
+    constructor(data?: IZZVaccineTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vaccineTypeId = _data["vaccineTypeId"] !== undefined ? _data["vaccineTypeId"] : <any>null;
+            this.vaccineName = _data["vaccineName"] !== undefined ? _data["vaccineName"] : <any>null;
+            this.dose = _data["dose"] !== undefined ? _data["dose"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZVaccineTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZVaccineTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vaccineTypeId"] = this.vaccineTypeId !== undefined ? this.vaccineTypeId : <any>null;
+        data["vaccineName"] = this.vaccineName !== undefined ? this.vaccineName : <any>null;
+        data["dose"] = this.dose !== undefined ? this.dose : <any>null;
+        return data;
+    }
+}
+
+export interface IZZVaccineTypeDto {
+    vaccineTypeId?: number;
+    vaccineName?: string | null;
+    dose?: string | null;
+}
+
+export class ZZVaccineTypeDtoApiResponse implements IZZVaccineTypeDtoApiResponse {
+    success?: boolean;
+    data?: ZZVaccineTypeDto;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZZVaccineTypeDtoApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.data = _data["data"] ? ZZVaccineTypeDto.fromJS(_data["data"]) : <any>null;
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZVaccineTypeDtoApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZVaccineTypeDtoApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["data"] = this.data ? this.data.toJSON() : <any>null;
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZZVaccineTypeDtoApiResponse {
+    success?: boolean;
+    data?: ZZVaccineTypeDto;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZZVaccineTypeDtoIEnumerableApiResponse implements IZZVaccineTypeDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZZVaccineTypeDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZZVaccineTypeDtoIEnumerableApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(ZZVaccineTypeDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZVaccineTypeDtoIEnumerableApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZVaccineTypeDtoIEnumerableApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZZVaccineTypeDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZZVaccineTypeDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZZratingDto implements IZZratingDto {
+    ratingId?: number;
+    fullName?: string | null;
+    userId?: number | null;
+    reviewTitle?: string | null;
+    ratingValue?: number;
+    review?: string | null;
+    createdAt?: Date | null;
+
+    constructor(data?: IZZratingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.ratingId = _data["ratingId"] !== undefined ? _data["ratingId"] : <any>null;
+            this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
+            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+            this.reviewTitle = _data["reviewTitle"] !== undefined ? _data["reviewTitle"] : <any>null;
+            this.ratingValue = _data["ratingValue"] !== undefined ? _data["ratingValue"] : <any>null;
+            this.review = _data["review"] !== undefined ? _data["review"] : <any>null;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZratingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZratingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["ratingId"] = this.ratingId !== undefined ? this.ratingId : <any>null;
+        data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
+        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        data["reviewTitle"] = this.reviewTitle !== undefined ? this.reviewTitle : <any>null;
+        data["ratingValue"] = this.ratingValue !== undefined ? this.ratingValue : <any>null;
+        data["review"] = this.review !== undefined ? this.review : <any>null;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>null;
+        return data;
+    }
+}
+
+export interface IZZratingDto {
+    ratingId?: number;
+    fullName?: string | null;
+    userId?: number | null;
+    reviewTitle?: string | null;
+    ratingValue?: number;
+    review?: string | null;
+    createdAt?: Date | null;
+}
+
+export class ZZratingDtoApiResponse implements IZZratingDtoApiResponse {
+    success?: boolean;
+    data?: ZZratingDto;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZZratingDtoApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.data = _data["data"] ? ZZratingDto.fromJS(_data["data"]) : <any>null;
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZratingDtoApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZratingDtoApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["data"] = this.data ? this.data.toJSON() : <any>null;
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZZratingDtoApiResponse {
+    success?: boolean;
+    data?: ZZratingDto;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZZratingDtoIEnumerableApiResponse implements IZZratingDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZZratingDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZZratingDtoIEnumerableApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(ZZratingDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZratingDtoIEnumerableApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZratingDtoIEnumerableApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZZratingDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZZratingDto[] | null;
     message?: string | null;
     errorMessage?: string | null;
 }

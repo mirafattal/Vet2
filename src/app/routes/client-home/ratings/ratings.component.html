@@ -1,0 +1,87 @@
+<div class="testimonial-container">
+  <div class="testimonial-left">
+    <h2>Your Words Matter</h2>
+    <div class="text"><p>
+      We would love to hear about your experience! Share your feedback and help us improve our services.
+    </p> </div>
+
+    <div class="review-cards">
+      <mat-card class="review-card" *ngFor="let review of reviews">
+        <p><strong>{{ review.fullName }}</strong></p>
+        <p>{{ review.review }}</p>
+        <div class="stars">
+          <mat-icon
+            *ngFor="let star of getStarArray(review.ratingValue!); let i = index"
+            [ngClass]="{ 'primary': star === 1 }"
+          >
+            {{ star === 1 ? 'star' : 'star_border' }}
+          </mat-icon>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="testimonial-right">
+    <mat-card class="feedback-form">
+      <h3>Submit Your Review</h3>
+      <form (ngSubmit)="onSubmitReview()" #reviewForm="ngForm">
+        <!-- Full Name -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Full Name</mat-label>
+          <input
+            matInput
+            placeholder="Enter your name"
+            [(ngModel)]="AddRating.fullName"
+            name="fullName"
+            required
+          />
+        </mat-form-field>
+
+        <!-- Review Title -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Review Title</mat-label>
+          <input
+            matInput
+            placeholder="Enter a title for your review"
+            [(ngModel)]="AddRating.reviewTitle"
+            name="reviewTitle"
+            required
+          />
+        </mat-form-field>
+
+        <!-- Star Rating -->
+        <div class="rating">
+          <span>Your Rating:</span>
+          <div class="stars">
+            <mat-icon
+              *ngFor="let star of stars; let i = index"
+              [class.selected]="i < rating"
+              (click)="selectRating(i + 1)"
+              (mouseenter)="highlightStars(i + 1)"
+              (mouseleave)="clearHighlight()"
+            >
+              star
+            </mat-icon>
+          </div>
+        </div>
+
+        <!-- Feedback -->
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Write Feedback</mat-label>
+          <textarea
+            matInput
+            placeholder="Share your experience"
+            [(ngModel)]="AddRating.review"
+            name="feedback"
+            required
+          ></textarea>
+        </mat-form-field>
+
+        <!-- Submit Button -->
+        <button mat-raised-button color="primary" type="submit">
+          Submit Review
+        </button>
+      </form>
+    </mat-card>
+  </div>
+</div>

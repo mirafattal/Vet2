@@ -69,7 +69,7 @@
     <button mat-menu-item>Contact</button>
     </mat-menu>
     <mat-menu #ResultsMenu="matMenu">
-      <button mat-menu-item>Lab Results</button>
+      <button mat-menu-item (click)="onLabResultHome()">Lab Results</button>
     </mat-menu>
 
       </mat-toolbar>
@@ -135,7 +135,7 @@
               If you have any questions, call or email us and our staff will respond
               as soon as possible!
             </p>
-            <a href="/contact" class="link">Connect with us</a>
+            <a class="link">Connect with us</a>
           </div>
         </button>
 
@@ -146,7 +146,7 @@
             <p>
               Learn more about our adoption process and find the perfect companion!
             </p>
-            <a href="/adoption-details" class="link">Learn More</a>
+            <a class="link">Learn More</a>
           </div>
         </button>
 
@@ -157,7 +157,7 @@
             <p>
               Learn about all of the services that we provide to patients at our veterinary center.
             </p>
-            <a href="/volunteer" class="link">Learn More</a>
+            <a class="link">Learn More</a>
           </div>
         </button>
 
@@ -168,7 +168,7 @@
             <p>
               Schedule a convenient appointment with our office now. We can’t wait to meet you!
             </p>
-            <a href="/book-appointment" class="link">Book Appoitment Now</a>
+            <a class="link">Book Appoitment Now</a>
           </div>
         </button>
       </div>
@@ -195,6 +195,10 @@
           </div>
         </mat-card>
       </div>
+    </div>
+
+    <div class="item item-11">
+      <app-ratings></app-ratings>
     </div>
 
     <div class="item item-9">

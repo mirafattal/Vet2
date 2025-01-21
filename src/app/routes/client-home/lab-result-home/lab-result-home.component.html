@@ -1,0 +1,44 @@
+<div class="container">
+  <!-- Select Animal -->
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Select Animal</mat-label>
+    <mat-select [(ngModel)]="selectedAnimalId" name="animal" required (selectionChange)="onAnimalSelect()">
+      <mat-option *ngFor="let animal of animals" [value]="animal.animalId">
+        {{ animal.animalName }} <!-- Assuming 'name' is a field in AnimalDto -->
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Display Lab Results Table -->
+  <mat-table [dataSource]="labResults" class="mat-elevation-z8">
+    <!-- Lab Result Columns -->
+    <ng-container matColumnDef="testName">
+      <mat-header-cell *matHeaderCellDef>Test Name</mat-header-cell>
+      <mat-cell *matCellDef="let result">{{ result.testName }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="testResult">
+      <mat-header-cell *matHeaderCellDef>Test Result</mat-header-cell>
+      <mat-cell *matCellDef="let result">{{ result.result }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="unitOfMeasurement">
+      <mat-header-cell *matHeaderCellDef>Unit of Measurement</mat-header-cell>
+      <mat-cell *matCellDef="let result">{{ getUnitOfMeasurement(result.labResultId) }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="testDate">
+      <mat-header-cell *matHeaderCellDef>Test Date</mat-header-cell>
+      <mat-cell *matCellDef="let result">{{ result.testDate | date: 'short' }}</mat-cell> <!-- Date formatting -->
+    </ng-container>
+
+    <ng-container matColumnDef="Condition">
+      <mat-header-cell *matHeaderCellDef>Condition</mat-header-cell>
+      <mat-cell *matCellDef="let result">{{ result.isNormal }}</mat-cell>
+    </ng-container>
+
+    <!-- Table Footer -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

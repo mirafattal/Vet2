@@ -153,32 +153,7 @@ export class StaffComponent implements OnInit {
         }
       }
 
-      onFileSelected(event: Event, row: any): void {
-        const fileInput = event.target as HTMLInputElement;
 
-        if (fileInput.files && fileInput.files.length > 0) {
-          const file = fileInput.files[0];
-          console.log('Selected file:', file);
-
-          // Create a FileParameter object
-          const fileParameter = {
-            data: file, // The actual file object (Blob or File)
-            fileName: file.name // The file name
-          };
-
-          // Call the API service to upload the CV with both parameters
-          this.apiService.uploadcv(fileParameter, row.staffId).subscribe({
-            next: () => {
-              alert('CV uploaded successfully!');
-              row.cvFile = file.name; // Save file name to the row (or use a URL from backend)
-            },
-            error: (err) => {
-              console.error('Error uploading CV:', err);
-              alert('Failed to upload CV.');
-            },
-          });
-        }
-      }
 
       editStaff(row: any): void {
         const dialogRef = this.dialog.open(EditStaffDialogComponent, {
