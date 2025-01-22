@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +16,8 @@ import { APIClient } from '@shared/services/api-client/veterinary-api.service';
     FormsModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule
   ],
   templateUrl: './edit-pet-dialog.component.html',
   styleUrls: ['./edit-pet-dialog.component.scss']
@@ -46,7 +48,7 @@ export class EditPetDialogComponent implements OnInit {
     this.apiService.update3(this.data.animal).subscribe({
       next: (updatedAnimal) => {
         console.log('Animal successfully updated:', updatedAnimal);
-        this.openSnackBar('Animal added successfully!', 'success');
+        this.openSnackBar('Animal has been edited successfully!', 'success');
         this.dialogRef.close(updatedAnimal); // Return the updated owner data to the parent
       },
       error: (err) => {

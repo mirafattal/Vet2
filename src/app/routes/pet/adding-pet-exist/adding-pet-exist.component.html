@@ -23,7 +23,6 @@
                   <td mat-cell *matCellDef="let owner">
                     <mat-radio-group [(ngModel)]="selectedOwnerId" (ngModelChange)="onOwnerSelectionChange($event)">
                       <mat-radio-button [value]="owner.ownerId">
-                        Select
                       </mat-radio-button>
                     </mat-radio-group>
                   </td>
@@ -38,7 +37,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
               <div>
-                <button mat-button matStepperPrevious (click)="onCancel()">Cancel</button>
+                <button mat-button color="warn" matStepperPrevious (click)="onCancel()">Cancel</button>
                 <button mat-button matStepperNext >Next</button>
               </div>
             </div>
@@ -101,7 +100,7 @@
             </div>
 
             <div>
-              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button color="warn" matStepperPrevious>Back</button>
               <button mat-button (click)="onAddAnimalwithExistingOwner()" [disabled]="!animalForm.valid">Submit</button>
             </div>
           </form>

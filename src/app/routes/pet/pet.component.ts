@@ -42,7 +42,7 @@ export class PetComponent implements OnInit {
 
     animals: AnimalDto[] = [];
     owners: OwnerDto[] = [];
-    displayedColumns = ['OwnerName', 'AnimalName', 'Species', 'Breed', 'actions', 'addAppointment'];
+    displayedColumns = ['OwnerName', 'AnimalName', 'Breed', 'actions', 'addAppointment'];
     dataSource = new MatTableDataSource<any>([]); // Initialize with an empty array
     animalId: number | null = null;
     animalTypeId = 1;

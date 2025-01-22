@@ -10,6 +10,7 @@ import { Inject } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-add-app-dialog',
@@ -21,7 +22,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatSelectModule,
     FormsModule,
     CommonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule
   ],
   templateUrl: './add-app-dialog.component.html',
   styleUrls: ['./add-app-dialog.component.scss'],

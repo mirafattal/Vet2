@@ -20,6 +20,10 @@ export abstract class BaseToken {
     return this.attributes.Username;
   }
 
+  get FullName(): string | void {
+    return this.attributes.FullName;
+  }
+
   get refresh_token(): string | void {
     return this.attributes.refresh_token;
   }

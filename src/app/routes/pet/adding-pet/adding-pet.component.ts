@@ -107,7 +107,7 @@ export class AddingPetComponent implements OnInit {
     this.apiService.addownerwithanimal(this.animalowner).subscribe({
       next: (response) => {
         console.log('Response from backend:', response);
-        this.snackBar.open('Vaccine Result has been deleted successfully!', 'Close', { duration: 3000 })
+        this.snackBar.open('Animal has been added successfully!', 'Close', { duration: 3000 })
           this.dialogRef.close(); // Close the dialog on successful submission
       },
       error: (err) => {
@@ -123,7 +123,7 @@ export class AddingPetComponent implements OnInit {
     this.dialogRef.close(); // Close the dialog
   }
 
-  speciesList: string[] = ['Dog', 'Cat', 'Bird'];
+  speciesList: string[] = ['Dog', 'Cat', 'Bird', 'Rabbit', 'Horse'];
 
   breedsBySpecies: { [key: string]: string[] } = {
     'Dog': ['Labrador', 'Beagle', 'Bulldog', 'German Shepherd', 'Golden Retriever', 'Poodle',
@@ -138,15 +138,12 @@ export class AddingPetComponent implements OnInit {
     'Macaw', 'Conure', 'Amazons', 'African Grey', 'Eclectus', 'Quaker Parrot',
     'Pionus', 'Lorikeet', 'Finch', 'Pheasant', 'Dove', 'Peacock', 'Parakeet',],
 
-    'Rabbit': [
-    'Himalayan', 'Holland Lop', 'Mini Rex', 'English Angora', 'Mini Lop', 'Dutch',
+    'Rabbit': [ 'Himalayan', 'Holland Lop', 'Mini Rex', 'English Angora', 'Mini Lop', 'Dutch',
     'Flemish Giant', 'Lionhead', 'Himalayan', 'Hotot', 'Himalayan', 'American',
     'Miniature Lionhead', 'English Spot', 'New Zealand',  ],
-    'Horse': [
-      'Arabian', 'Thoroughbred', 'Quarter Horse', 'Clydesdale', 'Appaloosa', 'Draft', 'Paint',
+    'Horse': ['Arabian', 'Thoroughbred', 'Quarter Horse', 'Clydesdale', 'Appaloosa', 'Draft', 'Paint',
       'Shetland Pony', 'Tennessee Walker', 'Mustang', 'Morgan', 'Friesian', 'Warmblood', 'Andalusian',
-      'Haflinger', 'Percheron', 'Fjord', 'Hanoverian', 'Norwegian Fjord'
-    ]
+      'Haflinger', 'Percheron', 'Fjord', 'Hanoverian', 'Norwegian Fjord' ]
   };
 
 

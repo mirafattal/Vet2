@@ -20,4 +20,5 @@ export interface Token {
   user_ID?: number
   Username?: string;
   Roles?: string;
+  FullName?: string;
 }

@@ -46,6 +46,7 @@ export class AuthService {
           user_ID: token.data?.userId!,
           Username: token.data?.username!,
           Roles: token.data?.role!,
+          fullName: token.data?.fullName!, //add everything you need to get from AuthresponseDto
         });
       }),
       map(() => this.check())

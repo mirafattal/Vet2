@@ -32,7 +32,6 @@ mat-card-title {
 mat-dialog-actions {
   margin-top: 1rem;
   button {
-    text-transform: uppercase;
     font-weight: bold;
   }
 }
@@ -40,7 +39,5 @@ mat-dialog-actions {
 .close{
   width: 60px;
   height: 30px;
-  background-color: red;
   cursor: pointer;
-  border-radius: 8px;
 }

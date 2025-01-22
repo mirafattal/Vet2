@@ -41,13 +41,13 @@
       </mat-card-content>
 
       <mat-card-actions>
+                <!-- Reset Button -->
+                <button mat-button color="warn" (click)="onCancel()">Cancel</button>
         <!-- Submit Button -->
         <button mat-raised-button color="primary" type="submit" [disabled]="!labResultForm.valid"
         (click)="onSubmit()">
           Submit
-        </button>
-        <!-- Reset Button -->
-        <button mat-button color="warn" (click)="onCancel()">Cancel</button>
+      </button>
       </mat-card-actions>
     </mat-card>
   </div>

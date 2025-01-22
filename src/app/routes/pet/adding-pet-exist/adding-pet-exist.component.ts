@@ -15,6 +15,7 @@ import { ReplaySubject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-adding-pet-exist',
@@ -46,7 +47,7 @@ export class AddingPetExistComponent implements OnInit {
   searchTerm: string = '';
   AddanimalOnly: AnimalDto = new AnimalDto();
 
-  constructor(private apiService: APIClient,
+  constructor(private apiService: APIClient, private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<AddingPetExistComponent>,
       @Inject(MAT_DIALOG_DATA) public data: { ownerType: 'new' | 'existing' },) {
     console.log('Owner Type:', data.ownerType); // Should always be 'existing' here
@@ -110,7 +111,7 @@ export class AddingPetExistComponent implements OnInit {
       this.apiService.add3(this.AddanimalOnly).subscribe({
         next: (response) => {
           console.log('Response from backend:', response);
-          alert('Animal added successfully to existing Owner!');
+          this.snackBar.open('Pet has been added successfully!', 'Close', { duration: 3000 })
           this.dialogRef.close(); // Close the dialog on successful submission
         }
       })
@@ -120,7 +121,7 @@ export class AddingPetExistComponent implements OnInit {
   this.dialogRef.close(); // Close the dialog
 }
 
-speciesList: string[] = ['Dog', 'Cat', 'Bird'];
+speciesList: string[] = ['Dog', 'Cat', 'Bird', 'Rabbit', 'Horse'];
 
   breedsBySpecies: { [key: string]: string[] } = {
     'Dog': ['Labrador', 'Beagle', 'Bulldog', 'German Shepherd', 'Golden Retriever', 'Poodle',

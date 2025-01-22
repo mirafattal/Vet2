@@ -68,6 +68,11 @@ export class TokenService implements OnDestroy {
     return token?.Username;
   }
 
+  getFullName() {
+    const token = this.get();
+    return token?.FullName;
+  }
+
   getOwnerId() {
     const userId = this.getUserId();
     if (!userId) {

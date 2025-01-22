@@ -13,7 +13,7 @@
 
                   <!-- Animal Selection Section -->
         <div *ngIf="animals.length > 0">
-          <label for="animal">Select Animal:</label>
+          <label for="animal"> Animal:</label>
           <mat-select [(ngModel)]="selectedAnimalId" (selectionChange)="onAnimalChange($event.value)">
             <mat-option *ngFor="let animal of animals" [value]="animal.animalId">
               {{ animal.animalName }} ({{ animal.species }})
@@ -22,7 +22,7 @@
         </div>
 
           <div>
-            <label for="doctor">Select Doctor:</label>
+            <label for="doctor"> Doctor:</label>
             <mat-select [(ngModel)]="selectedDoctorId" (selectionChange)="onDoctorChange($event.value)">
               <mat-option *ngFor="let doctor of doctorNames" [value]="doctor.staffId">
                 {{ doctor.fullName }} , ({{ doctor.roleName }})
@@ -31,7 +31,7 @@
           </div>
 
           <div *ngIf="availableDates.length > 0">
-            <label for="date">Select Date:</label>
+            <label for="date"> Date:</label>
             <mat-select [(ngModel)]="selectedDate" (selectionChange)="onDateChange($event.value)">
               <mat-option *ngFor="let date of availableDates" [value]="date">
                 {{ date | date: 'EEEE, MMMM d, yyyy' }}
@@ -40,7 +40,7 @@
           </div>
 
           <div *ngIf="availableTimes.length > 0">
-            <label for="time">Select Time:</label>
+            <label for="time"> Time:</label>
             <mat-select [(ngModel)]="selectedTime" (selectionChange)="onTimeChange($event.value)">
               <mat-option *ngFor="let time of availableTimes" [value]="time">
                 {{ time }}

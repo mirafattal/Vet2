@@ -37,7 +37,7 @@ export class HorseComponent {
 
   animals: AnimalDto[] = [];
   owners: OwnerDto[] = [];
-  displayedColumns = ['OwnerName', 'AnimalName', 'Species', 'actions', 'addAppointment'];
+  displayedColumns = ['OwnerName', 'AnimalName', 'Breed', 'actions', 'addAppointment'];
   dataSource = new MatTableDataSource<any>([]); // Initialize with an empty array
   animalId: number | null = null;
   animalTypeId = 2;

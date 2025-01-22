@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Add Appointment</h2>
+<h2 mat-dialog-title></h2>
 <mat-dialog-content>
   <div class="appointment-container">
 
@@ -7,7 +7,7 @@
       <h2>Book an Appointment</h2>
 
       <div>
-        <label for="doctor">Select Doctor:</label>
+        <label for="doctor">Doctor:</label>
         <mat-select [(ngModel)]="selectedDoctorId" (selectionChange)="onDoctorChange($event.value)">
           <mat-option *ngFor="let doctor of doctorNames" [value]="doctor.staffId">
             {{ doctor.fullName }} , ({{ doctor.roleName }})
@@ -16,7 +16,7 @@
       </div>
 
       <div *ngIf="availableDates.length > 0">
-        <label for="date">Select Date:</label>
+        <label for="date">Date:</label>
         <mat-select [(ngModel)]="selectedDate" (selectionChange)="onDateChange($event.value)">
           <mat-option *ngFor="let date of availableDates" [value]="date">
             {{ date | date: 'EEEE, MMMM d, yyyy' }}
@@ -25,7 +25,7 @@
       </div>
 
       <div *ngIf="availableTimes.length > 0">
-        <label for="time">Select Time:</label>
+        <label for="time">Time:</label>
         <mat-select [(ngModel)]="selectedTime" (selectionChange)="onTimeChange($event.value)">
           <mat-option *ngFor="let time of availableTimes" [value]="time">
             {{ time }}
@@ -45,7 +45,7 @@
 
 
     <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button color="warn" class="cancelbutton" mat-dialog-close>Cancel</button>
       <button mat-button color="primary" mat-dialog-close (click)="submitAppointment()">Save</button>
     </mat-dialog-actions>
 

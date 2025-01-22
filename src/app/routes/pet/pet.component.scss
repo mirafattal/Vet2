@@ -73,14 +73,14 @@
   font-size: 14px;       // Adjust font size
   padding: 8px 16px;     // Adjust padding for size
   color: white;          // Override text color
-  background-color: #290bade5; // Override primary background color (e.g., blue)
+  background-color: #6200ee; // Override primary background color (e.g., blue)
   border-radius: 4px;    // Optional: Round the button corners
   text-transform: none;  // Remove uppercase transformation (if needed)
   cursor: pointer;
 }
 
 .appointsbutton:hover {
-  background-color: #290bade5; // Darker shade for hover effect
+  background-color: #6200ee; // Darker shade for hover effect
 }
 
 .appointsbutton:disabled {

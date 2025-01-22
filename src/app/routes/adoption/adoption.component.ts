@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ViewQuestComponent } from './view-quest/view-quest.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-adoption',
@@ -25,7 +26,8 @@ import { ViewQuestComponent } from './view-quest/view-quest.component';
     FormsModule,
     MatInputModule,
     MatTabsModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './adoption.component.html',
   styleUrls: ['./adoption.component.scss']

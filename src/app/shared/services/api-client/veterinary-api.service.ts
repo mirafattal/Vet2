@@ -13154,6 +13154,7 @@ export class AuthResponseDto implements IAuthResponseDto {
     token?: string | null;
     username?: string | null;
     userId?: number;
+    fullName?: string | null;
     password?: string | null;
     email?: string | null;
     role?: string | null;
@@ -13172,6 +13173,7 @@ export class AuthResponseDto implements IAuthResponseDto {
             this.token = _data["token"] !== undefined ? _data["token"] : <any>null;
             this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+            this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
             this.password = _data["password"] !== undefined ? _data["password"] : <any>null;
             this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
             this.role = _data["role"] !== undefined ? _data["role"] : <any>null;
@@ -13190,6 +13192,7 @@ export class AuthResponseDto implements IAuthResponseDto {
         data["token"] = this.token !== undefined ? this.token : <any>null;
         data["username"] = this.username !== undefined ? this.username : <any>null;
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
         data["password"] = this.password !== undefined ? this.password : <any>null;
         data["email"] = this.email !== undefined ? this.email : <any>null;
         data["role"] = this.role !== undefined ? this.role : <any>null;
@@ -13201,6 +13204,7 @@ export interface IAuthResponseDto {
     token?: string | null;
     username?: string | null;
     userId?: number;
+    fullName?: string | null;
     password?: string | null;
     email?: string | null;
     role?: string | null;

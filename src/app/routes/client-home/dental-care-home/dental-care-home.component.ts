@@ -8,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-dental-care-home',
   standalone: true,
   imports: [
-    ClientToolbarComponent,
     CommonModule,
     MatIconModule
   ],

@@ -18,7 +18,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MtxProgressModule } from '@ng-matero/extensions/progress';
 import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
-import { AppSettings, SettingsService } from '@core';
+import { AppSettings, SettingsService, TokenService } from '@core';
 import { DashboardService } from './dashboard.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { APIClient } from '@shared/services/api-client/veterinary-api.service';
@@ -155,16 +155,19 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['ratings'])
   }
 
-  constructor(private apiService: APIClient, private router: Router){
+  constructor(private apiService: APIClient, private router: Router, private tokenService: TokenService){
     Chart.register(...registerables); // Register Chart.js components
   }
 
+  username: string | undefined;
   ngOnInit(): void {
     this.totalAppointments();
     this.loadRevenueChart();
     this.loadPetCounts();
     this.loadHorseCounts();
     this.loadYearlyTotalRevenue();
+    this.username = this.tokenService.getUsername()!;
+    console.log('fullname:', this.username)
   }
 
   appoints: number = 0 ;

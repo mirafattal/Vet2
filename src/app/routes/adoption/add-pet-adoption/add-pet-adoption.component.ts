@@ -43,47 +43,64 @@ export class AddPetAdoptionComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<AddPetAdoptionComponent>, private apiService: APIClient,
- private http: HttpClient
-  ) { }
+ private http: HttpClient,
+  ) {
+    this.petdetails = {
+     petForAdoptionId: 0,
+     breed: '',
+     species: '',
+     petBirthDate: null!,
+     petCondition: '',
+     gender: '',
+     weight: 0,
+     adoptionStatusId: 1,
+     petName: '',
+     imageUrl: 'default-poster.jpg',
+      init: function (_data?: any): void {
+        throw new Error('Function not implemented.');
+      },
+      toJSON: function (data?: any) {
+        throw new Error('Function not implemented.');
+      },
+    };
+
+  }
 
   ngOnInit() {
 
   }
 
-  petdetails: AddPetForAdoptionDto = new AddPetForAdoptionDto ();
+  petdetails: AddPetForAdoptionDto;
+
+
+
 
   addPetWithImage(): void {
     console.log('Starting addPetWithImage()'); // Debug: Method entry point
 
     // Debug: Log the current state of petdetails
     console.log('Pet details before API call:', this.petdetails);
+    const fileParameter: FileParameter = {
+      data: this.selectedFile,
+      fileName: this.selectedFile!.name,
+    };
 
-    this.petdetails.petForAdoptionId = 0;
-    this.petdetails.adoptionStatusId = 1;
-    this.petdetails.imageUrl = 'default-poster.jpg';
-
-    // Create FormData object to send the image
-    const formData = new FormData();
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile as Blob, this.selectedFile.name);
-    }
+    const petForAdoptionId = 0;
+    const adoptionStatusId = 1 as number;  // Type assertion to number
+    const breed = this.petdetails.breed;
+    const species = this.petdetails.species;
+    const petBirthDate = this.petdetails.petBirthDate ? this.petdetails.petBirthDate : null; // Or use new Date() if a default is needed
+    const gender = this.petdetails.gender;
+    const weight = this.petdetails.weight;
+    const petName = this.petdetails.petName;
+    const petCondition = this.petdetails.petCondition;
+    const ImageUrl = this.selectedFile ? this.selectedFile.name : 'default-poster.jpg';
 
     // Call the API with all required parameters including FormData
     this.apiService.addPetwithImage(
-      this.petdetails.petForAdoptionId,
-      this.petdetails.breed!,
-      this.petdetails.species!,
-      this.petdetails.petBirthDate,
-      this.petdetails.petCondition!,
-      this.petdetails.gender!,
-      this.petdetails.weight,
-      this.petdetails.adoptionStatusId,
-      this.petdetails.petName!,
-      this.petdetails.imageUrl || 'default-poster.jpg',
-      {
-        data: this.selectedFile,
-        fileName: this.selectedFile?.name!,
-      }
+     petForAdoptionId, breed!, species!, petBirthDate!, petCondition!, gender!, weight, adoptionStatusId, petName!,
+     ImageUrl,
+      fileParameter
     ).subscribe({
       next: (response) => {
         console.log('Pet added successfully:', response);
@@ -101,30 +118,17 @@ export class AddPetAdoptionComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0] as unknown as File;
+      console.log('Selected file:', this.selectedFile);
     } else {
       this.selectedFile = null;
+      console.log('No file selected');
     }
   }
 
 
 
-  fileSelected: boolean = false;   // Track if a file is selected
+  //fileSelected: boolean = false;   // Track if a file is selected
   selectedFile: File | null = null; // Store selected file as FileParameter
-  // onFileSelected(event: Event): void {
-  //   const fileInput = event.target as HTMLInputElement;
-  //   const file = fileInput?.files?.[0];
-
-  //   if (file) {
-  //     this.fileSelected = true;
-  //     this.selectedFile = {
-  //       data: file,
-  //       fileName: file.name,
-  //     };
-  //   } else {
-  //     this.fileSelected = false;
-  //     this.selectedFile = undefined; // Clear the selected file if no file is selected
-  //   }
-  // }
 
 
 onCancel(): void {
