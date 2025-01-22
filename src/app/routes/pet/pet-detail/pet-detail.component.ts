@@ -25,6 +25,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddVaccineComponent } from '../add-vaccine/add-vaccine.component';
 import { AddAppDialogComponent } from '../add-app-dialog/add-app-dialog.component';
 import { EditMedicalComponent } from '../edit-medical/edit-medical.component';
+import { EditVaccineComponent } from '../edit-vaccine/edit-vaccine.component';
 
 @Component({
   selector: 'app-pet-detail',
@@ -185,7 +186,7 @@ export class PetDetailComponent implements OnInit {
     if (this.records) { // Ensure owner data is available before opening the dialog
       const dialogRef = this.dialog.open(EditMedicalComponent, {
         width: '400px',
-        data: { records: { ...this.records },} // Pass a copy of the owner data to the dialog
+        data: { records: { ...this.records }, animalId: this.animalId} // Pass a copy of the owner data to the dialog
       });
 
       dialogRef.afterClosed().subscribe((updatedMedical) => {
@@ -198,6 +199,32 @@ export class PetDetailComponent implements OnInit {
       console.error('Medical data is not available.');
     }
   }
+
+
+  editVaccine(): void {
+    console.log('Vaccine Records:', this.vaccines); // Log records to check if they are available
+
+  if (this.vaccines && this.vaccines.length > 0) {
+    const vaccine = this.vaccines[0]; // Access the first record or you can iterate through the array
+    console.log('Editing record with Animal ID:', vaccine.animalId);
+  }
+    if (this.records) { // Ensure owner data is available before opening the dialog
+      const dialogRef = this.dialog.open(EditVaccineComponent, {
+        width: '400px',
+        data: { vaccines: { ...this.vaccines }, animalId: this.animalId} // Pass a copy of the owner data to the dialog
+      });
+
+      dialogRef.afterClosed().subscribe((updatedVaccine) => {
+        if (updatedVaccine) {
+          this.vaccines = updatedVaccine; // Update the owner data with the changes
+          console.log('Updated medical data:', this.vaccines);
+        }
+      });
+    } else {
+      console.error('Medical data is not available.');
+    }
+  }
+
 
   editPet(): void {
     if (this.animal) { // Ensure owner data is available before opening the dialog
@@ -229,15 +256,6 @@ export class PetDetailComponent implements OnInit {
     this.router.navigate(['pet-detail', this.animalId]); // Pass the current animalId to the detail page
   }
 
-  onEdit(row: MedicalRecordDto): void {
-    console.log('Edit action clicked for:', row);
-    // Add logic to edit details
-  }
-
-  onDelete(row: MedicalRecordDto): void {
-    console.log('Delete action clicked for:', row);
-    // Add logic to delete the row
-  }
 
   fetchVaccinationsDetails(): void {
     this.apiService.getvaccinationbyanimalId(this.animalId).subscribe(

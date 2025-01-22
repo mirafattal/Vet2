@@ -1,55 +1,60 @@
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
   <mat-tab label="Appointments">
-<div class="appointments-page">
-  <!-- Add Appointment Button and Dropdown -->
-  <div class="header">
+    <div class="appointments-page">
+      <!-- Add Appointment Button and Dropdown -->
+      <div class="header">
+        <!-- Staff Dropdown -->
+        <mat-form-field appearance="fill" class="staff">
+          <mat-label>Staff</mat-label>
+          <mat-select [(value)]="selectedStaffId" (selectionChange)="filterAppointments()">
+            <mat-option *ngFor="let staff of staffList" [value]="staff.staffId">
+              {{ staff.fullName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <!-- Staff Dropdown -->
-<mat-form-field appearance="fill" class="staff">
-  <mat-label>Staff</mat-label>
-  <mat-select [(value)]="selectedStaffId" (selectionChange)="filterAppointments()" >
-    <mat-option *ngFor="let staff of staffList" [value]="staff.staffId">
-      {{ staff.fullName }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+        <!-- Dropdown to select Time Range -->
+        <mat-form-field class="date">
+          <mat-select [(value)]="selectedTimeRange" (selectionChange)="filterAppointments()">
+            <mat-option value="thisWeek">This Week</mat-option>
+            <mat-option value="thisMonth">This Month</mat-option>
+            <mat-option value="nextMonth">Next Month</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-    <!-- Dropdown to select Time Range -->
-    <mat-form-field class="date">
-      <mat-select [(value)]="selectedTimeRange" (selectionChange)="filterAppointments()">
-        <mat-option value="thisWeek">This Week</mat-option>
-        <mat-option value="thisMonth">This Month</mat-option>
-        <mat-option value="nextMonth">Next Month</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+      <!-- UTC Date -->
+      <div class="utc-date">
+        <h2>Today's Date: {{ todayDate | date: 'dd MMM yyyy' }}</h2>
+      </div>
 
-  <!-- UTC Date -->
-  <div class="utc-date">
-    <h2>Today's Date: {{ todayDate | date: 'dd MMM yyyy' }}</h2>
-  </div>
+      <!-- Appointments Section -->
+      <div class="appointments-container">
+        <h3>Upcoming Appointments</h3>
 
-  <!-- Appointments Section -->
-  <div class="appointments-container">
-    <h3>Upcoming Appointments</h3>
-    <div class="appointments-grid">
-      <mat-card *ngFor="let appointment of filteredAppointments" class="appointment-card">
-        <mat-card-header>
-          <mat-card-title>{{ appointment.slotStartTime}}</mat-card-title>
-          <mat-card-subtitle>Owner Name: {{ appointment.fullName }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p><strong>Animal:</strong> {{ appointment.animalName }}</p>
-          <p><strong>Date:</strong> {{ appointment.appointmentDate | date: 'dd MMM yyyy' }}</p>
+        <!-- Message for no appointments -->
+        <div *ngIf="!filteredAppointments?.length" class="no-appointments">
+          <p>No appointments available at the moment.</p>
+        </div>
 
-          <p><strong>Reason:</strong> {{ appointment.appointmentReason }}</p>
-        </mat-card-content>
-
-      </mat-card>
+        <!-- Appointments Grid -->
+        <div *ngIf="filteredAppointments?.length" class="appointments-grid">
+          <mat-card *ngFor="let appointment of filteredAppointments" class="appointment-card">
+            <mat-card-header>
+              <mat-card-title>{{ appointment.slotStartTime }}</mat-card-title>
+              <mat-card-subtitle>Owner Name: {{ appointment.fullName }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p><strong>Animal:</strong> {{ appointment.animalName }}</p>
+              <p><strong>Date:</strong> {{ appointment.appointmentDate | date: 'dd MMM yyyy' }}</p>
+              <p><strong>Reason:</strong> {{ appointment.appointmentReason }}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</mat-tab>
+  </mat-tab>
+
 
 
 <mat-tab label="Schedule">

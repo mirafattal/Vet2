@@ -15,10 +15,7 @@
           <div class="card-grid">
             <mat-card *ngFor="let pet of petsforadoption">
               <mat-card-header>
-                <mat-card-title>Name: {{ pet.petName }}</mat-card-title>
-                <mat-card-subtitle>
-                  Birth date: {{ pet.petBirthDate | date: 'dd MMM yyyy' }}
-                </mat-card-subtitle>
+                <mat-card-title>{{ pet.petName }}</mat-card-title>
                 <button mat-icon-button class="btn-delete" (click)="onDeletePet(pet.petForAdoptionId!)">
                   <mat-icon>delete</mat-icon>
                 </button>
@@ -28,6 +25,7 @@
                 <p>Breed: {{ pet.breed }}</p>
                 <p>Health Condition: {{ pet.petCondition }}</p>
                 <p>Status: {{ pet.adoptionStatusId }}</p>
+                <p> Birth date: {{ pet.petBirthDate | date: 'dd MMM yyyy' }}</p>
                 <p>Gender: {{ pet.gender }}</p>
                 <p>Weight: {{ pet.weight }}</p>
               </mat-card-content>

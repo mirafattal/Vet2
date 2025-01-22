@@ -1,63 +1,25 @@
 .container{
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto auto;
-
-}
-.item-0{
-  grid-column: 1;
-  grid-row: 1;
+  grid-template-rows: auto auto auto;
 
 }
 
 .item-1{
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 1;
   background-color: #d5def5;
 
-  .breadcrumb-container {
-
-    padding: 8px 16px;
-    color: black;
-
+  .pets{
+    margin-top: 40px;
+    text-align: center;
+    font-size: 34px;
   }
-
-  .breadcrumb-item {
-    display: inline;
-  }
-
-  .breadcrumb-link {
-    background-color: #d5def5;
-    color: black;
-    text-decoration: none;
-    font-weight: 10px;
-    font-size: 16px;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .breadcrumb-separator {
-    color: black; // White for the separator
-    margin: 0 4px;
-  }
-
-  .current {
-    color: black; // White for the current page text
-    font-weight: normal;
-  }
-  .text{
-    font-size: 24px;
-    color: black;
-    margin-left: 30px;
-    margin-top:10px;
-  }
-
 }
 
 
 .item-2 {
-  grid-row: 3;
+  grid-row: 2;
   display: grid;
   background-color: #d5def5;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -139,7 +101,7 @@
 }
 
 .item-3{
-  grid-row: 4;
+  grid-row: 3;
   background-color: #d5def5;
 
   .office-hours {

@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Edit Vaccine Details</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form #ownerForm="ngForm">
+      <div class="form-row">
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Vaccine Name</mat-label>
+          <mat-select [(ngModel)]="selectedTypeId" name="testNormalRangeId" required>
+            <mat-option *ngFor="let vaccinetype of vaccineTypes" [value]="vaccinetype.vaccineTypeId">
+              {{ vaccinetype.vaccineName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Select Doctor</mat-label>
+          <mat-select name="staffId" [(ngModel)]="data.staffId" required>
+            <ng-container *ngFor="let doctor of doctorNames">
+              <mat-option [value]="doctor.staffId">
+                {{ doctor.fullName }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Vaccination Date</mat-label>
+          <input matInput [matDatepicker]="ownerBirthDatePicker"
+                 [(ngModel)]="data.vaccinationDate" name="ownerBirthDate" required/>
+          <mat-datepicker-toggle matIconSuffix [for]="ownerBirthDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #ownerBirthDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Next Due Date</mat-label>
+          <input matInput [matDatepicker]="VaccinePicker"
+                 [(ngModel)]="data.nextDueDate" name="ownerBirthDate" required/>
+          <mat-datepicker-toggle matIconSuffix [for]="VaccinePicker"></mat-datepicker-toggle>
+          <mat-datepicker #VaccinePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-button (click)="onNoClick()">Cancel</button>
+        <button mat-button (click)="saveChanges()" [disabled]="!ownerForm.valid">Submit</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+

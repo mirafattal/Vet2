@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-dog-training-home',
   standalone: true,
   imports: [
-    ClientToolbarComponent,
     CommonModule
   ],
   templateUrl: './dog-training-home.component.html',

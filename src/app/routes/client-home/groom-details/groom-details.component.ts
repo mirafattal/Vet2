@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
   selector: 'app-groom-details',
   standalone: true,
   imports: [
-    ClientToolbarComponent,
     CommonModule
   ],
   templateUrl: './groom-details.component.html',

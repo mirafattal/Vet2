@@ -5,13 +5,15 @@
   row-gap: 20px;
   column-gap: 20px;
   padding: 20px;
+  background-color: #d5def5;
 }
 
 .small-card {
   width: 220px;  // Set the width of the card
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Subtle shadow
   border-radius: 10px; // Rounded corners
-  background: linear-gradient(110deg, rgba(43, 40, 235, 0.87), #fff); // Gradient for a modern look
+  color:white;
+  background: linear-gradient(10deg, #fff, rgba(173, 216, 230, 0.7), rgba(43, 40, 235, 0.87));
   padding: 20px;
   height: 240px;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -26,6 +28,7 @@
 
 ngx-charts-pie-chart {
   margin: auto; // Center the chart inside the card
+  color: white;
 }
 
 .item-1 {
@@ -35,17 +38,17 @@ ngx-charts-pie-chart {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: rgba(43, 40, 235, 0.87); // Light gray background for the section
+    background: linear-gradient(10deg, #fff, rgba(173, 216, 230, 0.7), rgba(43, 40, 235, 0.87));
     padding: 10px;
     border-radius: 10px; // Rounded corners
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); // Subtle shadow
 
     .greeting-text {
-      font-size: 1.2rem;
+      font-size: 20px;
       text-align: center;
-      color: white; // Darker text color for better readability
+      color: #333; // Darker text color for better readability
       margin-bottom: 20px; // Space below the text
-      line-height: 1.5;
+
     }
 
 }
@@ -53,7 +56,10 @@ ngx-charts-pie-chart {
 .card {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Subtle shadow
   border-radius: 10px; // Rounded corners
-  background: linear-gradient(110deg, rgba(43, 40, 235, 0.87), #fff); // Gradient for a modern look
+  background: linear-gradient(10deg, #fff, rgba(173, 216, 230, 0.7), rgba(43, 40, 235, 0.87));
+
+ // background: linear-gradient(10deg, rgba(43, 40, 235, 0.87) 30%, #fff 100%);
+ // Gradient for a modern look
   text-align: center;
   padding: 20px;
   height: 240px;
@@ -67,21 +73,20 @@ ngx-charts-pie-chart {
 
 .icon {
   font-size: 48px; // Large icon size
-  color: rgba(43, 40, 235, 0.87); // Green color for icons
+  color: #333; // Green color for icons
   margin-bottom: 10px;
 }
 
 .card-text {
   h3 {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
     color: #333;
     margin-bottom: 5px;
   }
 
   p {
     font-size: 20px;
-    color: #555;
+    color: #333;
     margin: 0;
   }
 }
@@ -160,7 +165,7 @@ ngx-charts-pie-chart {
 .item-6 {
   grid-column: 1/4;
   grid-row: 3;
-  background-color: #fff; // White background for the card
+  background-color:#fff; // White background for the card
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

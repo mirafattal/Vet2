@@ -2,7 +2,7 @@ import { base64, capitalize, currentTimestamp, timeLeft } from './helpers';
 import { Token } from './interface';
 
 export abstract class BaseToken {
-  constructor(protected attributes: Token) {}
+  constructor(public attributes: Token) {}
 
   get access_token(): string {
     return this.attributes.access_token;
@@ -10,6 +10,14 @@ export abstract class BaseToken {
 
   get user_ID(): number | undefined {
     return this.attributes.user_ID;
+  }
+
+  get Roles(): string[] | undefined{
+    return this.attributes.Role!;
+  }
+
+  get Username(): string | void {
+    return this.attributes.Username;
   }
 
   get refresh_token(): string | void {

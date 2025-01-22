@@ -1,11 +1,12 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription, share, timer } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription, map, share, timer } from 'rxjs';
 
 import { LocalStorageService } from '@shared';
 import { currentTimestamp, filterObject } from './helpers';
 import { Token } from './interface';
 import { BaseToken } from './token';
 import { TokenFactory } from './token-factory.service';
+import { APIClient } from '@shared/services/api-client/veterinary-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class TokenService implements OnDestroy {
 
   private readonly store = inject(LocalStorageService);
   private readonly factory = inject(TokenFactory);
+  private readonly apiService = inject(APIClient);
 
   private readonly change$ = new BehaviorSubject<BaseToken | undefined>(undefined);
   private readonly refresh$ = new Subject<BaseToken | undefined>();
@@ -54,6 +56,27 @@ export class TokenService implements OnDestroy {
   getUserId() {
     const token = this.get(); // Use the newly added `get` method
     return token?.user_ID; // Return the user_ID property
+  }
+
+  getRoles() {
+    const token = this.get();
+    return token?.Roles;
+  }
+
+  getUsername() {
+    const token = this.get();
+    return token?.Username;
+  }
+
+  getOwnerId() {
+    const userId = this.getUserId();
+    if (!userId) {
+      throw new Error('User ID is not available.');
+    }
+    // Make an API call to get ownerId based on userId
+    return this.apiService
+      .getOwnerIdByUserId(userId) // Assuming you have a method in your API service
+      .pipe(map((response: any) => response.ownerId));
   }
 
   clear() {
@@ -105,6 +128,20 @@ export class TokenService implements OnDestroy {
   private clearRefresh() {
     if (this.timer$ && !this.timer$.closed) {
       this.timer$.unsubscribe();
+    }
+  }
+
+  public decodeToken(token: string): any {
+    if (!token) return null;
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) return null;
+
+    try {
+      // Decode the payload part of the token (Base64URL)
+      return JSON.parse(atob(tokenParts[1]));
+    } catch (e) {
+      console.error('Error decoding token', e);
+      return null;
     }
   }
 }

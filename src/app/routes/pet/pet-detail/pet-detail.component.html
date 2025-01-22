@@ -24,28 +24,28 @@
             <!-- Pet Details -->
             <div class="info-row">
               <div class="info-item">
-                <strong>Name:</strong> {{ animal.animalName }}
+                <h4 class="petname">{{ animal.animalName }}</h4>
               </div>
               <div class="info-item">
-                <strong>Gender:</strong> {{ animal.gender }}
-              </div>
-            </div>
-
-            <div class="info-row">
-              <div class="info-item">
-                <strong>Species:</strong> {{ animal.species }}
-              </div>
-              <div class="info-item">
-                <strong>Breed:</strong> {{ animal.breed }}
+                <p>{{ animal.gender }}</p>
               </div>
             </div>
 
             <div class="info-row">
               <div class="info-item">
-                <strong>Birth Date:</strong> {{ animal.animalBirthDate | date: 'dd MMM yyyy' }}
+                <p>{{ animal.species }}</p>
               </div>
               <div class="info-item">
-                <strong>Weight:</strong> {{ animal.weight }}
+                <p>{{ animal.breed }}</p>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-item">
+                <p> {{ animal.animalBirthDate | date: 'dd MMM yyyy' }}</p>
+              </div>
+              <div class="info-item">
+                <p>{{ animal.weight }} Kg</p>
               </div>
             </div>
 
@@ -69,11 +69,11 @@
           <div class="owner-card-content">
             <div *ngIf="owner">
               <h3>Owner Details</h3>
-              <p><strong>Name:</strong> {{ owner.fullName }}</p>
-              <p><strong>Owner Birth Date:</strong> {{ owner.ownerBirthDate | date: 'dd MMM yyyy'}}</p>
-              <p><strong>Phone:</strong> {{ owner.phone }}</p>
-              <p><strong>Email:</strong>{{owner.ownerEmail}}</p>
-              <p><strong>Address:</strong> {{ owner.address }}</p>
+              <p> {{ owner.fullName }}</p>
+              <p> {{ owner.ownerBirthDate | date: 'dd MMM yyyy'}}</p>
+              <p> {{ owner.phone }}</p>
+              <p>{{owner.ownerEmail}}</p>
+              <p>{{ owner.address }}</p>
               <!-- Add any other properties of the OwnerDto object here -->
             </div>
           </div>
@@ -237,7 +237,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="tableheader"> Actions </th>
           <td mat-cell *matCellDef="let row">
-           <button mat-icon-button color="accent">
+           <button mat-icon-button color="accent" (click)="editVaccine()">
              <mat-icon>edit</mat-icon>
            </button>
        <button mat-icon-button color="warn" (click)="onDeleteVaccine(row)">

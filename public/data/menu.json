@@ -5,52 +5,72 @@
       "name": "dashboard",
       "type": "link",
       "icon": "dashboard",
-      "badge": {
-        "color": "red-50",
-        "value": "5"
+"permissions": {
+        "only": "ADMIN"
       }
     },
     {
       "route": "appointment",
       "name": "appointment",
       "type": "link",
-      "icon": "calendar_today"
+      "icon": "calendar_today",
+      "permissions": {
+        "only": "ADMIN"
+      }
     },
     {
       "route": "adoption",
       "name": "adoption",
       "type": "link",
-      "icon": "person_pin"
+      "icon": "person_pin",
+      "permissions": {
+        "only": "ADMIN"
+      }
     },
     {
       "route": "staff",
       "name": "staff",
       "type": "link",
-      "icon": "face"
+      "icon": "face",
+      "permissions": {
+        "only": "ADMIN"
+      }
     },
     {
       "route": "pet",
       "name": "pet",
       "type": "link",
-      "icon": "pets"
+      "icon": "pets",
+      "permissions": {
+        "only": "ADMIN"
+      }
     },
     {
       "route": "horse",
       "name": "horse",
       "type": "link",
-      "icon": "pages"
+      "icon": "pages",
+      "permissions": {
+        "only": "ADMIN"
+      }
     },
     {
       "route": "invoice",
       "name": "invoice",
       "type": "link",
-      "icon": "inventory"
+      "icon": "inventory",
+      "permissions": {
+        "only": "ADMIN"
+      }
     },
     {
       "route": "ratings",
       "name": "ratings",
       "type": "link",
-      "icon": "star"
+      "icon": "star",
+      "permissions": {
+        "only": "ADMIN"
+      }
     },
     {
       "route": "client-home",
@@ -58,7 +78,16 @@
       "type": "link",
       "icon": "dashboard",
       "permissions": {
-        "only": "ADMIN"
+      "except": "MANAGER"
+      }
+    },
+    {
+      "route": "book-appointment",
+      "name": "book-appointment",
+      "type": "link",
+      "icon": "dashboard",
+      "permissions": {
+        "only": "GUEST"
       }
     },
     {
@@ -66,11 +95,17 @@
       "name": "permissions",
       "type": "sub",
       "icon": "lock",
+      "permissions": {
+        "only": "ADMIN"
+      },
       "children": [
         {
           "route": "role-switching",
           "name": "role-switching",
-          "type": "link"
+          "type": "link",
+          "permissions": {
+        "only": "ADMIN"
+      }
         },
         {
           "route": "route-guard",
@@ -86,6 +121,49 @@
           "type": "link",
           "permissions": {
             "only": "ADMIN"
+          }
+        }
+      ]
+    },
+    {
+      "route": "menu-level",
+      "name": "menu-level",
+      "type": "sub",
+      "icon": "subject",
+      "permissions": {
+        "only": "GUEST"
+      },
+      "children": [
+        {
+          "route": "dog-training-home",
+          "name": "level-1-1",
+          "type": "link",
+          "permissions": {
+            "only": "GUEST"
+          }
+        },
+        {
+          "route": "dental-care-home",
+          "name": "level-1-2",
+          "type": "link",
+          "permissions": {
+            "only": "GUEST"
+          }
+        },
+        {
+          "route": "internal-medicine",
+          "name": "level-2-1",
+          "type": "link",
+          "permissions": {
+            "only": "GUEST"
+          }
+        },
+        {
+          "route": "groom-details",
+          "name": "level-2-2",
+          "type": "link",
+          "permissions": {
+            "only": "GUEST"
           }
         }
       ]
@@ -108,5 +186,6 @@
         }
       ]
     }
+
   ]
 }

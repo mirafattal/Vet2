@@ -1,84 +1,11 @@
 <body>
   <div class="container">
-    <div class="item item-0">
-      <mat-toolbar color="primary" class="toolbar">
-        <div class="logo-container">
-          <img src="/images/MyImages/Logo2.png" alt="Logo" class="logo-image" />
-          <span class="logo-title">Dr PawPaw</span>
-        </div>
 
-        <!-- Spacer to push menu items to the right -->
-        <span class="spacer"></span>
-
-        <!-- Services Button -->
-        <div
-    class="menu-wrapper">
-    <button mat-button [matMenuTriggerFor]="PetservicesMenu" #PetservicesTrigger="matMenuTrigger">
-      Pet Services <mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-    <mat-menu #PetservicesMenu="matMenu" class="hover-menu">
-      <button mat-menu-item (click)="onDogTraining()">Dog Training</button>
-      <button mat-menu-item (click)="onDentalCare()">Dental Care</button>
-      <button mat-menu-item (click)="onVaccineDetails()">Vaccination</button>
-      <button mat-menu-item (click)="onSurgeryDetails()">Surgery</button>
-      <button mat-menu-item (click)="onGroomDetails()">Grooming</button>
-      </mat-menu>
-  </div>
-
-<div class="menu-wrapper">
-    <button mat-button [matMenuTriggerFor]="EquineservicesMenu" #EquineservicesTrigger="matMenuTrigger">
-      Equine Services <mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-  </div>
-
-  <div class="menu-wrapper">
-    <button mat-button [matMenuTriggerFor]="PetAdoptionMenu" #PetservicesTrigger="matMenuTrigger">
-      Pet Adoption <mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-    <mat-menu #PetAdoptionMenu="matMenu" class="hover-menu">
-      <button mat-menu-item (click)="onAdoptionDetails()">Adoption Details</button>
-      <button mat-menu-item (click)="onAdoptNow()">Adopt now</button>
-      </mat-menu>
-    </div>
-
-
-  <!-- About Us Menu -->
-  <div
-    class="menu-wrapper">
-    <button mat-button [matMenuTriggerFor]="aboutUsMenu" #aboutUsTrigger="matMenuTrigger">
-      About Us <mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-  </div>
-  <div class="menu-wrapper">
-    <button mat-button [matMenuTriggerFor]="ResultsMenu" #ResultsTrigger="matMenuTrigger">
-      Check Results <mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-  </div>
-
-   <!-- Menus -->
-   <mat-menu #EquineservicesMenu="matMenu">
-    <button mat-menu-item (click)="onInternalMedicine()">Internal Medicine</button>
-    <button mat-menu-item>Diagnostics</button>
-    <button mat-menu-item>Lab Testing & Screening</button>
-    <button mat-menu-item>Horse Training</button>
-    <button mat-menu-item>Wellness & Preventative Care</button>
-  </mat-menu>
-
-    <mat-menu #aboutUsMenu="matMenu" class="hover-menu">
-    <button mat-menu-item (click)="goToTeamPage()">Our Team</button>
-    <button mat-menu-item>Contact</button>
-    </mat-menu>
-    <mat-menu #ResultsMenu="matMenu">
-      <button mat-menu-item (click)="onLabResultHome()">Lab Results</button>
-    </mat-menu>
-
-      </mat-toolbar>
-    </div>
 
     <div class="item item-1">
       <!-- Background Image -->
       <div class="background-container">
-        <img src="images/MyImages/ClientHomeBack.webp" alt="Example Image">
+        <img src="images/MyImages/ClientHome1.webp" alt="Example Image">
       </div>
 
       <!-- Centered Text -->
@@ -96,7 +23,7 @@
     </div>
 
     <div class="item item-3">
-      <div><button class ="service-1">
+      <div><button class ="service-1" (click)="onInternalMedicine()">
         <span class="text-bg">Equine</span></button>
       </div>
       <div><button class ="service-2" (click)="onVaccineDetails()">
@@ -128,14 +55,13 @@
     <div class="item item-5">
       <div class="button-grid">
         <!-- Button 1 -->
-        <button class="transparent-button">
+        <button class="transparent-button" (click)="onVaccineDetails()">
           <div>
-            <p class="head">Contact us</p>
+            <p class="head">Vaccination Details</p>
             <p>
-              If you have any questions, call or email us and our staff will respond
-              as soon as possible!
+              Understanding the details of vaccination is essential for making informed decisions about your Animal's health!
             </p>
-            <a class="link">Connect with us</a>
+            <a class="link">Learn More</a>
           </div>
         </button>
 
@@ -151,11 +77,11 @@
         </button>
 
         <!-- Button 3 -->
-        <button class="transparent-button">
+        <button class="transparent-button" (click)="onSurgeryDetails()">
           <div>
-            <p class="head">Wellness & Care Checkups</p>
+            <p class="head">Check Our Surgery Details</p>
             <p>
-              Learn about all of the services that we provide to patients at our veterinary center.
+              Learn about the services that we provide to patients at our veterinary center.
             </p>
             <a class="link">Learn More</a>
           </div>
@@ -224,14 +150,6 @@
       <div class="footer-section">
         <div class="logo">
           <img src="images/MyImages/Logo2.png" alt="Dr Pawpaw Center Logo" />
-        </div>
-        <div class="social-icons">
-          <a href="https://www.instagram.com" target="_blank">
-            <img src="images/MyImages/instagram.webp" alt="Instagram" />
-          </a>
-          <a href="https://www.facebook.com" target="_blank">
-            <img src="images/MyImages/facebook.jpg" alt="Facebook" />
-          </a>
         </div>
         <div class="contact-info">
           <span>Call Us: <a href="tel:800-462-8749">800-462-8749</a></span>

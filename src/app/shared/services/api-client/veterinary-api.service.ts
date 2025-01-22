@@ -1568,6 +1568,267 @@ export class APIClient {
     }
 
     /**
+     * @param searchTerm (optional) 
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @return OK
+     */
+    searchAnimals(searchTerm: string | undefined, page: number | undefined, pageSize: number | undefined): Observable<AnimalDtoPaginationResponseDto> {
+        let url_ = this.baseUrl + "/api/Animal/searchAnimals?";
+        if (searchTerm === null)
+            throw new Error("The parameter 'searchTerm' cannot be null.");
+        else if (searchTerm !== undefined)
+            url_ += "SearchTerm=" + encodeURIComponent("" + searchTerm) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "Page=" + encodeURIComponent("" + page) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchAnimals(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchAnimals(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AnimalDtoPaginationResponseDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AnimalDtoPaginationResponseDto>;
+        }));
+    }
+
+    protected processSearchAnimals(response: HttpResponseBase): Observable<AnimalDtoPaginationResponseDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AnimalDtoPaginationResponseDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = InvoiceDtoPaginationResponseDto.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param searchTerm (optional) 
+     * @return OK
+     */
+    searchAnimalOwner(searchTerm: string | undefined): Observable<AnimalSearchDto[]> {
+        let url_ = this.baseUrl + "/api/Animal/searchAnimalOwner?";
+        if (searchTerm === null)
+            throw new Error("The parameter 'searchTerm' cannot be null.");
+        else if (searchTerm !== undefined)
+            url_ += "searchTerm=" + encodeURIComponent("" + searchTerm) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearchAnimalOwner(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearchAnimalOwner(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AnimalSearchDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AnimalSearchDto[]>;
+        }));
+    }
+
+    protected processSearchAnimalOwner(response: HttpResponseBase): Observable<AnimalSearchDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AnimalSearchDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param searchTerm (optional) 
+     * @return OK
+     */
+    search(searchTerm: string | undefined): Observable<AnimalSearchDto[]> {
+        let url_ = this.baseUrl + "/api/Animal/search?";
+        if (searchTerm === null)
+            throw new Error("The parameter 'searchTerm' cannot be null.");
+        else if (searchTerm !== undefined)
+            url_ += "searchTerm=" + encodeURIComponent("" + searchTerm) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSearch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSearch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AnimalSearchDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AnimalSearchDto[]>;
+        }));
+    }
+
+    protected processSearch(response: HttpResponseBase): Observable<AnimalSearchDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AnimalSearchDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAnimalOwnerTable(): Observable<GetAnimalOwnerTable[]> {
+        let url_ = this.baseUrl + "/api/Animal/GetAnimalOwnerTable";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAnimalOwnerTable(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAnimalOwnerTable(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAnimalOwnerTable[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAnimalOwnerTable[]>;
+        }));
+    }
+
+    protected processGetAnimalOwnerTable(response: HttpResponseBase): Observable<GetAnimalOwnerTable[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetAnimalOwnerTable.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Internal Server Error", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     getAll3(): Observable<AnimalDtoIEnumerableApiResponse> {
@@ -7461,6 +7722,58 @@ export class APIClient {
     }
 
     /**
+     * @param petId (optional) 
+     * @return OK
+     */
+    deletePetWithQuest(petId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/PetForAdoption/DeletePetWithQuest?";
+        if (petId === null)
+            throw new Error("The parameter 'petId' cannot be null.");
+        else if (petId !== undefined)
+            url_ += "petId=" + encodeURIComponent("" + petId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeletePetWithQuest(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeletePetWithQuest(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeletePetWithQuest(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     getAll12(): Observable<PetForAdoptionDtoIEnumerableApiResponse> {
@@ -12300,6 +12613,65 @@ export interface IAnimalDtoIEnumerableApiResponse {
     errorMessage?: string | null;
 }
 
+export class AnimalDtoPaginationResponseDto implements IAnimalDtoPaginationResponseDto {
+    data?: AnimalDto[] | null;
+    totalRecords?: number;
+    pageNumber?: number;
+    pageSize?: number;
+
+    constructor(data?: IAnimalDtoPaginationResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(AnimalDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.totalRecords = _data["totalRecords"] !== undefined ? _data["totalRecords"] : <any>null;
+            this.pageNumber = _data["pageNumber"] !== undefined ? _data["pageNumber"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AnimalDtoPaginationResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AnimalDtoPaginationResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["totalRecords"] = this.totalRecords !== undefined ? this.totalRecords : <any>null;
+        data["pageNumber"] = this.pageNumber !== undefined ? this.pageNumber : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        return data;
+    }
+}
+
+export interface IAnimalDtoPaginationResponseDto {
+    data?: AnimalDto[] | null;
+    totalRecords?: number;
+    pageNumber?: number;
+    pageSize?: number;
+}
+
 export class AnimalImageDto implements IAnimalImageDto {
     animalId?: number;
     imageUrl?: string | null;
@@ -12338,6 +12710,66 @@ export class AnimalImageDto implements IAnimalImageDto {
 export interface IAnimalImageDto {
     animalId?: number;
     imageUrl?: string | null;
+}
+
+export class AnimalSearchDto implements IAnimalSearchDto {
+    animalId?: number;
+    animalName?: string | null;
+    species?: string | null;
+    breed?: string | null;
+    ownerId?: number;
+    fullName?: string | null;
+    owner?: OwnerDto;
+
+    constructor(data?: IAnimalSearchDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
+            this.animalName = _data["animalName"] !== undefined ? _data["animalName"] : <any>null;
+            this.species = _data["species"] !== undefined ? _data["species"] : <any>null;
+            this.breed = _data["breed"] !== undefined ? _data["breed"] : <any>null;
+            this.ownerId = _data["ownerId"] !== undefined ? _data["ownerId"] : <any>null;
+            this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
+            this.owner = _data["owner"] ? OwnerDto.fromJS(_data["owner"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AnimalSearchDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AnimalSearchDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
+        data["animalName"] = this.animalName !== undefined ? this.animalName : <any>null;
+        data["species"] = this.species !== undefined ? this.species : <any>null;
+        data["breed"] = this.breed !== undefined ? this.breed : <any>null;
+        data["ownerId"] = this.ownerId !== undefined ? this.ownerId : <any>null;
+        data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
+        data["owner"] = this.owner ? this.owner.toJSON() : <any>null;
+        return data;
+    }
+}
+
+export interface IAnimalSearchDto {
+    animalId?: number;
+    animalName?: string | null;
+    species?: string | null;
+    breed?: string | null;
+    ownerId?: number;
+    fullName?: string | null;
+    owner?: OwnerDto;
 }
 
 export class AnimalTypeDto implements IAnimalTypeDto {
@@ -13342,6 +13774,98 @@ export interface IGetAllAdoptionQuestwithPetNameDto {
     questionStatus?: string | null;
     createdAt?: Date;
     petName?: string | null;
+}
+
+export class GetAnimalOwnerTable implements IGetAnimalOwnerTable {
+    animalId?: number;
+    ownerId?: number;
+    animalTypeId?: number;
+    animalName?: string | null;
+    species?: string | null;
+    breed?: string | null;
+    gender?: string | null;
+    animalBirthDate?: Date;
+    weight?: number;
+    userId?: number;
+    fullName?: string | null;
+    address?: string | null;
+    ownerEmail?: string | null;
+    ownerBirthDate?: Date;
+    phone?: string | null;
+
+    constructor(data?: IGetAnimalOwnerTable) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
+            this.ownerId = _data["ownerId"] !== undefined ? _data["ownerId"] : <any>null;
+            this.animalTypeId = _data["animalTypeId"] !== undefined ? _data["animalTypeId"] : <any>null;
+            this.animalName = _data["animalName"] !== undefined ? _data["animalName"] : <any>null;
+            this.species = _data["species"] !== undefined ? _data["species"] : <any>null;
+            this.breed = _data["breed"] !== undefined ? _data["breed"] : <any>null;
+            this.gender = _data["gender"] !== undefined ? _data["gender"] : <any>null;
+            this.animalBirthDate = _data["animalBirthDate"] ? new Date(_data["animalBirthDate"].toString()) : <any>null;
+            this.weight = _data["weight"] !== undefined ? _data["weight"] : <any>null;
+            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+            this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
+            this.address = _data["address"] !== undefined ? _data["address"] : <any>null;
+            this.ownerEmail = _data["ownerEmail"] !== undefined ? _data["ownerEmail"] : <any>null;
+            this.ownerBirthDate = _data["ownerBirthDate"] ? new Date(_data["ownerBirthDate"].toString()) : <any>null;
+            this.phone = _data["phone"] !== undefined ? _data["phone"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GetAnimalOwnerTable {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAnimalOwnerTable();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
+        data["ownerId"] = this.ownerId !== undefined ? this.ownerId : <any>null;
+        data["animalTypeId"] = this.animalTypeId !== undefined ? this.animalTypeId : <any>null;
+        data["animalName"] = this.animalName !== undefined ? this.animalName : <any>null;
+        data["species"] = this.species !== undefined ? this.species : <any>null;
+        data["breed"] = this.breed !== undefined ? this.breed : <any>null;
+        data["gender"] = this.gender !== undefined ? this.gender : <any>null;
+        data["animalBirthDate"] = this.animalBirthDate ? this.animalBirthDate.toISOString() : <any>null;
+        data["weight"] = this.weight !== undefined ? this.weight : <any>null;
+        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
+        data["address"] = this.address !== undefined ? this.address : <any>null;
+        data["ownerEmail"] = this.ownerEmail !== undefined ? this.ownerEmail : <any>null;
+        data["ownerBirthDate"] = this.ownerBirthDate ? this.ownerBirthDate.toISOString() : <any>null;
+        data["phone"] = this.phone !== undefined ? this.phone : <any>null;
+        return data;
+    }
+}
+
+export interface IGetAnimalOwnerTable {
+    animalId?: number;
+    ownerId?: number;
+    animalTypeId?: number;
+    animalName?: string | null;
+    species?: string | null;
+    breed?: string | null;
+    gender?: string | null;
+    animalBirthDate?: Date;
+    weight?: number;
+    userId?: number;
+    fullName?: string | null;
+    address?: string | null;
+    ownerEmail?: string | null;
+    ownerBirthDate?: Date;
+    phone?: string | null;
 }
 
 export class GetAnimalbyOwnerIDdto implements IGetAnimalbyOwnerIDdto {

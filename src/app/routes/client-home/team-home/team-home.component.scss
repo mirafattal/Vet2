@@ -1,60 +1,18 @@
 .container{
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 90px 100px 1fr;
-}
-.item-0{
-  grid-column: 1;
-  grid-row: 1;
+  grid-template-rows: 50px 1fr;
 }
 
 .item-1{
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 1;
   background-color: #d5def5;
-
-  .breadcrumb-container {
-
-    padding: 8px 16px;
-    color: black;
-  }
-
-  .breadcrumb-item {
-    display: inline;
-  }
-
-  .breadcrumb-link {
-    color: black;
-    text-decoration: none;
-    font-weight: 10px;
-    font-size: 16px;
-    background-color: #d5def5;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .breadcrumb-separator {
-    color: black; // White for the separator
-    margin: 0 4px;
-  }
-
-  .current {
-    color: black; // White for the current page text
-    font-weight: normal;
-    background-color: #d5def5;
-  }
-  .text{
-    font-size: 24px;
-    color: black;
-    margin-left: 30px;
-    margin-top:10px;
-  }
 
 }
 .item-2{
   grid-column: 1;
-  grid-row: 3;
+  grid-row: 2;
   background-color: #d5def5;
   .team-page-container {
     display: grid;

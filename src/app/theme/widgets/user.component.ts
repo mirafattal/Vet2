@@ -6,13 +6,14 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { debounceTime, tap } from 'rxjs';
 
-import { AuthService, SettingsService, User } from '@core';
+import { AuthService, SettingsService, TokenService, User } from '@core';
+import { APIClient, UserDto } from '@shared/services/api-client/veterinary-api.service';
 
 @Component({
   selector: 'app-user',
   template: `
     <button mat-icon-button [matMenuTriggerFor]="menu">
-      <img class="avatar" [src]="user.avatar" width="24" alt="avatar" />
+      <img class="avatar" [src]="'images/heros/5.jpg'" width="24" alt="avatar" />
     </button>
 
     <mat-menu #menu="matMenu">
@@ -49,17 +50,24 @@ export class UserComponent implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly settings = inject(SettingsService);
+  private readonly tokenService = inject(TokenService);
+  private readonly apiService = inject(APIClient);
 
-  user!: User;
+  user!: UserDto;
 
   ngOnInit(): void {
-    this.auth
-      .user()
-      .pipe(
-        tap(user => (this.user = user)),
-        debounceTime(10)
-      )
-      .subscribe(() => this.cdr.detectChanges());
+    const userId = this.tokenService.getUserId();  // Get userId from token
+    if (userId) {
+      this.apiService.getById15(userId).subscribe(
+        (userData) => {
+          this.user = userData;  // Set the user data from the backend
+          this.cdr.detectChanges();  // Trigger change detection
+        },
+        (error) => {
+          console.error('Error fetching user data:', error);
+        }
+      );
+    }
   }
 
   logout() {

@@ -3,8 +3,8 @@
 
 .matero-container-wrap,
 .matero-container {
-  --mat-sidenav-content-background-color: transparent;
-
+  --mat-sidenav-content-background-color: #d5def5;
+  //background-color: #d5def5;
   height: 100%;
 }
 
@@ -83,6 +83,7 @@
 .matero-sidenav-collapsed {
   .matero-content {
     margin-left: var(--sidenav-collapsed-width) !important;
+    background-color: #d5def5;
 
     [dir='rtl'] & {
       margin-right: var(--sidenav-collapsed-width) !important;
@@ -145,6 +146,7 @@
 .matero-page-content {
   position: relative;
   padding: var(--gutter);
+  background-color: #dbe2f3;
 
   .matero-header + &,
   .matero-header-above &,

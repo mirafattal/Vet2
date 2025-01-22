@@ -182,7 +182,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  colorScheme = 'air'; // Use a predefined color scheme
+  colorScheme = 'ocean'; // Use a predefined color scheme
   showContent = true;
 
   datas: ChartDat[] = []; // Initialize an empty array for the chart data

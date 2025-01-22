@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-internal-medicine',
   standalone: true,
   imports: [
-    ClientToolbarComponent,
     CommonModule
   ],
   templateUrl: './internal-medicine.component.html',

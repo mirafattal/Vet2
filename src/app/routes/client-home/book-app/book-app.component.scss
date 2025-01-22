@@ -1,62 +1,21 @@
 .container{
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 90px 150px 800px;
-
-}
-.item-0{
-  grid-column: 1;
-  grid-row: 1;
+  grid-template-rows: 100px 800px;
 
 }
 
 .item-1{
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 1;
   background-color: #d5def5;
-
-  .breadcrumb-container {
-
-    padding: 8px 16px;
-    color: black;
-  }
-
-  .breadcrumb-item {
-    display: inline;
-  }
-
-  .breadcrumb-link {
-    color: black;
-    text-decoration: none;
-    font-weight: 10px;
-    font-size: 16px;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .breadcrumb-separator {
-    color: black; // White for the separator
-    margin: 0 4px;
-  }
-
-  .current {
-    color: black; // White for the current page text
-    font-weight: normal;
-  }
-  .text{
-    font-size: 24px;
-    color: black;
-    margin-left: 30px;
-    margin-top:10px;
-  }
 
 }
 
 .item-2{
+  grid-row: 2;
   background-color: #d5def5;
-  grid-column: 1;
-  grid-row: 3;
+
 .appointment-container {
 
   max-width: 600px;
@@ -66,83 +25,96 @@
   background-color: beige;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-}
-
-mat-select {
-  width: 50%;
-  margin-top: 10px;
-}
-
-mat-option {
-  font-size: 16px;
-}
-
-label {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 5px;
-  display: inline-block;
-}
-
-div {
-  margin-bottom: 20px;
-}
-
-button {
-  display: block;
-  margin: 20px auto;
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #45a049;
-  }
-}
-
-mat-form-field {
-  display: block;
-  width: 300%;
-  margin-top: 10px;
-  margin-left: 100px;
-}
-
-mat-select {
-  .mat-select-trigger {
-    font-size: 16px;
-  }
-}
-
-mat-option {
-  font-size: 16px;
-  padding: 10px;
-}
-}
-.appointment-textarea {
-  width: 400px;  // Adjust to desired width
-  max-width: 500px;  // Optional: limit the maximum width
-}
-
-.confirmation-message {
-  text-align: center;
-  margin-top: 50px;
-
   h2 {
-    color: #4caf50; // Green for success
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
   }
 
-  p {
-    font-size: 18px;
-    color: #333;
+  mat-select {
+    width: 100%;  // Ensure full width
+    margin-top: 10px;
+    background-color: white;  // Ensure dropdown has a white background
+    border-radius: 4px;  // Optional: border radius for the select box
+    border: 1px solid #ccc;  // Optional: border for the select box
+    padding: 5px;
+
+    .mat-select-trigger {
+      font-size: 16px;
+      color: #333;  // Make sure the text is visible
+    }
+
+    .mat-select-arrow {
+      color: #333;  // Make sure the arrow icon is visible
+    }
+
+    .mat-select-panel {
+      background-color: white;  // Ensure the dropdown has a white background
+      color: #333;  // Text color for options
+      border-radius: 4px;  // Optional: border radius for the dropdown
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  // Optional: add shadow for dropdown
+    }
+
+    mat-option {
+      font-size: 16px;
+      padding: 10px;
+    }
+  }
+
+  mat-form-field {
+    display: block;
+    width: 100%;  // Adjust width to fit inside the container
+    margin-top: 10px;
+    margin-left: 0;  // Remove left margin for better alignment
+    border-radius: 4px;
+    background-color: white;  // Ensure the field has a white background
+    border: 1px solid #ccc;  // Ensure border for the form field
+
+    // Style the label and input inside the form field
+    label {
+      font-size: 16px;
+      color: #333;
+    }
+
+    input,
+    mat-select {
+      font-size: 16px;
+    }
+  }
+
+  button {
+    display: block;
+    margin: 20px auto;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  .appointment-textarea {
+    width: 400px;  // Adjust to desired width
+    max-width: 500px;  // Optional: limit the maximum width
+  }
+
+  .confirmation-message {
+    text-align: center;
+    margin-top: 50px;
+
+    h2 {
+      color: #4caf50; // Green for success
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+    }
   }
 }
-
 }

@@ -1,35 +1,49 @@
-<mat-card class="owner-card">
+<mat-card>
   <mat-card-header>
     <mat-card-title>Edit Medical Details</mat-card-title>
   </mat-card-header>
-
   <mat-card-content>
-    <form #ownerForm="ngForm" class="owner-form">
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Diagnosis</mat-label>
-        <input matInput [(ngModel)]="data.records.diagnosis" name="diagnosis" required />
-      </mat-form-field>
+    <form #ownerForm="ngForm">
+      <div class="form-row">
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Medication</mat-label>
-        <input matInput [(ngModel)]="data.records.prescribedMedication" name="medication" required />
-      </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Diagnosis</mat-label>
+          <input matInput [(ngModel)]="data.diagnosis" name="fullName" required />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Surgery Details</mat-label>
-        <input matInput [(ngModel)]="data.records.surgeryDetails" name="surgery" required />
-      </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Treatment</mat-label>
+          <input matInput [(ngModel)]="data.treatment" name="phone" required />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Treatment</mat-label>
-        <input matInput [(ngModel)]="data.records.treatment" name="treatment" required />
-      </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Surgery Details</mat-label>
+          <input matInput [(ngModel)]="data.surgeryDetails" name="surgery" required />
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Prescribed Medication</mat-label>
+          <input matInput [(ngModel)]="data.prescribedMedication" name="medication" required />
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Select Doctor</mat-label>
+          <mat-select name="staffId" [(ngModel)]="data.staffId" required>
+            <ng-container *ngFor="let doctor of doctorNames">
+              <mat-option [value]="doctor.staffId">
+                {{ doctor.fullName }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
+      <div class="action-buttons">
+        <button mat-button (click)="onNoClick()">Cancel</button>
+        <button mat-button (click)="saveChanges()" [disabled]="!ownerForm.valid">Submit</button>
+      </div>
     </form>
-    </mat-card-content>
-
-  <mat-card-actions align="end">
-    <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="saveChanges()" cdkFocusInitial>Save</button>
-  </mat-card-actions>
-
+  </mat-card-content>
 </mat-card>
+

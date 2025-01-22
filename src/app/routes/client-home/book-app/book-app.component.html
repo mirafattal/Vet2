@@ -1,28 +1,17 @@
 <body>
   <div class="container">
-    <div class="item item-0">
-      <app-client-toolbar></app-client-toolbar>
-    </div>
 
     <div class="item item-1">
-      <div class="breadcrumb-container mat-elevation-z2">
-        <nav>
-          <span class="breadcrumb-item">
-            <button mat-button (click)="navigateTo('/client-home')" class="breadcrumb-link">Home</button>
-          </span>
-          <span class="breadcrumb-separator"> / </span>
-          <span class="breadcrumb-item">
-            <button mat-button (click)="navigateTo('/book-appointment')" class="breadcrumb-link current">Appointment</button>
-          </span>
-        </nav>
-      </div>
-      <div class="text">Book Appointment</div>
     </div>
 
     <div class="item item-2">
       <div class="appointment-container">
 
-        <!-- Animal Selection Section -->
+        <!-- Form Section -->
+        <div *ngIf="!showConfirmationMessage">
+          <h2>Book an Appointment</h2>
+
+                  <!-- Animal Selection Section -->
         <div *ngIf="animals.length > 0">
           <label for="animal">Select Animal:</label>
           <mat-select [(ngModel)]="selectedAnimalId" (selectionChange)="onAnimalChange($event.value)">
@@ -31,10 +20,6 @@
             </mat-option>
           </mat-select>
         </div>
-
-        <!-- Form Section -->
-        <div *ngIf="!showConfirmationMessage">
-          <h2>Book an Appointment</h2>
 
           <div>
             <label for="doctor">Select Doctor:</label>

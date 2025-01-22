@@ -183,14 +183,19 @@ export class AdoptionComponent implements OnInit {
   }
 
 
-  onDeletePet(petForAdoptionId: number): void {
+  onDeletePet(petId: number): void {
     if (confirm('Are you sure you want to delete this pet?')) {
-      this.apiService.deleteById12(petForAdoptionId).subscribe(() => {
-        this.petsforadoption = this.petsforadoption.filter(
-          pet => pet.petForAdoptionId !== petForAdoptionId
-        );
-        this.snackBar.open('Pet deleted successfully', 'Close', { duration: 3000 });
-      });
+      this.apiService.deletePetWithQuest(petId).subscribe(
+        () => {
+          this.snackBar.open('Pet deleted successfully', 'Close', { duration: 3000 });
+          // Refresh the pet list after deletion
+          this.fetchPets();
+        },
+        (error) => {
+          console.error('Error deleting pet:', error);
+          this.snackBar.open('Error deleting pet', 'Close', { duration: 3000 });
+        }
+      );
     }
   }
 

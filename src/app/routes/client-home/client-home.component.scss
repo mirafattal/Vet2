@@ -1,78 +1,13 @@
 .container{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 90px 800px 250px 450px 500px 800px 400px 600px 400px 600px;
+  grid-template-rows: 759px 250px 450px 500px 800px 400px 600px 400px 600px;
   column-gap: 30px;
 
 }
-.item-0{
+.item-1 {
   grid-column: 1/5;
   grid-row: 1;
-  .toolbar {
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background-color: 	#6643b5;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    height: 90px;
-
-    /* Logo Styling */
-    .logo-container {
-      display: flex;
-      align-items: center;
-
-      .logo-image {
-        width: 80px; /* Adjust the size of your logo */
-        height: 80px; /* Adjust the size of your logo */
-        margin-right: 8px; /* Add spacing between the image and the title */
-      }
-
-      .logo-title {
-        font-size: 26px;
-        font-weight: 10px;
-        color: black;
-      }
-    }
-
-    .spacer {
-      flex: 1; /* Pushes menu items to the right */
-    }
-
-    button {
-      background-color:	#6643b5;
-      font-size: 16px; /* Change this value to adjust the text size */
-      font-weight: 500; /* Optional: Make the text bolder */
-      text-transform: capitalize; /* Optional: Capitalize the text */
-
-      /* Adjust padding for larger text */
-      padding: 8px 16px;
-
-      /* Optional: Add hover effect */
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.1); /* Highlight on hover */
-      }
-    }
-    .menu-wrapper {
-      position: relative;
-    }
-
-    mat-menu-item {
-      font-size: 16px;
-      padding: 8px 16px;
-      color: #3f51b5;
-
-      &:hover {
-        background-color: rgba(63, 81, 181, 0.1);
-      }
-    }
-  }
-}
-.item-1 {
-  grid-column: 1 / 5;
-  grid-row: 2;
   position: relative; /* Important: Makes it a containing block for absolutely positioned children */
 
   .background-container {
@@ -101,7 +36,7 @@
     }
 
     .subtitle {
-      color: white;
+      color: #53186b;
       font-size: 20px; /* Slightly smaller font size for the subtitle */
       font-weight: normal; /* Regular weight for the subtitle */
       margin-bottom: 20px; /* Space between subtitle and button */
@@ -143,7 +78,7 @@
 }
 .item-2{
   grid-column: 1/5;
-  grid-row: 3;
+  grid-row: 2;
   background-color:	#6643b5;
   background-size: cover;
   display: flex; /* Keeps the position intact */
@@ -152,7 +87,7 @@
   flex-direction: column; /* Stack text and button vertically */
   .text-2{
     margin-top: 90px;
-    color: white;
+    color: #e2dbdb;
     font-size: 34px; /* Adjust text size */
     margin-bottom: 20px; /* Add spacing below the text */
   }
@@ -164,7 +99,7 @@
   font-size: 20px; /* Adjust font size */
   font-weight: 1px; /* Make the text stand out */
   color: rgb(0, 0, 0); /* Text color */
-  background-color: rgb(243, 243, 191); /* Button background color */
+  background-color: #e2dbdb; /* Button background color */
   border: none; /* Remove default border */
   border-radius: 8px; /* Add rounded corners */
   cursor: pointer; /* Show a pointer when hovered */
@@ -173,7 +108,7 @@
 
   /* Hover effect */
   &:hover {
-    background-color: rgb(224, 224, 155); /* Slightly darker background on hover */
+    background-color: #d3cccc; /* Slightly darker background on hover */
     transform: scale(1.05); /* Slight scale-up for hover effect */
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4); /* More pronounced shadow on hover */
   }
@@ -187,7 +122,7 @@
 }
 .item-3{
 grid-column: 1/5;
-grid-row: 4;
+grid-row: 3;
 
 background-color:	#6643b5;
 background-size: cover;
@@ -298,7 +233,7 @@ align-items: center; /* Vertically center buttons */
 
 .item-4{
   grid-column: 1/5;
-  grid-row: 5;
+  grid-row: 4;
   background-color: #d5def5;
   display: grid;
   grid-template-columns: 700px 400px;
@@ -350,7 +285,7 @@ align-items: center; /* Vertically center buttons */
 }
 .item-5{
   grid-column: 1/5;
-  grid-row: 6;
+  grid-row: 5;
   background-color: #d5def5;
   .button-grid {
     display: grid;
@@ -409,7 +344,7 @@ align-items: center; /* Vertically center buttons */
 }
 .item-8{
   grid-column: 1/5;
-  grid-row: 7;
+  grid-row: 6;
   background-color: #d5def5;
 
   .meet-the-team-container {
@@ -498,7 +433,7 @@ align-items: center; /* Vertically center buttons */
 
 .item-9{
   grid-column: 1/5;
-  grid-row: 9;
+  grid-row: 8;
   background-color: #6643b5;
 
 
@@ -511,7 +446,7 @@ align-items: center; /* Vertically center buttons */
 
     h3 {
       font-size: 1.5rem;
-      color: #333; /* Sea Green */
+      color: #e2dbdb; /* Sea Green */
       margin-bottom: 1rem;
     }
 
@@ -523,7 +458,7 @@ align-items: center; /* Vertically center buttons */
 
       .day-time {
         font-size: 1rem;
-        color: #333;
+        color: #e2dbdb;
         text-align: center;
         margin: 0 0.5rem;
         flex: 1; /* Equal space for each day */
@@ -531,7 +466,7 @@ align-items: center; /* Vertically center buttons */
 
         span {
           font-size: 0.9rem;
-          color: #333;
+          color: #e2dbdb;
         }
       }
 
@@ -617,7 +552,7 @@ align-items: center; /* Vertically center buttons */
 }
 .item-10{
   grid-column: 1/5;
-  grid-row: 10;
+  grid-row: 9;
   background-color: #d5def5;
 
   .location-section {
@@ -648,6 +583,6 @@ align-items: center; /* Vertically center buttons */
 
 .item-11{
   grid-column: 1/5;
-  grid-row: 8;
+  grid-row: 7;
   background-color: #6643b5;
 }

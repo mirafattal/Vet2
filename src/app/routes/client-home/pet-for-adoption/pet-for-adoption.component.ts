@@ -9,7 +9,6 @@ import { APIClient, PetForAdoptionDto, PetForAdoptionDtoIEnumerableApiResponse }
   selector: 'app-pet-for-adoption',
   standalone: true,
   imports: [
-    ClientToolbarComponent,
     MatCardModule,
     CommonModule
   ],

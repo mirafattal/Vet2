@@ -42,7 +42,7 @@ export class MyAuthService {
     }
 
     // 4. Get Token
-    getToken(): string | null {
+    public getToken(): string | null {
       return localStorage.getItem(this.TOKEN_KEY);
     }
 

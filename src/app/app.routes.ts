@@ -34,8 +34,6 @@ import { AdoptionComponent } from './routes/adoption/adoption.component';
 import { InvoiceComponent } from './routes/Invoice/Invoice.component';
 import { AddLabComponent } from './routes/pet/add-lab/add-lab.component';
 import { DashRatingsComponent } from './routes/dash-ratings/dash-ratings.component';
-import { LabResultHomeComponent } from './routes/client-home/lab-result-home/lab-result-home.component';
-
 
 export const routes: Routes = [
   {
@@ -75,7 +73,6 @@ export const routes: Routes = [
       { path: 'adoption', component: AdoptionComponent},
       { path: 'invoice', component: InvoiceComponent},
       { path: 'ratings', component: DashRatingsComponent},
-      { path: 'lab-result-home', component: LabResultHomeComponent},
 
 
       {
@@ -109,6 +106,10 @@ export const routes: Routes = [
       {
         path: 'utilities',
         loadChildren: () => import('./routes/utilities/utilities.routes').then(m => m.routes),
+      },
+      {
+        path: 'menu-level',
+        loadChildren: () => import('./routes/client-home/home.routes').then(m => m.routes),
       },
     ],
   },

@@ -4,6 +4,7 @@ import {
   Component,
   HostBinding,
   OnDestroy,
+  OnInit,
   ViewChild,
   ViewEncapsulation,
   inject,
@@ -14,12 +15,16 @@ import { NgProgressbar } from 'ngx-progressbar';
 import { NgProgressRouter } from 'ngx-progressbar/router';
 import { Subscription, filter } from 'rxjs';
 
-import { AppSettings, SettingsService } from '@core';
+import { AppSettings, AuthService, BaseToken, SettingsService, TokenService } from '@core';
 import { CustomizerComponent } from '../customizer/customizer.component';
 import { HeaderComponent } from '../header/header.component';
 import { SidebarNoticeComponent } from '../sidebar-notice/sidebar-notice.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { TopmenuComponent } from '../topmenu/topmenu.component';
+import { NgxRolesService } from 'ngx-permissions';
+import { permissionsOfRole } from 'app/app.component';
+import { CommonModule } from '@angular/common';
+import { MyAuthService } from 'app/routes/my-login/my-auth-service/my-auth.service';
 
 const MOBILE_MEDIAQUERY = 'screen and (max-width: 599px)';
 const TABLET_MEDIAQUERY = 'screen and (min-width: 600px) and (max-width: 959px)';
@@ -42,15 +47,18 @@ const MONITOR_MEDIAQUERY = 'screen and (min-width: 960px)';
     SidebarComponent,
     SidebarNoticeComponent,
     CustomizerComponent,
+    CommonModule
   ],
 })
-export class AdminLayoutComponent implements OnDestroy {
+export class AdminLayoutComponent implements OnInit, OnDestroy {
   @ViewChild('sidenav', { static: true }) sidenav!: MatSidenav;
   @ViewChild('content', { static: true }) content!: MatSidenavContent;
 
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly router = inject(Router);
   private readonly settings = inject(SettingsService);
+  private readonly rolesSrv = inject(NgxRolesService);
+  private readonly tokenService = inject(TokenService);
 
   options = this.settings.options;
 
@@ -107,6 +115,38 @@ export class AdminLayoutComponent implements OnDestroy {
       this.content.scrollTo({ top: 0 });
     });
   }
+  ngOnInit(): void {
+   var user = JSON.parse(localStorage.getItem('ng-matero-token')!);
+
+   const token: BaseToken = this.tokenService.get()!; // Assuming you get the BaseToken
+console.log('Token:', token);
+
+if (token?.access_token) {
+  // Decode the access token (this should only decode the JWT string)
+  const decodedToken: any = this.tokenService.decodeToken(token.access_token); // Decode the access_token
+  console.log('Decoded Token:', decodedToken);
+
+  // Access the 'Roles' from token.attributes (not directly from the token)
+  if (token?.attributes?.Roles) {
+    // If Roles is a string, convert it to an array
+    this.roles = Array.isArray(token.attributes.Roles) ? token.attributes.Roles : [token.attributes.Roles];
+  } else {
+    this.roles = [];
+  }
+
+  console.log('Roles:', this.roles);
+} else {
+  console.log('No token found');
+  this.roles = [];
+}
+
+
+
+    var currentPermissions: string[] = [];
+    var currentRole = user['Roles'];
+    currentPermissions = permissionsOfRole[currentRole];
+    this.rolesSrv.flushRolesAndPermissions();
+    this.rolesSrv.addRoleWithPermissions(currentRole, currentPermissions);  }
 
   ngOnDestroy() {
     this.layoutChangesSubscription.unsubscribe();
@@ -138,5 +178,19 @@ export class AdminLayoutComponent implements OnDestroy {
     this.settings.setOptions(options);
     this.settings.setDirection();
     this.settings.setTheme();
+  }
+
+  roles: string[] = [];
+
+  isAdmin(): boolean {
+    return this.roles.includes('ADMIN'); // Return true if the user has the 'admin' role
+  }
+
+  isGuest(): boolean {
+    return this.roles.includes('GUEST'); // Check if the user has the 'guest' role
+  }
+
+  toggleSidenav() {
+    this.sidenav.toggle();
   }
 }

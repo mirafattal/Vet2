@@ -11,16 +11,20 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AddingPetComponent } from './adding-pet/adding-pet.component';
-import { AnimalDto, APIClient, OwnerDto, OwnerDtoIEnumerableApiResponse } from '@shared/services/api-client/veterinary-api.service';
+import { AnimalDto, AnimalSearchDto, APIClient, GetAnimalOwnerTable, OwnerDto, OwnerDtoIEnumerableApiResponse } from '@shared/services/api-client/veterinary-api.service';
 import { DrawerPosition, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { PetDetailComponent } from './pet-detail/pet-detail.component';
 import { AddAppDialogComponent } from './add-app-dialog/add-app-dialog.component';
 import { AskUserDialogComponent } from './ask-user-dialog/ask-user-dialog.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-pet',
   standalone: true,
   imports: [
+    FormsModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -38,10 +42,11 @@ export class PetComponent implements OnInit {
 
     animals: AnimalDto[] = [];
     owners: OwnerDto[] = [];
-    displayedColumns = ['OwnerName', 'AnimalName', 'Species', 'actions', 'addAppointment'];
+    displayedColumns = ['OwnerName', 'AnimalName', 'Species', 'Breed', 'actions', 'addAppointment'];
     dataSource = new MatTableDataSource<any>([]); // Initialize with an empty array
     animalId: number | null = null;
     animalTypeId = 1;
+    searchTerm: string = '';
 
     position: DrawerPosition = 'right';
     width = '900px';
@@ -50,7 +55,7 @@ export class PetComponent implements OnInit {
     disableClose = false;
     closeOnNavigation = true;
 
-    constructor(private apiService: APIClient, private router: Router,
+    constructor(private apiService: APIClient, private router: Router, private snackBar: MatSnackBar,
       private route: ActivatedRoute, private drawer: MtxDrawer) {}
 
       open(animalId: number) {
@@ -89,49 +94,73 @@ export class PetComponent implements OnInit {
         this.fetchData(this.animalTypeId);
       });
     }
+    fetchData(animalTypeId: number, searchTerm: string = ''): void {
+      if (searchTerm) {
+        // Ensure the owners are fetched as well
+        this.apiService.searchAnimalOwner(searchTerm).subscribe((results) => {
+          this.updateDataSource(results);
+        });
+      } else {
+        // Default fetch without search term
+        this.apiService.getAnimalOwnerTable().subscribe(
+          (data: GetAnimalOwnerTable[]) => {
+            // Map the data from the backend to match the format expected by your table
+            const formattedData = data.map((item) => ({
+              animalId: item.animalId,
+              animalName: item.animalName,
+              species: item.species,
+              breed: item.breed,
+              fullName: item.fullName || 'Unknown', // Ensure a fallback if fullName is null
+              ownerId: item.ownerId,
+            }));
 
-      fetchData(animalTypeId: number): void {
-              console.log('Fetching data for animalTypeId:', animalTypeId);
+            this.updateDataSource(formattedData);
+          },
+          (error) => {
+            console.error('Error fetching data:', error);
+            this.snackBar.open('Error fetching data', 'Close', { duration: 3000 });
+          }
+        );
+      }
+    }
 
-              forkJoin({
-                animals: this.apiService.getbyAnimalTypeId(animalTypeId), // Fetch animals by animalTypeId
-                owners: this.apiService.getAll11(), // Fetch all owners
-              }).subscribe(
-                ({ animals, owners }: { animals: AnimalDto[]; owners: OwnerDtoIEnumerableApiResponse }) => {
-                  console.log('Animals Response:', animals);
-                  console.log('Owners Response:', owners);
+    applySearch(searchTerm: string): void {
+      if (searchTerm) {
+        this.apiService.getAnimalOwnerTable().subscribe(
+          (data: AnimalSearchDto[]) => {
+            // Filter animals based on the search term
+            const filteredData = data.filter((item) =>
+              item.animalName!.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              item.breed!.toLowerCase().includes(searchTerm.toLowerCase())
+            );
 
-                  const animalList = animals || []; // Since animals is an array
-                  const ownerList = owners?.data || []; // Owners might still have a `data` property
+            // Map the filtered data to match the table structure
+            const updatedData = filteredData.map((item) => ({
+              animalId: item.animalId,
+              animalName: item.animalName,
+              breed: item.breed,
+              fullName: item.fullName || 'Unknown', // Include owner name for reference
+              ownerId: item.ownerId,
+            }));
 
-                  if (animalList.length > 0 && ownerList.length > 0) {
-                    this.dataSource.data = animalList.map((animal) => {
-                      const owner = ownerList.find((o: any) => o.ownerId === animal.ownerId);
-                      return {
-                        animalId: animal.animalId,
-                        animalName: animal.animalName,
-                        animalTypeId: animal.animalTypeId,
-                        species: animal.species,
-                        breed: animal.breed,
-                        fullName: owner ? owner.fullName : 'Unknown',
-                        ownerId: owner ? owner.ownerId : null, // Ensure ownerId is included
-                      };
-                    });
-                  } else {
-                    console.warn('No animals or owners data available.');
-                    this.dataSource.data = [];
-                  }
-                },
-                (error) => {
-                  console.error('Error fetching data:', error);
-                  this.dataSource.data = []; // Reset data source in case of error
-                }
-              );
-            }
+            // Update the dataSource with the filtered data
+            this.updateDataSource(updatedData);
+          },
+          (error) => {
+            console.error('Error fetching data:', error);
+            this.snackBar.open('Error fetching data', 'Close', { duration: 3000 });
+          }
+        );
+      } else {
+        // If no search term is provided, reload the full data
+        this.fetchData(this.animalTypeId);
+      }
+    }
 
-    applyFilter(event: Event): void {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLowerCase();
+
+
+    private updateDataSource(data: any[]): void {
+      this.dataSource.data = data;
     }
 
     onEdit(row: any): void {
@@ -140,28 +169,27 @@ export class PetComponent implements OnInit {
     }
 
     onDelete(row: any): void {
-      console.log('Owner ID to delete:', row.ownerId); // Log the ownerId
-      console.log('Delete action clicked for:', row);
 
-      // Confirm the deletion action (optional)
-      const confirmDelete = window.confirm(`Are you sure you want to delete ${row.fullName} and its associated animals?`);
-      if (!confirmDelete) {
-        return; // If user cancels, do nothing
-      }
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            width: '400px', // Set the desired width here
+            height: '200px'
+          });
 
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
       // Call the backend service to delete the owner and animal
       this.apiService.deleteownerwithanimal(row.ownerId).subscribe({
         next: (response) => {
           console.log('Delete successful:', response);
           // Update the UI (remove the row from the table, etc.)
           this.removeRowFromTable(row);
-          alert('Owner and associated animal deleted successfully!');
+          this.snackBar.open('Owner and associated Animal has been deleted successfully!', 'Close', { duration: 3000 })
         },
         error: (err) => {
           console.error('Error deleting owner and animal:', err);
           alert('Failed to delete owner and animal!');
         }
-      });
+      }); }})
     }
 
     removeRowFromTable(row: any): void {

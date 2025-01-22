@@ -13,6 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {provideNativeDateAdapter} from '@angular/material/core';
+import { BaseToken, TokenService } from '@core';
 
 @Component({
   selector: 'app-appointment',
@@ -148,8 +149,9 @@ getStaffNames() {
 }
 
 
-constructor(private dialog: MatDialog, private apiService: APIClient) {}
+constructor(private dialog: MatDialog, private apiService: APIClient, private tokenService: TokenService) {}
 
+roles: string[] = [];
 ngOnInit(): void {
   this.todayDate = new Date().toUTCString(); // Display today's UTC date dynamically
   this.getAppointmentsThisMonth();
@@ -158,6 +160,30 @@ ngOnInit(): void {
   this.getStaffNamesFordate();
   this.fetchAppointmentsbyDate();
   this.getStaffNames();
+
+
+  const token: BaseToken = this.tokenService.get()!; // Assuming you get the BaseToken
+  console.log('Token:', token);
+
+  if (token?.access_token) {
+    // Decode the access token (this should only decode the JWT string)
+    const decodedToken: any = this.tokenService.decodeToken(token.access_token); // Decode the access_token
+    console.log('Decoded Token:', decodedToken);
+
+    // Access the 'Roles' from token.attributes (not directly from the token)
+    if (token?.attributes?.Roles) {
+      // If Roles is a string, convert it to an array
+      this.roles = Array.isArray(token.attributes.Roles) ? token.attributes.Roles : [token.attributes.Roles];
+    } else {
+      this.roles = [];
+    }
+
+    console.log('Roles:', this.roles);
+  } else {
+    console.log('No token found');
+    this.roles = [];
+  }
+
 }
 
 
@@ -174,7 +200,7 @@ filterAppointments() {
       this.filteredAppointments = this.appointAnimalNextMonth;
       break;
     default:
-      this.filteredAppointments = [];
+      this.filteredAppointments = this.appointAnimalThisWeek;
   }
    // Now filter by staffId, if selectedStaffId is available
    if (this.selectedStaffId) {

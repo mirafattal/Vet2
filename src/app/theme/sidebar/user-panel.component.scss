@@ -2,11 +2,12 @@
 
 .matero-user-panel {
   display: flex;
+  background-color: #d5def5;
   align-items: center;
   padding: 0.75rem;
   margin-bottom: 0.75rem;
   cursor: pointer;
-  background-color: var(--user-panel-background-color);
+  //background-color: var(--user-panel-background-color);
   border-radius: 0.75rem;
   outline: none;
 
