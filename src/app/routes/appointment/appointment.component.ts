@@ -332,6 +332,10 @@ filterAppointments() {
     this.fetchAppointmentsbyDate();  // Re-fetch appointments when a staff is selected
   }
 
-
+// Fetch appointments based on the selected date
+onDateChange() {
+  console.log('Selected Date:', this.selectedDate); // Debug log
+  this.fetchAppointmentsbyDate();
+}
 
 }
