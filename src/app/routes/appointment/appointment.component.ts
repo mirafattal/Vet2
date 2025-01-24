@@ -207,15 +207,6 @@ filterAppointments() {
     this.filteredAppointments = this.filteredAppointments.filter(appointment => appointment.staffId === this.selectedStaffId);
   }
 }
-  reschedule(appointment: any): void {
-    console.log('Reschedule clicked for:', appointment);
-    // Logic for rescheduling
-  }
-
-  viewDetails(appointment: any): void {
-    console.log('View details clicked for:', appointment);
-    // Logic for viewing details
-  }
 
 
 

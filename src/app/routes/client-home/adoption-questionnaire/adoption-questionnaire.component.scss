@@ -8,42 +8,6 @@
   grid-row: 1;
   background-color: #d5def5;
 
-  .breadcrumb-container {
-
-    padding: 8px 16px;
-    color: black;
-  }
-
-  .breadcrumb-item {
-    display: inline;
-  }
-
-  .breadcrumb-link {
-    color: black;
-    text-decoration: none;
-    font-weight: 10px;
-    font-size: 16px;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .breadcrumb-separator {
-    color: black; // White for the separator
-    margin: 0 4px;
-  }
-
-  .current {
-    color: black; // White for the current page text
-    font-weight: normal;
-  }
-  .text{
-    font-size: 24px;
-    color: black;
-    margin-left: 30px;
-    margin-top:10px;
-  }
-
 }
 
 
@@ -62,8 +26,8 @@
 }
 
 .leftheader {
-  font-size: 25px;
-  margin-left: 100px;
+  font-size: 30px;
+  margin-left: 240px;
   margin-bottom: 10px;
 }
 

@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-adoption-details',
   standalone: true,
   imports:[
-    ClientToolbarComponent,
     CommonModule
   ],
   templateUrl: './adoption-details.component.html',

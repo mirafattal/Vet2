@@ -14,6 +14,7 @@ import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { HttpClient } from '@angular/common/http';
 import { File } from 'buffer';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-pet-adoption',
@@ -43,7 +44,7 @@ export class AddPetAdoptionComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<AddPetAdoptionComponent>, private apiService: APIClient,
- private http: HttpClient,
+ private http: HttpClient, private snackBar: MatSnackBar
   ) {
     this.petdetails = {
      petForAdoptionId: 0,
@@ -104,10 +105,12 @@ export class AddPetAdoptionComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         console.log('Pet added successfully:', response);
+        this.snackBar.open('Pet added successfully!', 'Close', { duration: 3000 })
+        this.dialogRef.close();
       },
       error: (error) => {
         console.error('Error adding pet:', error);
-        alert('Failed to add pet. Please check your input and try again.');
+        this.snackBar.open('Failed to add Pet!', 'Close', { duration: 3000 })
       }
     });
   }

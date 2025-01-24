@@ -156,6 +156,7 @@ ngOnInit(): void {
             console.log('Delete successful:', response);
             // Update the UI (remove the row from the table, etc.)
             this.removeRowFromTable(row);
+            this.fetchData(2);
             alert('Owner and associated animal deleted successfully!');
           },
           error: (err) => {

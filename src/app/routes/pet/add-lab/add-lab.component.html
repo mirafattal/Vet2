@@ -1,16 +1,15 @@
-<mat-dialog-content>
-  <div class="add-lab-result-container">
+
     <mat-card>
       <mat-card-header>
-        <mat-card-title>Add Lab Result</mat-card-title>
+        <mat-card-title> Lab Result</mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
         <form #labResultForm="ngForm">
-          <div class="form-group">
+          <div class="form-row">
 
             <!-- Test Name Dropdown -->
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" class="form-field">
               <mat-label>Test Name</mat-label>
               <mat-select [(ngModel)]="selectedtestNormalId" name="testNormalRangeId" required>
                 <mat-option *ngFor="let test of testNormalRange" [value]="test.testNormalRangeId">
@@ -20,7 +19,7 @@
             </mat-form-field>
 
             <!-- Result Input -->
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" class="form-field">
               <mat-label>Result</mat-label>
               <input matInput [(ngModel)]="addLab.result" name="result" type="number" required />
               <mat-error *ngIf="!addLab.result">
@@ -37,10 +36,10 @@
          <button mat-button color="warn" (click)="onCancel()">Cancel</button>
         <!-- Submit Button -->
         <button mat-raised-button color="primary" type="submit" [disabled]="!labResultForm.valid"
-        (click)="onSubmit()">
+        (click)="onSubmit()" class="submit">
           Submit
         </button>
       </mat-card-actions>
     </mat-card>
-  </div>
-</mat-dialog-content>
+
+

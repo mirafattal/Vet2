@@ -5,7 +5,7 @@
       "name": "dashboard",
       "type": "link",
       "icon": "dashboard",
-"permissions": {
+      "permissions": {
         "only": "ADMIN"
       }
     },
@@ -76,7 +76,7 @@
       "route": "client-home",
       "name": "client-home",
       "type": "link",
-      "icon": "dashboard",
+      "icon": "home",
       "permissions": {
       "except": "MANAGER"
       }
@@ -85,7 +85,16 @@
       "route": "book-appointment",
       "name": "book-appointment",
       "type": "link",
-      "icon": "dashboard",
+      "icon": "calendar_today",
+      "permissions": {
+        "only": "GUEST"
+      }
+    },
+    {
+      "route": "pet-for-adoption",
+      "name": "pet-for-adoption",
+      "type": "link",
+      "icon": "pets",
       "permissions": {
         "only": "GUEST"
       }

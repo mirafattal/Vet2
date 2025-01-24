@@ -83,6 +83,7 @@ export class RatingsComponent implements OnInit {
             duration: 3000,
           });
           this.resetForm();
+          this.getLastReviews();
         },
         error: (error) => {
           console.error('Error submitting review:', error);

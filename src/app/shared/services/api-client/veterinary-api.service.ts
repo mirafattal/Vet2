@@ -12020,7 +12020,7 @@ export class AddPetForAdoptionDto implements IAddPetForAdoptionDto {
     petForAdoptionId?: number;
     breed?: string | null;
     species?: string | null;
-    petBirthDate?: Date;
+    petBirthDate?: Date | null;
     petCondition?: string | null;
     gender?: string | null;
     weight?: number;
@@ -12064,7 +12064,7 @@ export class AddPetForAdoptionDto implements IAddPetForAdoptionDto {
         data["petForAdoptionId"] = this.petForAdoptionId !== undefined ? this.petForAdoptionId : <any>null;
         data["breed"] = this.breed !== undefined ? this.breed : <any>null;
         data["species"] = this.species !== undefined ? this.species : <any>null;
-        data["petBirthDate"] = this.petBirthDate ? formatDate(this.petBirthDate) : <any>null;
+        data["petBirthDate"] = this.petBirthDate ? this.petBirthDate.toISOString() : <any>null;
         data["petCondition"] = this.petCondition !== undefined ? this.petCondition : <any>null;
         data["gender"] = this.gender !== undefined ? this.gender : <any>null;
         data["weight"] = this.weight !== undefined ? this.weight : <any>null;
@@ -12079,7 +12079,7 @@ export interface IAddPetForAdoptionDto {
     petForAdoptionId?: number;
     breed?: string | null;
     species?: string | null;
-    petBirthDate?: Date;
+    petBirthDate?: Date | null;
     petCondition?: string | null;
     gender?: string | null;
     weight?: number;
@@ -14827,7 +14827,7 @@ export class PetForAdoptionDto implements IPetForAdoptionDto {
     petName?: string | null;
     breed?: string | null;
     species?: string | null;
-    petBirthDate?: Date;
+    petBirthDate?: Date | null;
     petCondition?: string | null;
     gender?: string | null;
     weight?: number;
@@ -14871,7 +14871,7 @@ export class PetForAdoptionDto implements IPetForAdoptionDto {
         data["petName"] = this.petName !== undefined ? this.petName : <any>null;
         data["breed"] = this.breed !== undefined ? this.breed : <any>null;
         data["species"] = this.species !== undefined ? this.species : <any>null;
-        data["petBirthDate"] = this.petBirthDate ? formatDate(this.petBirthDate) : <any>null;
+        data["petBirthDate"] = this.petBirthDate ? this.petBirthDate.toISOString() : <any>null;
         data["petCondition"] = this.petCondition !== undefined ? this.petCondition : <any>null;
         data["gender"] = this.gender !== undefined ? this.gender : <any>null;
         data["weight"] = this.weight !== undefined ? this.weight : <any>null;
@@ -14886,7 +14886,7 @@ export interface IPetForAdoptionDto {
     petName?: string | null;
     breed?: string | null;
     species?: string | null;
-    petBirthDate?: Date;
+    petBirthDate?: Date | null;
     petCondition?: string | null;
     gender?: string | null;
     weight?: number;

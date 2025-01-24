@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { Component, OnInit } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -14,9 +14,11 @@ import { APIClient, InvoiceDto } from '@shared/services/api-client/veterinary-ap
 import { CommonModule } from '@angular/common';
 import { AddDollarPipe } from '@shared/pipes/add-dollar.pipe';
 import { AddInvoiceComponent } from './add-invoice/add-invoice.component';
-import { MatPaginatorModule, PageEvent, MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
-import { HttpParams } from '@angular/common/http';
+import { EditInvoiceComponent } from './edit-invoice/edit-invoice.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 
 @Component({
@@ -54,7 +56,7 @@ pageIndex: number = 0; // Current page index
 searchTerm: string = '';
 
 constructor(private apiService: APIClient, private router: Router,
-private route: ActivatedRoute,) {}
+private route: ActivatedRoute, private snackBar: MatSnackBar, private diaglog: MatDialog) {}
 
 ngOnInit(): void {
   this.dataSource.filterPredicate = (data: any, filter: string) => {
@@ -67,19 +69,6 @@ ngOnInit(): void {
  this.loadInvoices();
 }
 
-         fetchData(){
-         this.apiService.getAll9().subscribe(
-           (response) => {
-           this.invoice = response.data ?? []; // Directly replace with the API response
-           this.dataSource.data = this.invoice;
-           console.log('Invoice Details:', this.invoice);
-                 },
-         (error) => {
-         console.error('Error fetching invoice details', error);
-          }
-        );
-     }
-
 
 
          applyFilter(event: Event): void {
@@ -87,34 +76,41 @@ ngOnInit(): void {
            this.dataSource.filter = filterValue.trim().toLowerCase();
          }
 
-         onEdit(row: any): void {
-           console.log('Edit action clicked for:', row);
-           // Add logic to edit details
-         }
+         openEditInvoiceDialog(invoice: InvoiceDto[]) {
+          const dialogRef = this.dialog.open(EditInvoiceComponent, {
+            data: {
+              invoices: {...this.invoice}
+            }
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            // Handle the result if needed
+          });
+        }
 
          onDelete(row: any): void {
-           console.log('Item ID to delete:', row.itemId); // Log the ownerId
-           console.log('Delete action clicked for:', row);
+           const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                 width: '400px', // Set the desired width here
+                 height: '200px'
+               });
 
-           // Confirm the deletion action (optional)
-           const confirmDelete = window.confirm(`Are you sure you want to delete ${row.itemName}?`);
-           if (!confirmDelete) {
-             return; // If user cancels, do nothing
-           }
+               dialogRef.afterClosed().subscribe(result => {
+                 if (result) {
 
            // Call the backend service to delete the owner and animal
-           this.apiService.deleteById9(row.itemId).subscribe({
+           this.apiService.deleteById9(row.invoiceId).subscribe({
              next: (response) => {
                console.log('Delete successful:', response);
                // Update the UI (remove the row from the table, etc.)
                this.removeRowFromTable(row);
-               alert('Item has been deleted successfully!');
-             },
+               this.loadInvoices();
+               this.snackBar.open('Invoice deleted successfully!', 'Close', { duration: 3000 })
+              },
              error: (err) => {
                console.error('Error deleting item:', err);
                alert('Failed to delete the Item!');
-             }
-           });
+                 }})
+           }});
          }
 
          removeRowFromTable(row: any): void {
@@ -122,8 +118,9 @@ ngOnInit(): void {
            const index = this.invoice.findIndex(item => item.invoiceId === row.itemId);
            if (index !== -1) {
              this.invoice.splice(index, 1);  // Remove the row from your data array
-           }
-         }
+            }
+          }
+
 
     readonly dialog = inject(MatDialog);
      openDialog() {
@@ -145,12 +142,6 @@ ngOnInit(): void {
 
 
     page: number = 1;
-    // loadSearch(): void {
-    //   this.apiService.searchInvoice(this.searchTerm, this.page, this.pageSize).subscribe((data) => {
-    //     this.invoice! = data.data!;
-    //     this.totalCounts! = data.totalRecords!;
-    //   });
-    // }
 
     loadSearch(): void {
       // If searchTerm is empty or null, explicitly set it to null to fetch all invoices
@@ -164,6 +155,10 @@ ngOnInit(): void {
             this.invoice = [];
             this.totalCounts = 0;
           }
+          if (search == null) {
+            console.error("searchTerm cannot be null");
+            return this.loadInvoices(); // Call fetchData() if searchTerm is null
+        }
         },
         error: (error) => {
           console.error('Failed to load invoices:', error);

@@ -24,12 +24,12 @@ export class AskUserDialogComponent implements OnInit {
 
     if (ownerType === 'new') {
       this.dialog.open(AddingPetComponent, {
-        width: '500px',
+        width: '450px',
         data: { ownerType: 'new' }
       });
     } else if (ownerType === 'existing') {
       this.dialog.open(AddingPetExistComponent, {
-        width: '500px',
+        width: '450px',
         data: { ownerType: 'existing' }
       });
     }

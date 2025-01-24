@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ViewQuestComponent } from './view-quest/view-quest.component';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-adoption',
@@ -186,7 +187,13 @@ export class AdoptionComponent implements OnInit {
 
 
   onDeletePet(petId: number): void {
-    if (confirm('Are you sure you want to delete this pet?')) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+     width: '400px', // Set the desired width here
+      height: '200px'
+     });
+
+     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
       this.apiService.deletePetWithQuest(petId).subscribe(
         () => {
           this.snackBar.open('Pet deleted successfully', 'Close', { duration: 3000 });
@@ -199,6 +206,7 @@ export class AdoptionComponent implements OnInit {
         }
       );
     }
+  });
   }
 
   onMarkAsAdopted(petForAdoptionId: number): void {

@@ -67,6 +67,13 @@ mat-dialog-actions button {
   margin: 0 8px;
 }
 
+.confirm{
+  margin-left: 180px;
+}
+.cancel{
+  margin-left: 30px;
+}
+
 /* Add some responsiveness */
 @media screen and (max-width: 600px) {
   mat-dialog-container {

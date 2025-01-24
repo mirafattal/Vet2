@@ -13,9 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { ClientToolbarComponent } from "../client-toolbar/client-toolbar.component";
-import { utc } from 'moment';
 import { AuthService, TokenService } from '@core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-adoption-questionnaire',
@@ -33,7 +32,6 @@ import { AuthService, TokenService } from '@core';
     MatSelectModule,
     MatInputModule,
     MatRadioModule,
-    ClientToolbarComponent
 ],
   templateUrl: './adoption-questionnaire.component.html',
   styleUrls: ['./adoption-questionnaire.component.scss']
@@ -45,7 +43,7 @@ export class AdoptionQuestionnaireComponent implements OnInit {
   adoption: AdoptionQuestionnaireDto = new AdoptionQuestionnaireDto();
 
   constructor(private apiService: APIClient, private router: Router, private route: ActivatedRoute,
-    private authService: AuthService, private tokenService: TokenService
+    private authService: AuthService, private tokenService: TokenService, private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -85,7 +83,10 @@ export class AdoptionQuestionnaireComponent implements OnInit {
     this.apiService.add(this.adoption).subscribe({
       next: (response) => {
         console.log('Response from backend:', response);
-          alert('adoption questionnaire added successfully!');
+        this.snackBar.open('adoption questionnaire added successfully!', 'Close', {
+          duration: 3000,
+        });
+          this.router.navigate(['pet-for-adoption']);
       },
       error: (err) => {
         console.error('Error adding adoption questionnaire:', err);

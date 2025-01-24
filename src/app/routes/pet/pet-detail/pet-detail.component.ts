@@ -147,10 +147,6 @@ export class PetDetailComponent implements OnInit {
     );
   }
 
-  onAddPet(): void {
-    // Navigate to the add pet route
-    this.router.navigate(['add-medical']);
-  }
 
   onFilesSelected(files: FileList | null): void {
     if (files) {
@@ -168,6 +164,7 @@ export class PetDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe((updatedOwner) => {
         if (updatedOwner) {
           this.owner = updatedOwner; // Update the owner data with the changes
+          this.fetchOwnerDetails();
           console.log('Updated owner data:', this.owner);
         }
       });
@@ -192,6 +189,7 @@ export class PetDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe((updatedMedical) => {
         if (updatedMedical) {
           this.records = updatedMedical; // Update the owner data with the changes
+          this.fetchMedicalRecords();
           console.log('Updated medical data:', this.records);
         }
       });
@@ -217,6 +215,7 @@ export class PetDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe((updatedVaccine) => {
         if (updatedVaccine) {
           this.vaccines = updatedVaccine; // Update the owner data with the changes
+          this.fetchVaccinationsDetails();
           console.log('Updated medical data:', this.vaccines);
         }
       });
@@ -236,6 +235,7 @@ export class PetDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe((updatedAnimal) => {
         if (updatedAnimal) {
           this.animal = updatedAnimal; // Update the owner data with the changes
+          this.fetchAnimalDetails();
           console.log('Updated animal data:', this.animal);
         }
       });
@@ -245,10 +245,18 @@ export class PetDetailComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialog.open(AddingMedicalComponent, {
-            disableClose: true, // Prevents closing on outside click or Escape key
-            data: { animalId: this.animalId },
-          });
+    const dialogRef = this.dialog.open(AddingMedicalComponent, {
+      disableClose: true, // Prevents closing on outside click or Escape key
+      data: { animalId: this.animalId },
+    });
+
+    // Subscribe to the afterClosed observable to fetch medical records after the dialog is closed
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // You can check for any specific result passed when closing the dialog
+        this.fetchMedicalRecords(); // Fetch medical records after dialog closes
+      }
+    });
   }
 
   onView(): void {
@@ -444,16 +452,24 @@ export class PetDetailComponent implements OnInit {
   onAddLabResults(): void {
     this.dialog.open(AddLabComponent, {
       disableClose: true, // Prevent closing on outside click or Escape key
-      width: '600px', // Optional: Adjust dialog width
+      width: '400px', // Optional: Adjust dialog width
       data: { animalId: this.animalId } // Pass animalId to the dialog
     });
   }
 
   onAddVaccine(): void {
-    this.dialog.open(AddVaccineComponent, {
-      disableClose: true, // Prevent closing on outside click or Escape key
-      width: '600px', // Optional: Adjust dialog width
+    const dialogRef = this.dialog.open(AddVaccineComponent, {
+      disableClose: true, // Prevents closing on outside click or Escape key
+      width: '400px', // Optional: Adjust dialog width
       data: { animalId: this.animalId } // Pass animalId to the dialog
+    });
+
+    // Subscribe to the afterClosed observable to fetch vaccination data after the dialog is closed
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // You can check for specific result passed when closing the dialog
+        this.fetchVaccinationsDetails(); // Fetch vaccination data after dialog closes
+      }
     });
   }
 
@@ -474,6 +490,7 @@ export class PetDetailComponent implements OnInit {
             console.log('Delete successful:', response);
             // Remove row from table
             this.removeRowFromTableMedical(row);
+            this.fetchMedicalRecords();
             this.snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 })
           },
           error: (err) => {
@@ -510,6 +527,7 @@ export class PetDetailComponent implements OnInit {
             console.log('Delete successful:', response);
             // Remove row from table
             this.removeRowFromTableLab(row);
+            this.fetchLabResults();
             this.snackBar.open('Lab Result has been deleted successfully!', 'Close', { duration: 3000 })
           },
           error: (err) => {
@@ -546,6 +564,7 @@ export class PetDetailComponent implements OnInit {
             console.log('Delete successful:', response);
             // Remove row from table
             this.removeRowFromTableVaccine(row);
+            this.fetchVaccinationsDetails();
             this.snackBar.open('Vaccine Result has been deleted successfully!', 'Close', { duration: 3000 })
           },
           error: (err) => {
