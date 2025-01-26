@@ -8273,6 +8273,62 @@ export class APIClient {
     }
 
     /**
+     * @param userId (optional) 
+     * @return OK
+     */
+    getStaffByUserId(userId: number | undefined): Observable<StaffDto> {
+        let url_ = this.baseUrl + "/api/Staff/GetStaffByUserId?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStaffByUserId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStaffByUserId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StaffDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StaffDto>;
+        }));
+    }
+
+    protected processGetStaffByUserId(response: HttpResponseBase): Observable<StaffDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StaffDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     getAll13(): Observable<StaffDtoIEnumerableApiResponse> {
@@ -11878,6 +11934,744 @@ export class APIClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return OK
+     */
+    getAll22(): Observable<ZZZMealDtoIEnumerableApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMeal/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll22(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll22(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZZMealDtoIEnumerableApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZZMealDtoIEnumerableApiResponse>;
+        }));
+    }
+
+    protected processGetAll22(response: HttpResponseBase): Observable<ZZZMealDtoIEnumerableApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZZMealDtoIEnumerableApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getById22(id: number | undefined): Observable<ZZZMealDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMeal/GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById22(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById22(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZZMealDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZZMealDtoApiResponse>;
+        }));
+    }
+
+    protected processGetById22(response: HttpResponseBase): Observable<ZZZMealDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZZMealDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    add22(body: ZZZMealDto | undefined): Observable<ZZZMealDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMeal/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd22(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd22(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZZMealDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZZMealDtoApiResponse>;
+        }));
+    }
+
+    protected processAdd22(response: HttpResponseBase): Observable<ZZZMealDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZZMealDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    update22(body: ZZZMealDto | undefined): Observable<ZZZMealDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMeal/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate22(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate22(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZZMealDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZZMealDtoApiResponse>;
+        }));
+    }
+
+    protected processUpdate22(response: HttpResponseBase): Observable<ZZZMealDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZZMealDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteById22(id: number | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMeal/DeleteById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteById22(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteById22(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDeleteById22(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    delete22(body: ZZZMealDto | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMeal/Delete";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete22(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete22(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDelete22(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param animalId (optional) 
+     * @param date (optional) 
+     * @return OK
+     */
+    getMealsForAnimalTrackedByDay(animalId: number | undefined, date: Date | undefined): Observable<GetMealTrackingWithMealDto[]> {
+        let url_ = this.baseUrl + "/api/ZZZMealTracking/GetMealsForAnimalTrackedByDay?";
+        if (animalId === null)
+            throw new Error("The parameter 'animalId' cannot be null.");
+        else if (animalId !== undefined)
+            url_ += "animalId=" + encodeURIComponent("" + animalId) + "&";
+        if (date === null)
+            throw new Error("The parameter 'date' cannot be null.");
+        else if (date !== undefined)
+            url_ += "date=" + encodeURIComponent(date ? "" + date.toISOString() : "") + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetMealsForAnimalTrackedByDay(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetMealsForAnimalTrackedByDay(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetMealTrackingWithMealDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetMealTrackingWithMealDto[]>;
+        }));
+    }
+
+    protected processGetMealsForAnimalTrackedByDay(response: HttpResponseBase): Observable<GetMealTrackingWithMealDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetMealTrackingWithMealDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result400 = resultData400 !== undefined ? resultData400 : <any>null;
+    
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAll23(): Observable<ZZZMealTrackingDtoIEnumerableApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMealTracking/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll23(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll23(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZZMealTrackingDtoIEnumerableApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZZMealTrackingDtoIEnumerableApiResponse>;
+        }));
+    }
+
+    protected processGetAll23(response: HttpResponseBase): Observable<ZZZMealTrackingDtoIEnumerableApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZZMealTrackingDtoIEnumerableApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    getById23(id: number | undefined): Observable<ZZZMealTrackingDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMealTracking/GetById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById23(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById23(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZZMealTrackingDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZZMealTrackingDtoApiResponse>;
+        }));
+    }
+
+    protected processGetById23(response: HttpResponseBase): Observable<ZZZMealTrackingDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZZMealTrackingDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    add23(body: ZZZMealTrackingDto | undefined): Observable<ZZZMealTrackingDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMealTracking/Add";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAdd23(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAdd23(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZZMealTrackingDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZZMealTrackingDtoApiResponse>;
+        }));
+    }
+
+    protected processAdd23(response: HttpResponseBase): Observable<ZZZMealTrackingDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZZMealTrackingDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    update23(body: ZZZMealTrackingDto | undefined): Observable<ZZZMealTrackingDtoApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMealTracking/Update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate23(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate23(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ZZZMealTrackingDtoApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ZZZMealTrackingDtoApiResponse>;
+        }));
+    }
+
+    protected processUpdate23(response: HttpResponseBase): Observable<ZZZMealTrackingDtoApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ZZZMealTrackingDtoApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return OK
+     */
+    deleteById23(id: number | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMealTracking/DeleteById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteById23(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteById23(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDeleteById23(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    delete23(body: ZZZMealTrackingDto | undefined): Observable<BooleanApiResponse> {
+        let url_ = this.baseUrl + "/api/ZZZMealTracking/Delete";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete23(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete23(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanApiResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanApiResponse>;
+        }));
+    }
+
+    protected processDelete23(response: HttpResponseBase): Observable<BooleanApiResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanApiResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export class AddAdoptionQuestWithOwnerDTO implements IAddAdoptionQuestWithOwnerDTO {
@@ -14025,6 +14819,58 @@ export class GetAvailableAppointmentsDto implements IGetAvailableAppointmentsDto
 
 export interface IGetAvailableAppointmentsDto {
     appointmentDate?: Date;
+}
+
+export class GetMealTrackingWithMealDto implements IGetMealTrackingWithMealDto {
+    trackingId?: number;
+    animalId?: number;
+    mealId?: number;
+    mealDate?: Date;
+    meal?: ZZZMealDto;
+
+    constructor(data?: IGetMealTrackingWithMealDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.trackingId = _data["trackingId"] !== undefined ? _data["trackingId"] : <any>null;
+            this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
+            this.mealId = _data["mealId"] !== undefined ? _data["mealId"] : <any>null;
+            this.mealDate = _data["mealDate"] ? new Date(_data["mealDate"].toString()) : <any>null;
+            this.meal = _data["meal"] ? ZZZMealDto.fromJS(_data["meal"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GetMealTrackingWithMealDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetMealTrackingWithMealDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["trackingId"] = this.trackingId !== undefined ? this.trackingId : <any>null;
+        data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
+        data["mealId"] = this.mealId !== undefined ? this.mealId : <any>null;
+        data["mealDate"] = this.mealDate ? this.mealDate.toISOString() : <any>null;
+        data["meal"] = this.meal ? this.meal.toJSON() : <any>null;
+        return data;
+    }
+}
+
+export interface IGetMealTrackingWithMealDto {
+    trackingId?: number;
+    animalId?: number;
+    mealId?: number;
+    mealDate?: Date;
+    meal?: ZZZMealDto;
 }
 
 export class GetStaffNamesdto implements IGetStaffNamesdto {
@@ -16664,6 +17510,316 @@ export class ZZVaccineTypeDtoIEnumerableApiResponse implements IZZVaccineTypeDto
 export interface IZZVaccineTypeDtoIEnumerableApiResponse {
     success?: boolean;
     data?: ZZVaccineTypeDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZZZMealDto implements IZZZMealDto {
+    mealId?: number;
+    mealName?: string | null;
+    calories?: string | null;
+    portionSize?: string | null;
+
+    constructor(data?: IZZZMealDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.mealId = _data["mealId"] !== undefined ? _data["mealId"] : <any>null;
+            this.mealName = _data["mealName"] !== undefined ? _data["mealName"] : <any>null;
+            this.calories = _data["calories"] !== undefined ? _data["calories"] : <any>null;
+            this.portionSize = _data["portionSize"] !== undefined ? _data["portionSize"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZZMealDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZZMealDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["mealId"] = this.mealId !== undefined ? this.mealId : <any>null;
+        data["mealName"] = this.mealName !== undefined ? this.mealName : <any>null;
+        data["calories"] = this.calories !== undefined ? this.calories : <any>null;
+        data["portionSize"] = this.portionSize !== undefined ? this.portionSize : <any>null;
+        return data;
+    }
+}
+
+export interface IZZZMealDto {
+    mealId?: number;
+    mealName?: string | null;
+    calories?: string | null;
+    portionSize?: string | null;
+}
+
+export class ZZZMealDtoApiResponse implements IZZZMealDtoApiResponse {
+    success?: boolean;
+    data?: ZZZMealDto;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZZZMealDtoApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.data = _data["data"] ? ZZZMealDto.fromJS(_data["data"]) : <any>null;
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZZMealDtoApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZZMealDtoApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["data"] = this.data ? this.data.toJSON() : <any>null;
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZZZMealDtoApiResponse {
+    success?: boolean;
+    data?: ZZZMealDto;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZZZMealDtoIEnumerableApiResponse implements IZZZMealDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZZZMealDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZZZMealDtoIEnumerableApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(ZZZMealDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZZMealDtoIEnumerableApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZZMealDtoIEnumerableApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZZZMealDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZZZMealDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZZZMealTrackingDto implements IZZZMealTrackingDto {
+    trackingId?: number;
+    animalId?: number;
+    mealId?: number;
+    mealDate?: Date;
+
+    constructor(data?: IZZZMealTrackingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.trackingId = _data["trackingId"] !== undefined ? _data["trackingId"] : <any>null;
+            this.animalId = _data["animalId"] !== undefined ? _data["animalId"] : <any>null;
+            this.mealId = _data["mealId"] !== undefined ? _data["mealId"] : <any>null;
+            this.mealDate = _data["mealDate"] ? new Date(_data["mealDate"].toString()) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZZMealTrackingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZZMealTrackingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["trackingId"] = this.trackingId !== undefined ? this.trackingId : <any>null;
+        data["animalId"] = this.animalId !== undefined ? this.animalId : <any>null;
+        data["mealId"] = this.mealId !== undefined ? this.mealId : <any>null;
+        data["mealDate"] = this.mealDate ? this.mealDate.toISOString() : <any>null;
+        return data;
+    }
+}
+
+export interface IZZZMealTrackingDto {
+    trackingId?: number;
+    animalId?: number;
+    mealId?: number;
+    mealDate?: Date;
+}
+
+export class ZZZMealTrackingDtoApiResponse implements IZZZMealTrackingDtoApiResponse {
+    success?: boolean;
+    data?: ZZZMealTrackingDto;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZZZMealTrackingDtoApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            this.data = _data["data"] ? ZZZMealTrackingDto.fromJS(_data["data"]) : <any>null;
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZZMealTrackingDtoApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZZMealTrackingDtoApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        data["data"] = this.data ? this.data.toJSON() : <any>null;
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZZZMealTrackingDtoApiResponse {
+    success?: boolean;
+    data?: ZZZMealTrackingDto;
+    message?: string | null;
+    errorMessage?: string | null;
+}
+
+export class ZZZMealTrackingDtoIEnumerableApiResponse implements IZZZMealTrackingDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZZZMealTrackingDto[] | null;
+    message?: string | null;
+    errorMessage?: string | null;
+
+    constructor(data?: IZZZMealTrackingDtoIEnumerableApiResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.success = _data["success"] !== undefined ? _data["success"] : <any>null;
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(ZZZMealTrackingDto.fromJS(item));
+            }
+            else {
+                this.data = <any>null;
+            }
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ZZZMealTrackingDtoIEnumerableApiResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new ZZZMealTrackingDtoIEnumerableApiResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["success"] = this.success !== undefined ? this.success : <any>null;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["message"] = this.message !== undefined ? this.message : <any>null;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : <any>null;
+        return data;
+    }
+}
+
+export interface IZZZMealTrackingDtoIEnumerableApiResponse {
+    success?: boolean;
+    data?: ZZZMealTrackingDto[] | null;
     message?: string | null;
     errorMessage?: string | null;
 }

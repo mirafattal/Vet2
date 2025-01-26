@@ -26,6 +26,7 @@ import { AddVaccineComponent } from '../add-vaccine/add-vaccine.component';
 import { AddAppDialogComponent } from '../add-app-dialog/add-app-dialog.component';
 import { EditMedicalComponent } from '../edit-medical/edit-medical.component';
 import { EditVaccineComponent } from '../edit-vaccine/edit-vaccine.component';
+import { EditLabComponent } from '../edit-lab/edit-lab.component';
 
 @Component({
   selector: 'app-pet-detail',
@@ -217,6 +218,31 @@ export class PetDetailComponent implements OnInit {
           this.vaccines = updatedVaccine; // Update the owner data with the changes
           this.fetchVaccinationsDetails();
           console.log('Updated medical data:', this.vaccines);
+        }
+      });
+    } else {
+      console.error('Medical data is not available.');
+    }
+  }
+
+  editLabResult(): void {
+    console.log('Vaccine Records:', this.labResults); // Log records to check if they are available
+
+  if (this.labResults && this.labResults.length > 0) {
+    const labResult = this.labResults[0]; // Access the first record or you can iterate through the array
+    console.log('Editing record with Animal ID:', labResult.animalId);
+  }
+    if (this.records) { // Ensure owner data is available before opening the dialog
+      const dialogRef = this.dialog.open(EditLabComponent, {
+        width: '400px',
+        data: { labResults: { ...this.labResults }, animalId: this.animalId} // Pass a copy of the owner data to the dialog
+      });
+
+      dialogRef.afterClosed().subscribe((updatedlabResults) => {
+        if (updatedlabResults) {
+          this.labResults = updatedlabResults; // Update the owner data with the changes
+          this.fetchLabResults();
+          console.log('Updated medical data:', this.labResults);
         }
       });
     } else {

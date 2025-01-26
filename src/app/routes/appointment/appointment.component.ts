@@ -51,15 +51,21 @@ selectedStaffId: number | undefined |null = null; // Declare the selectedStaffId
 
 
 getAppointmentsThisWeek() {
+  const staffId = this.staffId; // Ensure staffId is fetched and assigned earlier
+
+  if (!staffId) {
+    console.error('Staff ID is not available. Cannot fetch appointments.');
+    return;
+  }
   this.apiService.getAnimalAndAppoinThisWeek().subscribe((appointAnimal: AppoiAnimalNameDto[]) => {
     console.log(appointAnimal);
     this.appointAnimalThisWeek = appointAnimal;
 
     // Filter by staffId before sorting
-    if (this.selectedStaffId) {
-      this.appointAnimalThisWeek = this.appointAnimalThisWeek.filter(appointAnimal =>
-        appointAnimal.staffId === this.selectedStaffId);
-    }
+    this.appointAnimalThisWeek = this.appointAnimalThisWeek.filter(
+      (appointment) => appointment.staffId === staffId
+    );
+
     this.appointAnimalThisWeek.sort((a, b) => {
       const dateA = a.appointmentDate ? new Date(a.appointmentDate) : new Date(0); // Default to epoch if undefined
       const dateB = b.appointmentDate ? new Date(b.appointmentDate) : new Date(0); // Default to epoch if undefined
@@ -75,14 +81,20 @@ getAppointmentsThisWeek() {
 }
 
 getAppointmentsThisMonth() {
+  const staffId = this.staffId; // Ensure staffId is fetched and assigned earlier
+
+  if (!staffId) {
+    console.error('Staff ID is not available. Cannot fetch appointments.');
+    return;
+  }
   this.apiService.getAnimalAndAppoinThisMonth().subscribe((appointAnimal: AppoiAnimalNameDto[]) => {
     console.log(appointAnimal);
     this.appointAnimalThisMonth = appointAnimal;
 
-    if (this.selectedStaffId) {
-      this.appointAnimalThisWeek = this.appointAnimalThisMonth.filter(appointAnimal =>
-        appointAnimal.staffId === this.selectedStaffId);
-    }
+    this.appointAnimalThisMonth = this.appointAnimalThisMonth.filter(
+      (appointment) => appointment.staffId === staffId
+    );
+
     this.appointAnimalThisMonth.sort((a, b) => {
       // Sort by appointmentDate first
       const dateA = a.appointmentDate ? new Date(a.appointmentDate) : new Date(0);
@@ -111,42 +123,58 @@ getAppointmentsThisMonth() {
 }
 
 getAppointmentsNextMonth() {
-  this.apiService.getAnimalAndAppoinNextMonth().subscribe((appointAnimal: AppoiAnimalNameDto[]) => {
-    console.log(appointAnimal);
-    this.appointAnimalNextMonth = appointAnimal;
+  const staffId = this.staffId; // Ensure staffId is fetched and assigned earlier
 
-    if (this.selectedStaffId) {
-      this.appointAnimalThisWeek = this.appointAnimalNextMonth.filter(appointAnimal =>
-        appointAnimal.staffId === this.selectedStaffId);
-    }
-    this.appointAnimalNextMonth.sort((a, b) => {
-      const dateA = a.appointmentDate ? new Date(a.appointmentDate) : new Date(0); // Default to epoch if undefined
-      const dateB = b.appointmentDate ? new Date(b.appointmentDate) : new Date(0); // Default to epoch if undefined
-      return dateA.getTime() - dateB.getTime(); // Ascending order
-    });
+  if (!staffId) {
+    console.error('Staff ID is not available. Cannot fetch appointments.');
+    return;
+  }
 
-    appointAnimal.forEach(appointAnimal => {
-        console.log('Animal Name:', appointAnimal.animalName);
-        console.log('Owner Name:', appointAnimal.fullName);
-        console.log('Slot Time:', appointAnimal.slotStartTime);
-    });
+  this.apiService.getAnimalAndAppoinNextMonth().subscribe({
+    next: (appointAnimal: AppoiAnimalNameDto[]) => {
+      // Store all next month's appointments
+      this.appointAnimalNextMonth = appointAnimal;
+
+      // Filter appointments for the current staffId
+      this.appointAnimalNextMonth = this.appointAnimalNextMonth.filter(
+        (appointment) => appointment.staffId === staffId
+      );
+
+      // Sort appointments by appointmentDate
+      this.appointAnimalNextMonth.sort((a, b) => {
+        const dateA = a.appointmentDate ? new Date(a.appointmentDate) : new Date(0); // Default to epoch if undefined
+        const dateB = b.appointmentDate ? new Date(b.appointmentDate) : new Date(0); // Default to epoch if undefined
+        return dateA.getTime() - dateB.getTime(); // Ascending order
+      });
+
+      // Log details for debugging
+      this.appointAnimalNextMonth.forEach((appointment) => {
+        console.log('Animal Name:', appointment.animalName);
+        console.log('Owner Name:', appointment.fullName);
+        console.log('Slot Time:', appointment.slotStartTime);
+      });
+    },
+    error: (error) => {
+      console.error('Failed to fetch appointments:', error);
+    },
   });
 }
-getStaffNames() {
-  this.apiService.staffwithroles().subscribe((staff: StaffWithRoleDTO[]) => {
-    console.log('Staff data received:', staff); // Debug log
-    // Filter the staff to include only 'Pet Doctor' or 'Horse Doctor'
-    this.staffList = staff.filter(
-      (s) => s.roleName === 'Pet Doctor' || s.roleName === 'Horse Doctor'
-    );
 
-    // Set the selected staff to the first doctor if available
-    this.selectedStaffId = this.staffList.length > 0 ? this.staffList[0].staffId : null;
+// getStaffNames() {
+//   this.apiService.staffwithroles().subscribe((staff: StaffWithRoleDTO[]) => {
+//     //console.log('Staff data received:', staff); // Debug log
+//     // Filter the staff to include only 'Pet Doctor' or 'Horse Doctor'
+//     this.staffList = staff.filter(
+//       (s) => s.roleName === 'Pet Doctor' || s.roleName === 'Horse Doctor'
+//     );
 
-    // Fetch appointments for the selected staff
-    this.fetchAppointmentsbyDate();
-  });
-}
+//     // Set the selected staff to the first doctor if available
+//     this.selectedStaffId = this.staffList.length > 0 ? this.staffList[0].staffId : null;
+
+//     // Fetch appointments for the selected staff
+//     this.fetchAppointmentsbyDate();
+//   });
+// }
 
 
 constructor(private dialog: MatDialog, private apiService: APIClient, private tokenService: TokenService) {}
@@ -154,12 +182,9 @@ constructor(private dialog: MatDialog, private apiService: APIClient, private to
 roles: string[] = [];
 ngOnInit(): void {
   this.todayDate = new Date().toUTCString(); // Display today's UTC date dynamically
-  this.getAppointmentsThisMonth();
-  this.getAppointmentsThisWeek();
-  this.getAppointmentsNextMonth();
-  this.getStaffNamesFordate();
-  this.fetchAppointmentsbyDate();
-  this.getStaffNames();
+  //this.getStaffNamesFordate();
+
+  //this.getStaffNames();
 
 
   const token: BaseToken = this.tokenService.get()!; // Assuming you get the BaseToken
@@ -184,8 +209,32 @@ ngOnInit(): void {
     this.roles = [];
   }
 
+  const userId = this.tokenService.getUserId();
+  console.log('userId:', userId)
+  if (userId) {
+    this.fetchStaffId(userId);
+  } else {
+    console.error('User ID is not available.');
+  }
+
 }
 
+staffId!: number;
+fetchStaffId(userId: number): void {
+  this.apiService.getStaffByUserId(userId).subscribe({
+    next: (response) => {
+      this.staffId = response.staffId!;
+      this.getAppointmentsThisWeek();
+      this.getAppointmentsThisMonth();
+      this.getAppointmentsNextMonth();
+      this.fetchAppointmentsbyDate();
+      console.log('Staff ID:', this.staffId);
+    },
+    error: (error) => {
+      console.error('Failed to fetch staff ID:', error);
+    },
+  });
+}
 
 // Filter appointments based on selected time range
 filterAppointments() {
@@ -202,11 +251,15 @@ filterAppointments() {
     default:
       this.filteredAppointments = this.appointAnimalThisWeek;
   }
-   // Now filter by staffId, if selectedStaffId is available
-   if (this.selectedStaffId) {
-    this.filteredAppointments = this.filteredAppointments.filter(appointment => appointment.staffId === this.selectedStaffId);
+
+  // Filter by staffId retrieved earlier
+  if (this.staffId) {
+    this.filteredAppointments = this.filteredAppointments.filter(
+      (appointment) => appointment.staffId === this.staffId
+    );
   }
 }
+
 
 
 
@@ -229,21 +282,21 @@ filterAppointments() {
     return this.timeSlots.every(slot => !slot.appointment);
   }
 
-  getStaffNamesFordate() {
-    this.apiService.staffwithroles().subscribe((staff: StaffWithRoleDTO[]) => {
-      console.log('Staff data received:', staff); // Debug log
-      // Filter the staff to include only 'Pet Doctor' or 'Horse Doctor'
-      this.staffList = staff.filter(
-        (s) => s.roleName === 'Pet Doctor' || s.roleName === 'Horse Doctor'
-      );
+  // getStaffNamesFordate() {
+  //   this.apiService.staffwithroles().subscribe((staff: StaffWithRoleDTO[]) => {
+  //     //console.log('Staff data received:', staff); // Debug log
+  //     // Filter the staff to include only 'Pet Doctor' or 'Horse Doctor'
+  //     this.staffList = staff.filter(
+  //       (s) => s.roleName === 'Pet Doctor' || s.roleName === 'Horse Doctor'
+  //     );
 
-      // Set the selected staff to the first doctor if available
-      this.selectedStaffId = this.staffList.length > 0 ? this.staffList[0].staffId : null;
+  //     // Set the selected staff to the first doctor if available
+  //     this.selectedStaffId = this.staffList.length > 0 ? this.staffList[0].staffId : null;
 
-      // Fetch appointments for the selected staff
-      this.fetchAppointmentsbyDate();
-    });
-  }
+  //     // Fetch appointments for the selected staff
+  //     this.fetchAppointmentsbyDate();
+  //   });
+  // }
 
 
   fetchAppointmentsbyDate() {
@@ -253,7 +306,7 @@ filterAppointments() {
 
     this.apiService.getAppointmentByDate(this.selectedDate).subscribe({
       next: (appointments) => {
-        console.log('Appointments received:', appointments); // Debug log
+        //console.log('Appointments received:', appointments); // Debug log
         this.isLoading = false;
         this.timeSlots = Array.from({ length: 8 }, (_, i) => ({
           time: `${9 + i}:00`,

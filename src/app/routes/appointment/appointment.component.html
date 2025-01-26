@@ -3,15 +3,6 @@
     <div class="appointments-page">
       <!-- Add Appointment Button and Dropdown -->
       <div class="header">
-        <!-- Staff Dropdown -->
-        <mat-form-field appearance="fill" class="staff">
-          <mat-label>Staff</mat-label>
-          <mat-select [(value)]="selectedStaffId" (selectionChange)="filterAppointments()">
-            <mat-option *ngFor="let staff of staffList" [value]="staff.staffId">
-              {{ staff.fullName }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
 
         <!-- Dropdown to select Time Range -->
         <mat-form-field class="date">
@@ -74,15 +65,6 @@
         >
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="staff">
-        <mat-label>Staff</mat-label>
-        <mat-select [(value)]="selectedStaffId" (selectionChange)="filterAppointmentsForSchedule()">
-          <mat-option *ngFor="let staff of staffList" [value]="staff.staffId">
-            {{ staff.fullName }}
-          </mat-option>
-        </mat-select>
       </mat-form-field>
 
       <button mat-icon-button (click)="nextDate()">

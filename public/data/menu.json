@@ -28,15 +28,6 @@
       }
     },
     {
-      "route": "staff",
-      "name": "staff",
-      "type": "link",
-      "icon": "face",
-      "permissions": {
-        "only": "ADMIN"
-      }
-    },
-    {
       "route": "pet",
       "name": "pet",
       "type": "link",
